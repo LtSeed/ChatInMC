@@ -1,0 +1,4 @@
+name: ChatInMC
+version: '${project.version}'
+main: ltseed.chatinmc.ChatInMC
+api-version: 1.19
