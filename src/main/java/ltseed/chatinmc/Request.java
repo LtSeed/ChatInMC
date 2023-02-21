@@ -33,8 +33,7 @@ public class Request {
         CloseableHttpResponse response = null;
         try {
             // 创建uri
-            JSONObject j = new JSONObject(params);
-//            if (params != null){
+            //            if (params != null){
 //                for (String key : params.keySet()) {
 //                    j.addProperty(key, params.get(key).toString());
 //                }
@@ -42,15 +41,17 @@ public class Request {
 
             URIBuilder builder = new URIBuilder(url);
             URI uri = builder.build();
-            // 创建http GET请求
+            // 创建http请求
             HttpPost httpRequest = new HttpPost(uri);
-            httpRequest.setEntity(new StringEntity(j.toString()));
+
+            //将params以json格式添加到request中
+            httpRequest.setEntity(new StringEntity(new JSONObject(params).toString()));
+
             if (header != null) {
                 for (String key : header.keySet()) {
                     httpRequest.setHeader(key, header.get(key));
                 }
             }
-
 
             // 执行请求
             try {
@@ -63,10 +64,11 @@ public class Request {
                 return null;
             }
             // 判断返回状态是否为200
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getStatusLine().getStatusCode() != 200)
+                System.out.println(response.getStatusLine().getStatusCode());
 
-            } else System.out.println(response.getStatusLine().getStatusCode());
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

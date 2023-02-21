@@ -25,10 +25,10 @@ public class AskBuilder {
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
 
-    public Ask build(){
+    public Completions build(){
         if(model.contains("[model]"))return null;
         if(prompt.contains("[prompt]"))return null;
-        return new Ask(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
+        return new Completions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
     }
 
     public void setPrompt(String prompt) {

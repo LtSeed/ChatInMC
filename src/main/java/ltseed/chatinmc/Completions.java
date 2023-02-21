@@ -9,7 +9,7 @@ import java.util.Objects;
 
 import static ltseed.chatinmc.Request.request;
 
-public class Ask {
+public class Completions {
 
     private final String model;
     private final String prompt;
@@ -24,7 +24,7 @@ public class Ask {
     private final int best_of;// = 1;
     private final Map<String,String> logit_bias;// = null;
 
-    protected Ask(String model, String prompt, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected Completions(String model, String prompt, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
         this.prompt = prompt;
         this.suffix = suffix;
@@ -39,9 +39,9 @@ public class Ask {
         this.logit_bias = logit_bias;
     }
 
-    public String ask() {
+    public String ask(String key) {
         HashMap<String, String> stringStringHashMap = new HashMap<>();
-        stringStringHashMap.put("Authorization","Bearer "+Test.key);
+        stringStringHashMap.put("Authorization","Bearer " + key);
         stringStringHashMap.put("Content-Type","application/json");
         HashMap<String, Object> params = new HashMap<>();
 //        params.put("model","text-davinci-003");

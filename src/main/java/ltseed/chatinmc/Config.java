@@ -13,7 +13,7 @@ public class Config {
     public static String translation_key;
 
     public static boolean translation;
-    public static boolean debug;
+    public static String debug;
 
     public static JSONArray chatting_entity;
     public static JSONObject entity_information;
@@ -23,9 +23,8 @@ public class Config {
         chatGPT_key = fileConfiguration.getString("chatGPT_key");
         translation_key = fileConfiguration.getString("translation_key");
         translation = fileConfiguration.getBoolean("translation",true);
-        debug = fileConfiguration.getBoolean("debug",false);
-        chatting_entity = JSON.parseArray(fileConfiguration.getString("chatting_entity","[]"));
-        entity_information = JSON.parseObject(fileConfiguration.getString("entity_information","{}"));
+        debug = fileConfiguration.getString("debug","N");
+        ChatInMC.debug = Debug.valueOf(debug);
     }
 
     public static void saveConfig(){
@@ -33,8 +32,6 @@ public class Config {
         fileConfiguration.set("chatGPT_key",chatGPT_key);
         fileConfiguration.set("translation_key",translation_key);
         fileConfiguration.set("debug",debug);
-        fileConfiguration.set("chatting_entity",chatting_entity);
-        fileConfiguration.set("entity_information",entity_information);
         tp.saveConfig();
     }
 }
