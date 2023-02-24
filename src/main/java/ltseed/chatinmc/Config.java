@@ -22,7 +22,7 @@ public class Config {
         FileConfiguration fileConfiguration = tp.getConfig();
         chatGPT_key = fileConfiguration.getString("chatGPT_key");
         translation_key = fileConfiguration.getString("translation_key");
-        translation = fileConfiguration.getBoolean("translation",true);
+        translation = fileConfiguration.getBoolean("translation",false);
         debug = fileConfiguration.getString("debug","N");
         ChatInMC.debug = Debug.valueOf(debug);
     }

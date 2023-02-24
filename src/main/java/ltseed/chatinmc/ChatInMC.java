@@ -1,9 +1,12 @@
 package ltseed.chatinmc;
 
 import org.bukkit.Server;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -32,6 +35,7 @@ public final class ChatInMC extends JavaPlugin {
         checkFolders(tp);
         models = readModels();
         chatters = readChatters();
+        debug.info("已经成功加载！");
     }
 
     @Override

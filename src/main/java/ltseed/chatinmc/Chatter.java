@@ -26,6 +26,7 @@ public class Chatter {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToFile(File Folder) throws IOException {
+        ChatInMC.debug.debugB("ltseed.chatinmc.Chatter#saveToFile called");
         File saving = new File(Folder, String.valueOf(uuid));
         saving.createNewFile();
         YamlConfiguration yml_file = new YamlConfiguration();
