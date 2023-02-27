@@ -9,9 +9,9 @@ import java.util.Map;
 @Getter
 @Setter
 
-public class AskBuilder {
-    public static final AskBuilder DEFAULT = new AskBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
-    public static final AskBuilder CONTENT_FILTER = new AskBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
+public class GPTChatterBuilder implements MessageBuilder {
+    public static final GPTChatterBuilder DEFAULT = new GPTChatterBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
+    public static final GPTChatterBuilder CONTENT_FILTER = new GPTChatterBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
     String model;
     String prompt;
     String suffix;// = null;
@@ -24,7 +24,7 @@ public class AskBuilder {
     double frequency_penalty;// = 0;
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
-
+    @Override
     public Completions build(){
         if(model.contains("[model]"))return null;
         if(prompt.contains("[prompt]"))return null;
@@ -43,7 +43,7 @@ public class AskBuilder {
         else this.model = model;
     }
 
-    protected AskBuilder(String model, String prompt, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected GPTChatterBuilder(String model, String prompt, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
         this.prompt = prompt;
         this.suffix = suffix;
@@ -58,7 +58,7 @@ public class AskBuilder {
         this.logit_bias = logit_bias;
     }
 
-    public AskBuilder (AskBuilder askBuilder){
+    public GPTChatterBuilder(GPTChatterBuilder askBuilder){
         this.model = askBuilder.model;
         this.prompt = askBuilder.prompt;
         this.suffix = askBuilder.suffix;
@@ -74,4 +74,7 @@ public class AskBuilder {
             this.logit_bias = new HashMap<>(askBuilder.logit_bias);
         else this.logit_bias = null;
     }
+
+
+
 }

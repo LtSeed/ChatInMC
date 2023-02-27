@@ -1,26 +1,44 @@
 package ltseed.chatinmc;
 
+import lombok.Getter;
 import ltseed.Exception.InvalidChatterException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static ltseed.chatinmc.ChatInMC.models;
-
+import static ltseed.chatinmc.ChatInMC.ts;
+@Getter
 public class Chatter {
 
-    final UUID uuid;
-    final double default_temperature;
-    Map<UUID, Double> temperature = new HashMap<>();
-    final Model model;
+    private final UUID uuid;
+    private final double default_temperature;
+    private final double talk_distance;
+    private Map<UUID, Double> temperature = new HashMap<>();
+    private final String model;
+
+    private MessageBuilder core;
+
+    private Entity te = null;
+    @Nullable
+    public Entity getEntity(){
+        if(te == null) te = ts.getEntity(uuid);
+        return te;
+    }
+
+    public String chat(String message){
+        return core.build().chat(message);
+    }
 
     //新建实例时使用
-    Chatter(UUID uuid, double default_temperature, Model model) {
+    Chatter(UUID uuid, double default_temperature, double talk_distance, String model) {
         this.uuid = uuid;
         this.default_temperature = default_temperature;
+        this.talk_distance = talk_distance;
         this.model = model;
     }
 
@@ -33,7 +51,9 @@ public class Chatter {
         yml_file.set("uuid",String.valueOf(uuid));
         yml_file.set("default_temperature",default_temperature);
         yml_file.set("user_temperature",temperature.entrySet());
-        yml_file.set("model",model.getName());
+        yml_file.set("model",model);
+        yml_file.set("talk_distance",talk_distance);
+        yml_file.set("type","chatGPT");
         yml_file.save(saving);
     }
 
@@ -52,6 +72,11 @@ public class Chatter {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DEFAULT_TEMPERATURE);
         }
         try {
+            talk_distance = yml_file.getDouble("talk_distance");
+        } catch (Exception e) {
+            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_TALK_DISTANCE);
+        }
+        try {
             List<Map<?, ?>> user_temperature = yml_file.getMapList("user_temperature");
             for (Map<?, ?> map : user_temperature) {
                 for (Map.Entry<?, ?> entry : map.entrySet()) {
@@ -62,9 +87,19 @@ public class Chatter {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_USER_TEMPERATURE);
         }
         try {
-            model = models.get(yml_file.getString("model"));
+            model = yml_file.getString("model");
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.UNFOUNDED_MODEL);
         }
+        try {
+            String s = yml_file.getString("type","chatGPT");
+            if(s.equals("chatGPT")){
+                core = GPTChatterBuilder.DEFAULT;
+            } else throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
+        } catch (Exception e) {
+            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
+        }
+
     }
+
 }

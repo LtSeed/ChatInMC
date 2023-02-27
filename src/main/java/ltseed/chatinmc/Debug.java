@@ -22,11 +22,11 @@ public enum Debug {
     }
 
     public void debugA(String log){
-        if(this == A) info.accept("[ChatInMC]" + ChatColor.DARK_GREEN + "[DEBUG_A]" + log);
+        if(this != N) info.accept("[ChatInMC]" + ChatColor.GREEN + "[DEBUG_A]" + log);
     }
 
     public void debugB(String log){
-        if(this == B) info.accept("[ChatInMC]" + ChatColor.DARK_GREEN + "[DEBUG_B]" + log);
+        if(this == B) info.accept("[ChatInMC]" + ChatColor.BLUE+ "[DEBUG_B]" + log);
     }
 
 }

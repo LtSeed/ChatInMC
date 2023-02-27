@@ -9,7 +9,7 @@ import java.util.Objects;
 
 import static ltseed.chatinmc.Request.request;
 
-public class Completions {
+public class Completions implements Talkative{
 
     private final String model;
     private final String prompt;
@@ -48,23 +48,28 @@ public class Completions {
 //        params.put("prompt",question);
 //        params.put("temperature",0);
 //        params.put("max_tokens",512);
-        if(!Objects.equals(this.model, AskBuilder.DEFAULT.model)) params.put("model", this.model);
-        if(!Objects.equals(this.prompt, AskBuilder.DEFAULT.prompt)) params.put("prompt", this.prompt);
-        if(!Objects.equals(this.suffix, AskBuilder.DEFAULT.suffix)) params.put("suffix", this.suffix);
+        if(!Objects.equals(this.model, GPTChatterBuilder.DEFAULT.model)) params.put("model", this.model);
+        if(!Objects.equals(this.prompt, GPTChatterBuilder.DEFAULT.prompt)) params.put("prompt", this.prompt);
+        if(!Objects.equals(this.suffix, GPTChatterBuilder.DEFAULT.suffix)) params.put("suffix", this.suffix);
         if(!Objects.equals(this.max_tokens, 16)) params.put("max_tokens", this.max_tokens);
-        if(!Objects.equals(this.temperature, AskBuilder.DEFAULT.temperature)) params.put("temperature", this.temperature);
-        if(!Objects.equals(this.top_p, AskBuilder.DEFAULT.top_p)) params.put("top_p", this.top_p);
-        if(!Objects.equals(this.n, AskBuilder.DEFAULT.n)) params.put("n", this.n);
-        if(!Objects.equals(this.logprobs, AskBuilder.DEFAULT.logprobs)) params.put("logprobs", this.logprobs);
-        if(!Objects.equals(this.presence_penalty, AskBuilder.DEFAULT.presence_penalty)) params.put("presence_penalty", this.presence_penalty);
-        if(!Objects.equals(this.frequency_penalty, AskBuilder.DEFAULT.frequency_penalty)) params.put("frequency_penalty", this.frequency_penalty);
-        if(!Objects.equals(this.best_of, AskBuilder.DEFAULT.best_of)) params.put("best_of", this.best_of);
-        if(!Objects.equals(this.logit_bias, AskBuilder.DEFAULT.logit_bias)) params.put("logit_bias", this.logit_bias);
+        if(!Objects.equals(this.temperature, GPTChatterBuilder.DEFAULT.temperature)) params.put("temperature", this.temperature);
+        if(!Objects.equals(this.top_p, GPTChatterBuilder.DEFAULT.top_p)) params.put("top_p", this.top_p);
+        if(!Objects.equals(this.n, GPTChatterBuilder.DEFAULT.n)) params.put("n", this.n);
+        if(!Objects.equals(this.logprobs, GPTChatterBuilder.DEFAULT.logprobs)) params.put("logprobs", this.logprobs);
+        if(!Objects.equals(this.presence_penalty, GPTChatterBuilder.DEFAULT.presence_penalty)) params.put("presence_penalty", this.presence_penalty);
+        if(!Objects.equals(this.frequency_penalty, GPTChatterBuilder.DEFAULT.frequency_penalty)) params.put("frequency_penalty", this.frequency_penalty);
+        if(!Objects.equals(this.best_of, GPTChatterBuilder.DEFAULT.best_of)) params.put("best_of", this.best_of);
+        if(!Objects.equals(this.logit_bias, GPTChatterBuilder.DEFAULT.logit_bias)) params.put("logit_bias", this.logit_bias);
         System.out.println(params);
         JSONObject request = request("https://api.openai.com/v1/completions", stringStringHashMap, params);
         if(request == null) return null;
         JSONArray choices = request.getJSONArray("choices");
         JSONObject text = choices.getJSONObject(0);
         return text.getString("text");
+    }
+
+    @Override
+    public String chat(String string) {
+        return ask(Config.chatGPT_key);
     }
 }

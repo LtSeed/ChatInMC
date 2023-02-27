@@ -2,6 +2,7 @@ package ltseed.chatinmc;
 
 import ltseed.Exception.InvalidChatterException;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -12,24 +13,30 @@ public class FileProcess {
 
     private static File dataFolder;
     private static File chattersFolder;
-    private static File modelsFolder;
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void checkFolders(Plugin tp){
         dataFolder = tp.getDataFolder();
         dataFolder.mkdirs();
         chattersFolder = new File(dataFolder,"chatters");
-        modelsFolder = new File(dataFolder,"models");
         chattersFolder.mkdirs();
-        modelsFolder.mkdirs();
     }
-    public static Map<String, Model> readModels(){
-        Map<String, Model> map = new HashMap<>();
-        if(modelsFolder.listFiles() == null) return map;
-        for (File file : Objects.requireNonNull(modelsFolder.listFiles())) {
-            map.put(file.getName(),new Model());
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static List<String> readModels() {
+        List<String> rl = new ArrayList<>();
+        File models = new File(dataFolder, "models");
+        try {
+            models.createNewFile();
+        } catch (IOException e) {
+            ChatInMC.debug.err("在读取models文件时发生错误！");
+            ChatInMC.debug.debugA(e.getLocalizedMessage());
         }
-        return map;
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(models);
+        List<?> list = yml.getList("models");
+        if (list != null) {
+            list.forEach(o -> rl.add(o.toString()));
+        }
+        return rl;
     }
 
     public static Map<UUID, Chatter> readChatters(){
@@ -52,18 +59,18 @@ public class FileProcess {
                 chatter.saveToFile(chattersFolder);
             } catch (IOException e) {
                 ChatInMC.debug.err("在保存实体数据时发生了错误，这可能导致重大的问题，" +
-                        "请检查文件（"+chatter.uuid+"）: " + e.getMessage());
+                        "请检查文件（"+ chatter.getUuid() +"）: " + e.getMessage());
             }
         }
     }
-    public static void saveModels(Collection<Model> models){
-        for (Model model : models) {
-            try {
-                model.saveToFile(modelsFolder);
-            } catch (IOException e) {
-                ChatInMC.debug.err("在保存模型数据时发生了错误，这可能导致重大的问题，" +
-                        "请检查文件（"+model.getName()+"）: " + e.getMessage());
-            }
+    public static void saveModels(List<String> models){
+        YamlConfiguration yml = new YamlConfiguration();
+        yml.set("models",models);
+        try {
+            yml.save(new File(dataFolder,"models.yml"));
+        } catch (IOException e) {
+            ChatInMC.debug.err("在保存模型数据时发生了错误，" +
+                    "请检查文件（models.yml）: " + e.getMessage());
         }
     }
 }

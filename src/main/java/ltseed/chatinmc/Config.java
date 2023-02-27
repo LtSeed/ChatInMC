@@ -1,8 +1,5 @@
 package ltseed.chatinmc;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import static ltseed.chatinmc.ChatInMC.tp;
@@ -14,9 +11,6 @@ public class Config {
 
     public static boolean translation;
     public static String debug;
-
-    public static JSONArray chatting_entity;
-    public static JSONObject entity_information;
 
     public static void readConfig(){
         FileConfiguration fileConfiguration = tp.getConfig();
@@ -31,6 +25,7 @@ public class Config {
         FileConfiguration fileConfiguration = tp.getConfig();
         fileConfiguration.set("chatGPT_key",chatGPT_key);
         fileConfiguration.set("translation_key",translation_key);
+        fileConfiguration.set("translation",translation);
         fileConfiguration.set("debug",debug);
         tp.saveConfig();
     }

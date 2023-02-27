@@ -7,9 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static ltseed.chatinmc.Config.*;
 import static ltseed.chatinmc.FileProcess.*;
@@ -19,7 +17,7 @@ public final class ChatInMC extends JavaPlugin {
     public static Server ts;
     public static Plugin tp;
 
-    public static Map<String, Model> models;
+    public static List<String> models;
     public static Map<UUID, Chatter> chatters;
 
     public static Debug debug;
@@ -35,6 +33,8 @@ public final class ChatInMC extends JavaPlugin {
         checkFolders(tp);
         models = readModels();
         chatters = readChatters();
+        ts.getPluginManager().registerEvents(new ChatterListener(),this);
+        Objects.requireNonNull(ts.getPluginCommand("cim")).setExecutor(new Commands());
         debug.info("已经成功加载！");
     }
 
@@ -42,7 +42,7 @@ public final class ChatInMC extends JavaPlugin {
     public void onDisable() {
         Config.saveConfig();
         saveChatters(chatters.values());
-        saveModels(models.values());
+        saveModels(models);
         // Plugin shutdown logic
     }
 }

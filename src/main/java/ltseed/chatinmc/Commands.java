@@ -9,15 +9,16 @@ public class Commands implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if(!label.equals("c")){
-            return true;}
+            return true;
+        }
 
-            if(args != null){
-                if(args.length == 2){
-                    if(args[0].equals("create")){
-                        String name = args[1];
-                    }
+        if(args != null){
+            if(args.length == 2){
+                if(args[0].equals("create")){
+                    String name = args[1];
                 }
             }
+        }
 
         return false;
     }
