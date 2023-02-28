@@ -94,7 +94,7 @@ public class Chatter {
         try {
             String s = yml_file.getString("type","chatGPT");
             if(s.equals("chatGPT")){
-                core = GPTChatterBuilder.DEFAULT;
+                core = GPTChatterBuilder.getDefault();
             } else throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);

@@ -10,7 +10,7 @@ import java.util.Map;
 @Setter
 
 public class GPTChatterBuilder implements MessageBuilder {
-    public static final GPTChatterBuilder DEFAULT = new GPTChatterBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
+    private static final GPTChatterBuilder DEFAULT = new GPTChatterBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
     public static final GPTChatterBuilder CONTENT_FILTER = new GPTChatterBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
     String model;
     String prompt;
@@ -29,6 +29,10 @@ public class GPTChatterBuilder implements MessageBuilder {
         if(model.contains("[model]"))return null;
         if(prompt.contains("[prompt]"))return null;
         return new Completions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
+    }
+
+    public static GPTChatterBuilder getDefault(){
+        return new GPTChatterBuilder(DEFAULT);
     }
 
     public void setPrompt(String prompt) {
