@@ -30,10 +30,6 @@ public class Chatter {
         return te;
     }
 
-    public String chat(String message){
-        return core.build().chat(message);
-    }
-
     //新建实例时使用
     Chatter(UUID uuid, double default_temperature, double talk_distance, String model) {
         this.uuid = uuid;

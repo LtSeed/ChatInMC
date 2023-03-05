@@ -2,6 +2,7 @@ package ltseed.chatinmc;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class GPTChatterBuilder implements MessageBuilder {
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
     @Override
-    public ChatGPTCompletions build(){
+    public ChatGPTCompletions build(Player ignore){
         if(model.contains("[model]"))return null;
         if(prompt.contains("[prompt]"))return null;
         return new ChatGPTCompletions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);

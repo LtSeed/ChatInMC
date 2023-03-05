@@ -1,5 +1,7 @@
 package ltseed.chatinmc;
 
+import org.bukkit.entity.Player;
+
 public interface MessageBuilder {
-    Talkative build();
+    Talkative build(Player talker);
 }

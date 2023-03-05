@@ -24,7 +24,7 @@ public class ChatterListener implements Listener {
             Entity entity = chatter.getEntity();
             if(entity == null) continue;
             if(entity.getLocation().distance(location) <= chatter.getTalk_distance()){
-                String m = chatter.chat(event.getMessage());
+                String m = chatter.getCore().build(player).chat(event.getMessage());
                 player.sendMessage("[" + entity.getCustomName() + "] -> 你：" + m);
             }
         }

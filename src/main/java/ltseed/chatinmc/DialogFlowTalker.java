@@ -2,6 +2,7 @@ package ltseed.chatinmc;
 
 import com.google.cloud.dialogflow.v2beta1.*;
 import com.google.protobuf.*;
+import org.apache.commons.codec.language.bm.Languages;
 
 import java.io.IOException;
 
@@ -10,34 +11,35 @@ public class DialogFlowTalker implements Talkative {
     private final SessionsClient sessionsClient;
 
     private final String projectId;
+    private final String sessionId;
 
-    public DialogFlowTalker(String projectId) {
-        this.sessionsClient = SessionsClient.create();
-        this.projectId = projectId;
+    public DialogFlowTalker(String sessionId) {
+        projectId = Config.getDialogFlowProjectID();
+        try {
+            this.sessionsClient = SessionsClient.create();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.sessionId = sessionId;
     }
 
     @Override
     public String chat(String string) {
-        try {
-            // Set up the session ID and language code
-            String sessionId = java.util.UUID.randomUUID().toString();
-            SessionName session = SessionName.of(this.projectId, sessionId);
-            String languageCode = "en-US";
+        // Set up the session ID and language code
 
-            // Set up the query input
-            TextInput.Builder textInput = TextInput.newBuilder().setText(string).setLanguageCode(languageCode);
-            QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
+        SessionName session = SessionName.of(this.projectId, sessionId);
+        String languageCode = "zh-CN";
 
-            // Send the request and get the response
-            DetectIntentResponse response = this.sessionsClient.detectIntent(session, queryInput);
+        // Set up the query input
+        TextInput.Builder textInput = TextInput.newBuilder().setText(string).setLanguageCode(languageCode);
+        QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
 
-            // Extract the response message
-            String message = response.getQueryResult().getFulfillmentText();
+        // Send the request and get the response
+        DetectIntentResponse response = this.sessionsClient.detectIntent(session, queryInput);
 
-            return message;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Sorry, an error occurred while communicating with the DialogFlow API";
-        }
+        // Extract the response message
+        String message = response.getQueryResult().getFulfillmentText();
+
+        return message;
     }
 }
