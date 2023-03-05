@@ -26,6 +26,16 @@ public final class ChatInMC extends JavaPlugin {
         //获取静态实例
         ts = getServer();
         tp = this;
+        //检测运行环境
+        try {
+            CmdTest.test();
+            if(!CloudSDKInstaller.isCloudSdkInstalled())
+                CloudSDKInstaller.install();
+            if(!DialogFlowInstaller.isDialogFlowInstalled())
+                DialogFlowInstaller.install();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         //读取config
         readConfig();
         debug.loadDebug(s -> tp.getLogger().info(s));
@@ -34,6 +44,7 @@ public final class ChatInMC extends JavaPlugin {
         models = readModels();
         chatters = readChatters();
         ts.getPluginManager().registerEvents(new ChatterListener(),this);
+
         Objects.requireNonNull(ts.getPluginCommand("cim")).setExecutor(new Commands());
         debug.info("已经成功加载！");
     }

@@ -10,56 +10,56 @@ public class CmdTest {
                 // Determine OS
                 String osName = System.getProperty("os.name").toLowerCase();
                 String downloadUrl;
-                String command;
+                String[] command;
 
                 // Download and install wget and tar based on OS
                 if (osName.contains("windows")) {
                     // Windows
                     downloadUrl = "https://eternallybored.org/misc/wget/1.20.3/64/wget.exe";
-                    command = "powershell -Command \"& { (New-Object Net.WebClient).DownloadFile('" + downloadUrl + "', 'wget.exe') }\"";
+                    command = new String[] {"powershell", "-Command", "&", "{", "(New-Object", "Net.WebClient).DownloadFile('" + downloadUrl + "', 'wget.exe')", "}"};
                     Runtime.getRuntime().exec(command).waitFor();
 
                     downloadUrl = "https://github.com/mholt/archiver/releases/download/v3.5.1/ar.exe";
-                    command = "powershell -Command \"& { (New-Object Net.WebClient).DownloadFile('" + downloadUrl + "', 'tar.exe') }\"";
+                    command = new String[] {"powershell", "-Command", "&", "{", "(New-Object", "Net.WebClient).DownloadFile('" + downloadUrl + "', 'tar.exe')", "}"};
                     Runtime.getRuntime().exec(command).waitFor();
                 } else if (osName.contains("mac")) {
                     // macOS
                     downloadUrl = "https://ftp.gnu.org/gnu/wget/wget-1.21.2.tar.gz";
-                    command = "curl -O " + downloadUrl;
+                    command = new String[] {"curl", "-O", downloadUrl};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "tar -xzvf wget-1.21.2.tar.gz";
+                    command = new String[] {"tar", "-xzvf", "wget-1.21.2.tar.gz"};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "cd wget-1.21.2 && ./configure && make && sudo make install";
+                    command = new String[] {"cd", "wget-1.21.2", "&&", "./configure", "&&", "make", "&&", "sudo", "make", "install"};
                     Runtime.getRuntime().exec(command).waitFor();
 
                     downloadUrl = "https://github.com/mholt/archiver/releases/download/v3.5.1/ar_darwin_amd64";
-                    command = "curl -Lo tar " + downloadUrl;
+                    command = new String[] {"curl", "-Lo", "tar", downloadUrl};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "chmod +x tar";
+                    command = new String[] {"chmod", "+x", "tar"};
                     Runtime.getRuntime().exec(command).waitFor();
                 } else {
                     // Linux
                     downloadUrl = "https://ftp.gnu.org/gnu/wget/wget-1.21.2.tar.gz";
-                    command = "wget " + downloadUrl;
+                    command = new String[]{"wget", downloadUrl};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "tar -xzvf wget-1.21.2.tar.gz";
+                    command = new String[]{"tar", "-xzvf", "wget-1.21.2.tar.gz"};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "cd wget-1.21.2 && ./configure && make && sudo make install";
+                    command = "cd wget-1.21.2 && ./configure && make && sudo make install".split(" ");
                     Runtime.getRuntime().exec(command).waitFor();
 
                     downloadUrl = "https://github.com/mholt/archiver/releases/download/v3.5.1/ar_linux_amd64";
-                    command = "wget " + downloadUrl;
+                    command = new String[]{"wget", downloadUrl};
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "chmod +x ar_linux_amd64";
+                    command = "chmod +x ar_linux_amd64".split(" ");
                     Runtime.getRuntime().exec(command).waitFor();
 
-                    command = "sudo mv ar_linux_amd64 /usr/local/bin/tar";
+                    command = "sudo mv ar_linux_amd64 /usr/local/bin/tar".split(" ");
                     Runtime.getRuntime().exec(command).waitFor();
                 }
             }
@@ -73,7 +73,7 @@ public class CmdTest {
 
     private static boolean isCommandInstalled(String command) {
         try {
-            Process process = Runtime.getRuntime().exec("which " + command);
+            Process process = Runtime.getRuntime().exec(new String[]{"which", command});
             process.waitFor();
             return process.exitValue()==0;
         } catch (IOException | InterruptedException e) {

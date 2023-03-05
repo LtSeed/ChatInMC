@@ -7,6 +7,15 @@ import static ltseed.chatinmc.ChatInMC.*;
 
 public class DialogFlowInstaller {
 
+    public static boolean isDialogFlowInstalled() {
+        try {
+            Class.forName("com.google.cloud.dialogflow.v2beta1.SessionsClient");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public static void install() throws Exception {
 
         String os = System.getProperty("os.name").toLowerCase();

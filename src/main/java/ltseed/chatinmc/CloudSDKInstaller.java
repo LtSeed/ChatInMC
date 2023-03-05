@@ -4,6 +4,18 @@ import java.io.*;
 import java.net.*;
 
 public class CloudSDKInstaller {
+
+    public static boolean isCloudSdkInstalled() {
+        try {
+            Process process = Runtime.getRuntime().exec("gcloud version".split(" "));
+            process.waitFor();
+            return process.exitValue() == 0;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void install() {
         String osName = System.getProperty("os.name").toLowerCase();
         String cloudSDKUrl = "";

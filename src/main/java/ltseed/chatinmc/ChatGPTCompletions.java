@@ -48,7 +48,7 @@ public class ChatGPTCompletions implements Talkative{
 //        params.put("prompt",question);
 //        params.put("temperature",0);
 //        params.put("max_tokens",512);
-        GPTChatterBuilder aDefault = GPTChatterBuilder.getDefault();
+        ChatGPTBuilder aDefault = ChatGPTBuilder.getDefault();
         if(!Objects.equals(this.model, aDefault.model)) params.put("model", this.model);
         if(!Objects.equals(this.prompt, aDefault.prompt)) params.put("prompt", this.prompt);
         if(!Objects.equals(this.suffix, aDefault.suffix)) params.put("suffix", this.suffix);

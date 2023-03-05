@@ -10,9 +10,9 @@ import java.util.Map;
 @Getter
 @Setter
 
-public class GPTChatterBuilder implements MessageBuilder {
-    private static final GPTChatterBuilder DEFAULT = new GPTChatterBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
-    public static final GPTChatterBuilder CONTENT_FILTER = new GPTChatterBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
+public class ChatGPTBuilder implements MessageBuilder {
+    private static final ChatGPTBuilder DEFAULT = new ChatGPTBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
+    public static final ChatGPTBuilder CONTENT_FILTER = new ChatGPTBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
     String model;
     String prompt;
     String suffix;// = null;
@@ -32,8 +32,8 @@ public class GPTChatterBuilder implements MessageBuilder {
         return new ChatGPTCompletions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
     }
 
-    public static GPTChatterBuilder getDefault(){
-        return new GPTChatterBuilder(DEFAULT);
+    public static ChatGPTBuilder getDefault(){
+        return new ChatGPTBuilder(DEFAULT);
     }
 
     public void setPrompt(String prompt) {
@@ -48,7 +48,7 @@ public class GPTChatterBuilder implements MessageBuilder {
         else this.model = model;
     }
 
-    protected GPTChatterBuilder(String model, String prompt, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected ChatGPTBuilder(String model, String prompt, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
         this.prompt = prompt;
         this.suffix = suffix;
@@ -63,7 +63,7 @@ public class GPTChatterBuilder implements MessageBuilder {
         this.logit_bias = logit_bias;
     }
 
-    public GPTChatterBuilder(GPTChatterBuilder askBuilder){
+    public ChatGPTBuilder(ChatGPTBuilder askBuilder){
         this.model = askBuilder.model;
         this.prompt = askBuilder.prompt;
         this.suffix = askBuilder.suffix;

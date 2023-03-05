@@ -21,6 +21,8 @@ public class Chatter {
     private Map<UUID, Double> temperature = new HashMap<>();
     private final String model;
 
+    private final Long dialogTime;
+
     private MessageBuilder core;
 
     private Entity te = null;
@@ -31,11 +33,12 @@ public class Chatter {
     }
 
     //新建实例时使用
-    Chatter(UUID uuid, double default_temperature, double talk_distance, String model) {
+    Chatter(UUID uuid, double default_temperature, double talk_distance, String model, Long dialogTime) {
         this.uuid = uuid;
         this.default_temperature = default_temperature;
         this.talk_distance = talk_distance;
         this.model = model;
+        this.dialogTime = dialogTime;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -50,11 +53,14 @@ public class Chatter {
         yml_file.set("model",model);
         yml_file.set("talk_distance",talk_distance);
         yml_file.set("type","chatGPT");
+        if(dialogTime != null)
+            yml_file.set("DialogTime",dialogTime);
         yml_file.save(saving);
     }
 
     //读取文件时使用
     Chatter(File chatter) throws IOException, InvalidConfigurationException, InvalidChatterException {
+        Long dialogTime1;
         YamlConfiguration yml_file = new YamlConfiguration();
         yml_file.load(chatter);
         try {
@@ -88,13 +94,29 @@ public class Chatter {
             throw new InvalidChatterException(InvalidChatterException.TYPE.UNFOUNDED_MODEL);
         }
         try {
-            String s = yml_file.getString("type","chatGPT");
-            if(s.equals("chatGPT")){
-                core = GPTChatterBuilder.getDefault();
-            } else throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
+            dialogTime1 = yml_file.getLong("DialogTime",-1);
+            if(dialogTime1 == -1) dialogTime1 = null;
+        } catch (Exception e) {
+            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DIALOG_TIME);
+        }
+        try {
+            String s = yml_file.getString("type","ChatGPT");
+
+            switch (s) {
+                case "ChatGPT":
+                    core = ChatGPTBuilder.getDefault();
+                    break;
+                case "DialogFlow":
+                    if(dialogTime1 == null) dialogTime1 = (long) (60 * 1000);
+                    core = new DialogFlowBuilder(dialogTime1);
+                    break;
+                default:
+                    throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
+            }
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
+        dialogTime = dialogTime1;
 
     }
 
