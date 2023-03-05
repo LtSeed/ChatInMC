@@ -25,10 +25,10 @@ public class GPTChatterBuilder implements MessageBuilder {
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
     @Override
-    public Completions build(){
+    public ChatGPTCompletions build(){
         if(model.contains("[model]"))return null;
         if(prompt.contains("[prompt]"))return null;
-        return new Completions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
+        return new ChatGPTCompletions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
     }
 
     public static GPTChatterBuilder getDefault(){

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 import static ltseed.chatinmc.Request.request;
 
-public class Completions implements Talkative{
+public class ChatGPTCompletions implements Talkative{
 
     private final String model;
     private final String prompt;
@@ -24,7 +24,7 @@ public class Completions implements Talkative{
     private final int best_of;// = 1;
     private final Map<String,String> logit_bias;// = null;
 
-    protected Completions(String model, String prompt, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected ChatGPTCompletions(String model, String prompt, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
         this.prompt = prompt;
         this.suffix = suffix;
@@ -63,6 +63,7 @@ public class Completions implements Talkative{
         if(!Objects.equals(this.logit_bias, aDefault.logit_bias)) params.put("logit_bias", this.logit_bias);
         System.out.println(params);
         JSONObject request = request("https://api.openai.com/v1/completions", stringStringHashMap, params);
+        System.out.println(request);
         if(request == null) return null;
         JSONArray choices = request.getJSONArray("choices");
         JSONObject text = choices.getJSONObject(0);
