@@ -6,9 +6,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.UUID;
+
+import static ltseed.chatinmc.ChatInMC.chatters;
 
 public class Commands implements CommandExecutor {
     @Override
@@ -46,6 +49,7 @@ public class Commands implements CommandExecutor {
                 Entity entity = nearbyEntities.get(Integer.parseInt(str)-1);
                 UUID uuid = entity.getUniqueId();
                 Chatter c = new Chatter(uuid,100,60*1000L);
+                chatters.put(uuid,c);
             });
 
             return true;

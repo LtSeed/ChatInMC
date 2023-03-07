@@ -1,6 +1,7 @@
 package ltseed.chatinmc;
 
 import lombok.Getter;
+import lombok.Setter;
 import ltseed.Exception.InvalidChatterException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +14,7 @@ import java.util.*;
 
 import static ltseed.chatinmc.ChatInMC.ts;
 @Getter
+@Setter
 public class Chatter {
 
     private final UUID uuid;
