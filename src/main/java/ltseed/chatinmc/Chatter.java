@@ -16,10 +16,10 @@ import static ltseed.chatinmc.ChatInMC.ts;
 public class Chatter {
 
     private final UUID uuid;
-    private final double default_temperature;
+    //private final double default_temperature;
     private final double talk_distance;
-    private Map<UUID, Double> temperature = new HashMap<>();
-    private final String model;
+    //private Map<UUID, Double> temperature = new HashMap<>();
+    //private final String model;
 
     private final Long dialogTime;
 
@@ -33,11 +33,11 @@ public class Chatter {
     }
 
     //新建实例时使用
-    Chatter(UUID uuid, double default_temperature, double talk_distance, String model, Long dialogTime) {
+    Chatter(UUID uuid, double talk_distance, Long dialogTime) {
         this.uuid = uuid;
-        this.default_temperature = default_temperature;
+        //this.default_temperature = default_temperature;
         this.talk_distance = talk_distance;
-        this.model = model;
+        //this.model = model;
         this.dialogTime = dialogTime;
     }
 
@@ -48,9 +48,9 @@ public class Chatter {
         saving.createNewFile();
         YamlConfiguration yml_file = new YamlConfiguration();
         yml_file.set("uuid",String.valueOf(uuid));
-        yml_file.set("default_temperature",default_temperature);
-        yml_file.set("user_temperature",temperature.entrySet());
-        yml_file.set("model",model);
+        //yml_file.set("default_temperature",default_temperature);
+        //yml_file.set("user_temperature",temperature.entrySet());
+        //yml_file.set("model",model);
         yml_file.set("talk_distance",talk_distance);
         yml_file.set("type","chatGPT");
         if(dialogTime != null)
@@ -68,31 +68,31 @@ public class Chatter {
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_UUID);
         }
-        try {
-            default_temperature = yml_file.getDouble("default_temperature");
-        } catch (Exception e) {
-            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DEFAULT_TEMPERATURE);
-        }
+//        try {
+//            default_temperature = yml_file.getDouble("default_temperature");
+//        } catch (Exception e) {
+//            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DEFAULT_TEMPERATURE);
+//        }
         try {
             talk_distance = yml_file.getDouble("talk_distance");
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_TALK_DISTANCE);
         }
-        try {
-            List<Map<?, ?>> user_temperature = yml_file.getMapList("user_temperature");
-            for (Map<?, ?> map : user_temperature) {
-                for (Map.Entry<?, ?> entry : map.entrySet()) {
-                    temperature.put(UUID.fromString((String) entry.getKey()), Double.parseDouble((String) entry.getValue()));
-                }
-            }
-        } catch (Exception e) {
-            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_USER_TEMPERATURE);
-        }
-        try {
-            model = yml_file.getString("model");
-        } catch (Exception e) {
-            throw new InvalidChatterException(InvalidChatterException.TYPE.UNFOUNDED_MODEL);
-        }
+//        try {
+//            List<Map<?, ?>> user_temperature = yml_file.getMapList("user_temperature");
+//            for (Map<?, ?> map : user_temperature) {
+//                for (Map.Entry<?, ?> entry : map.entrySet()) {
+//                    temperature.put(UUID.fromString((String) entry.getKey()), Double.parseDouble((String) entry.getValue()));
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_USER_TEMPERATURE);
+//        }
+//        try {
+//            model = yml_file.getString("model");
+//        } catch (Exception e) {
+//            throw new InvalidChatterException(InvalidChatterException.TYPE.UNFOUNDED_MODEL);
+//        }
         try {
             dialogTime1 = yml_file.getLong("DialogTime",-1);
             if(dialogTime1 == -1) dialogTime1 = null;

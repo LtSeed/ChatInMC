@@ -8,6 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Commands implements CommandExecutor {
     @Override
@@ -28,7 +29,7 @@ public class Commands implements CommandExecutor {
 
             // 打印实体信息
             player.sendMessage("附近的实体:");
-            for (int i = 0; i < nearbyEntities.size(); i++) {
+            for (int i = 1; i <= nearbyEntities.size(); i++) {
                 Entity entity = nearbyEntities.get(i);
                 player.sendMessage(i+": ");
                 player.sendMessage("实体类型: " + entity.getType().name());
@@ -39,9 +40,13 @@ public class Commands implements CommandExecutor {
             }
 
             // 提供选项
-            player.sendMessage("请选择一个实体来创建一个Ai:");
+
             PlayerConversation pc = new PlayerConversation(player);
-            //pc.startConversation();
+            pc.startConversation("请选择一个实体来创建一个Ai:(输入数字)",str -> {
+                Entity entity = nearbyEntities.get(Integer.parseInt(str)-1);
+                UUID uuid = entity.getUniqueId();
+                Chatter c = new Chatter(uuid,100,60*1000L);
+            });
 
             return true;
         }

@@ -26,6 +26,9 @@ public final class ChatInMC extends JavaPlugin {
         //获取静态实例
         ts = getServer();
         tp = this;
+        //读取config
+        readConfig();
+        debug.loadDebug(s -> tp.getLogger().info(s));
         //检测运行环境
         try {
             CmdTest.test();
@@ -36,9 +39,6 @@ public final class ChatInMC extends JavaPlugin {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        //读取config
-        readConfig();
-        debug.loadDebug(s -> tp.getLogger().info(s));
         //读取data
         checkFolders(tp);
         models = readModels();

@@ -61,6 +61,7 @@ public class DialogFlowInstaller {
         cs[0] = "tar";
         cs[1] = "-zxvf";
         cs[2] = "google-cloud-sdk.tar.gz";
+        //cs = "tar -zxvf google-cloud-sdk.tar.gz".split(" ");
         Process process = Runtime.getRuntime().exec(cs,null,tp.getDataFolder());
         process.waitFor();
 
