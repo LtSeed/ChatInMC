@@ -54,7 +54,9 @@ public class SimpleGUI implements Listener {
     }
 
     public void open(Player player) {
+        enableView();
         player.openInventory(inventory);
     }
+
 
 }

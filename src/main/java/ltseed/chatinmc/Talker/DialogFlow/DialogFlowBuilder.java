@@ -1,5 +1,6 @@
 package ltseed.chatinmc.Talker.DialogFlow;
 
+import lombok.Getter;
 import ltseed.chatinmc.Talker.MessageBuilder;
 import org.bukkit.entity.Player;
 
@@ -8,12 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 public class DialogFlowBuilder implements MessageBuilder {
 
     private static final Map<Player, Date> timer = new HashMap<>();
     private static final Map<Player, String> sessions = new HashMap<>();
 
     private final Long dialogTime;
+
+    private final String projectId;
 
     @Override
     public DialogFlowTalker build(Player player) {
@@ -34,10 +38,11 @@ public class DialogFlowBuilder implements MessageBuilder {
             sessionId = UUID.randomUUID().toString();
             sessions.put(player, sessionId);
         }
-        return new DialogFlowTalker(sessionId);
+        return new DialogFlowTalker(projectId,sessionId);
     }
 
-    public DialogFlowBuilder(Long time){
+    public DialogFlowBuilder(String projectId,Long time){
+        this.projectId = projectId;
         this.dialogTime = time;
     }
 }

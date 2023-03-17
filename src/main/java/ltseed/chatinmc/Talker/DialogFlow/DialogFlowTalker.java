@@ -13,8 +13,8 @@ public class DialogFlowTalker implements Talkative {
     private final String projectId;
     private final String sessionId;
 
-    public DialogFlowTalker(String sessionId) {
-        projectId = Config.getDialogFlowProjectID();
+    public DialogFlowTalker(String projectId, String sessionId) {
+        this.projectId = projectId;
         try {
             this.sessionsClient = SessionsClient.create();
         } catch (IOException e) {
@@ -34,12 +34,10 @@ public class DialogFlowTalker implements Talkative {
         TextInput.Builder textInput = TextInput.newBuilder().setText(string).setLanguageCode(languageCode);
         QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
 
-        // Send the request and get the response
+        // Send the post and get the response
         DetectIntentResponse response = this.sessionsClient.detectIntent(session, queryInput);
 
         // Extract the response message
-        String message = response.getQueryResult().getFulfillmentText();
-
-        return message;
+        return response.getQueryResult().getFulfillmentText();
     }
 }

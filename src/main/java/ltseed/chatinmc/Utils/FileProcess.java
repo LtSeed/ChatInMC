@@ -26,6 +26,8 @@ public class FileProcess {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static List<String> readModels() {
         List<String> rl = new ArrayList<>();
+        rl.add("ChatGPT");
+        rl.add("DialogFlow");
         File models = new File(dataFolder, "models");
         try {
             models.createNewFile();

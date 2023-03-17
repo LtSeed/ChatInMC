@@ -6,7 +6,6 @@ import ltseed.Exception.InvalidChatterException;
 import ltseed.chatinmc.ChatInMC;
 import ltseed.chatinmc.Talker.ChatGPT.ChatGPTBuilder;
 import ltseed.chatinmc.Talker.DialogFlow.DialogFlowBuilder;
-import ltseed.chatinmc.Talker.MessageBuilder;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -16,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static ltseed.chatinmc.ChatInMC.models;
 import static ltseed.chatinmc.ChatInMC.ts;
 @Getter
 @Setter
@@ -23,11 +23,11 @@ public class Chatter {
 
     private UUID uuid;
     //private final double default_temperature;
-    private double talk_distance;
+    private double talk_distance = 10;
     //private Map<UUID, Double> temperature = new HashMap<>();
     //private final String model;
 
-    private Long dialogTime;
+    private Long dialogTime = 60*1000L;
 
     private MessageBuilder core;
 
@@ -53,7 +53,14 @@ public class Chatter {
         //yml_file.set("user_temperature",temperature.entrySet());
         //yml_file.set("model",model);
         yml_file.set("talk_distance",talk_distance);
-        yml_file.set("type","chatGPT");
+        if(core instanceof ChatGPTBuilder){
+            yml_file.set("type","ChatGPT");
+            yml_file.set("modelOrProjectId","ChatGPT_" + models);
+        } else {
+            yml_file.set("type","DialogFlow");
+            yml_file.set("modelOrProjectId",((DialogFlowBuilder)core).getProjectId());
+        }
+
         if(dialogTime != null)
             yml_file.set("DialogTime",dialogTime);
         yml_file.save(saving);
@@ -86,19 +93,11 @@ public class Chatter {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DIALOG_TIME);
         }
         try {
+            String p = yml_file.getString("modelOrProjectId","text-davinci-003");
             String s = yml_file.getString("type","ChatGPT");
+            core = getCore(dialogTime1, s, p);
+            if(dialogTime1 == null) dialogTime1 = (long) (60 * 1000);
 
-            switch (s) {
-                case "ChatGPT":
-                    core = ChatGPTBuilder.getDefault();
-                    break;
-                case "DialogFlow":
-                    if(dialogTime1 == null) dialogTime1 = (long) (60 * 1000);
-                    core = new DialogFlowBuilder(dialogTime1);
-                    break;
-                default:
-                    throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
-            }
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
@@ -106,4 +105,19 @@ public class Chatter {
 
     }
 
+    public static MessageBuilder getCore(Long dialogTime1, String model, String projectId) throws InvalidChatterException {
+        switch (model) {
+            case "ChatGPT":
+                return ChatGPTBuilder.getDefault();
+            case "DialogFlow":
+                return new DialogFlowBuilder(projectId, dialogTime1);
+            default:
+                if(model.contains("ChatGPT")) {
+                    ChatGPTBuilder aDefault = ChatGPTBuilder.getDefault();
+                    aDefault.setModel(model.replace("ChatGPT_",""));
+                    return aDefault;
+                }
+                throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
+        }
+    }
 }

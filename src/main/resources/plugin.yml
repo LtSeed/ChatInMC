@@ -2,3 +2,13 @@ name: ChatInMC
 version: '${project.version}'
 main: ltseed.chatinmc.ChatInMC
 api-version: 1.19
+
+commands:
+  cim:
+    description: 启用 ChatInMC 插件
+    usage: /cim help
+
+permissions:
+  chatinmc.admin:
+    description: 允许管理员使用 ChatInMC 插件
+    default: op

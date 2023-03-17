@@ -48,7 +48,8 @@ public class Commands implements CommandExecutor {
             pc.startConversation("请选择一个实体来创建一个Ai:(输入数字)",str -> {
                 Entity entity = nearbyEntities.get(Integer.parseInt(str)-1);
                 UUID uuid = entity.getUniqueId();
-                Chatter c = new Chatter(uuid,100,60*1000L);
+                Chatter c = new Chatter();
+                c.setUuid(uuid);
                 chatters.put(uuid,c);
             });
 

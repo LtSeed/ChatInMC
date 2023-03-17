@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static ltseed.chatinmc.Utils.Request.request;
+import static ltseed.chatinmc.Utils.Request.post;
 
 public class ChatGPTCompletions implements Talkative {
 
@@ -64,7 +64,7 @@ public class ChatGPTCompletions implements Talkative {
         if(!Objects.equals(this.best_of, aDefault.best_of)) params.put("best_of", this.best_of);
         if(!Objects.equals(this.logit_bias, aDefault.logit_bias)) params.put("logit_bias", this.logit_bias);
         System.out.println(params);
-        JSONObject request = request("https://api.openai.com/v1/completions", stringStringHashMap, params);
+        JSONObject request = post("https://api.openai.com/v1/completions", stringStringHashMap, params);
         System.out.println(request);
         if(request == null) return null;
         JSONArray choices = request.getJSONArray("choices");
