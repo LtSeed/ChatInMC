@@ -33,10 +33,6 @@ public class Config {
         tp.saveConfig();
     }
 
-    public static String getDialogFlowToken() {
-        return dialogFlowToken;
-    }
-
     //public static long getDialogTime() {
     //    return 0;
     //}

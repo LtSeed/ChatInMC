@@ -14,7 +14,7 @@ import static ltseed.chatinmc.Utils.Request.post;
 public class ChatGPTCompletions implements Talkative {
 
     private final String model;
-    private final String prompt;
+    private String prompt;
     private final String suffix;// = null;
     private final int max_tokens;// = 512;
     private final double temperature;// = 1;
@@ -26,9 +26,8 @@ public class ChatGPTCompletions implements Talkative {
     private final int best_of;// = 1;
     private final Map<String,String> logit_bias;// = null;
 
-    protected ChatGPTCompletions(String model, String prompt, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected ChatGPTCompletions(String model, String suffix, int max_tokens, double temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
-        this.prompt = prompt;
         this.suffix = suffix;
         this.max_tokens = max_tokens;
         this.temperature = temperature;
@@ -74,6 +73,7 @@ public class ChatGPTCompletions implements Talkative {
 
     @Override
     public String chat(String string) {
+        this.prompt = string;
         return ask(Config.chatGPT_key);
     }
 }

@@ -57,16 +57,12 @@ public class ChatterCreateGUI extends SimpleGUI {
         nameLore.add("Click to edit");
         Button nameButton = new Button((short) 2, (short) 3, Material.NAME_TAG, name, nameLore) {
             /**
-             * @param player
              */
             @Override
             public void call(Player player) {
-                new PlayerConversation(player).startConversation("请输入Chatter的名字！", new PlayerConversation.ConversationCallback() {
-                    @Override
-                    public void onResponse(String response) {
-                        name = response;
-                        open(player);
-                    }
+                new PlayerConversation(player).startConversation("请输入Chatter的名字！", response -> {
+                    name = response;
+                    open(player);
                 });
             }
         };
@@ -76,16 +72,12 @@ public class ChatterCreateGUI extends SimpleGUI {
         descLore.add("Click to edit");
         Button descButton = new Button((short) 4, (short) 3, Material.PAPER, description, descLore) {
             /**
-             * @param player
              */
             @Override
             public void call(Player player) {
-                new PlayerConversation(player).startConversation("请输入Chatter的描述！", new PlayerConversation.ConversationCallback() {
-                    @Override
-                    public void onResponse(String response) {
-                        description = response;
-                        open(player);
-                    }
+                new PlayerConversation(player).startConversation("请输入Chatter的描述！", response -> {
+                    description = response;
+                    open(player);
                 });
             }
         };
@@ -97,7 +89,6 @@ public class ChatterCreateGUI extends SimpleGUI {
         if(material == null) material = Material.COW_SPAWN_EGG;
         Button entityChooseButton = new Button((short) 4, (short) 2, material, choose_entity, entityChooseLore) {
             /**
-             * @param player
              */
             @Override
             public void call(Player player) {
@@ -138,7 +129,6 @@ public class ChatterCreateGUI extends SimpleGUI {
 
         Button coreChooseButton = new Button((short) 6, (short) 4, Material.PAPER, core_name, coreChooseLore) {
             /**
-             * @param player
              */
             @Override
             public void call(Player player) {
@@ -168,16 +158,13 @@ public class ChatterCreateGUI extends SimpleGUI {
         Button distanceSetButton = new Button((short) 7, (short) 3, Material.ARROW,"触发距离："+ talkDistance, nameLore) {
             @Override
             public void call(Player player) {
-                new PlayerConversation(player).startConversation("请输入能够触发聊天的距离！", new PlayerConversation.ConversationCallback() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            talkDistance = Double.parseDouble(response);
-                        } catch (NumberFormatException e) {
-                            player.sendMessage("你的数字格式有误！");
-                        }
-                        open(player);
+                new PlayerConversation(player).startConversation("请输入能够触发聊天的距离！", response -> {
+                    try {
+                        talkDistance = Double.parseDouble(response);
+                    } catch (NumberFormatException e) {
+                        player.sendMessage("你的数字格式有误！");
                     }
+                    open(player);
                 });
             }
         };
@@ -188,16 +175,12 @@ public class ChatterCreateGUI extends SimpleGUI {
             proIdSetLore.add("Click to edit");
             Button proIdSetButton = new Button((short) 5, (short) 4, Material.BOOK, projectId, proIdSetLore) {
                 /**
-                 * @param player
                  */
                 @Override
                 public void call(Player player) {
-                    new PlayerConversation(player).startConversation("请输入DialogFlow ProjectID:", new PlayerConversation.ConversationCallback() {
-                        @Override
-                        public void onResponse(String response) {
-                            projectId = response;
-                            open(player);
-                        }
+                    new PlayerConversation(player).startConversation("请输入DialogFlow ProjectID:", response -> {
+                        projectId = response;
+                        open(player);
                     });
                 }
             };
@@ -208,16 +191,13 @@ public class ChatterCreateGUI extends SimpleGUI {
         Button dialogTimeSetButton = new Button((short) 7, (short) 4, Material.CLOCK,"对话持续时间："+ TimeConverter.getCode(dur), nameLore) {
             @Override
             public void call(Player player) {
-                new PlayerConversation(player).startConversation("请输入对话持续时间，格式为*天*时*分*秒*毫秒", new PlayerConversation.ConversationCallback() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            dur = TimeConverter.getTime(response);
-                        } catch (Exception e) {
-                            player.sendMessage("你的格式有误！");
-                        }
-                        open(player);
+                new PlayerConversation(player).startConversation("请输入对话持续时间，格式为*天*时*分*秒*毫秒", response -> {
+                    try {
+                        dur = TimeConverter.getTime(response);
+                    } catch (Exception e) {
+                        player.sendMessage("你的格式有误！");
                     }
+                    open(player);
                 });
             }
         };

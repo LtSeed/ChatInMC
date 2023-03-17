@@ -42,14 +42,6 @@ public class PlayerConversation implements Listener {
         }
     }
 
-    public void endConversation() {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
-            callbacks.clear();
-            player.closeInventory();
-        }
-    }
-
     public void sendMessage(String message) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {

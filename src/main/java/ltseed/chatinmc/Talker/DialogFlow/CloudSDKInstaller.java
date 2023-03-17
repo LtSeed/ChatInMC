@@ -43,7 +43,7 @@ public class CloudSDKInstaller {
                     File tempFile = File.createTempFile("google-cloud-sdk", null);
                     FileOutputStream outputStream = new FileOutputStream(tempFile);
                     byte[] buffer = new byte[4096];
-                    int bytesRead = -1;
+                    int bytesRead;
 
                     while ((bytesRead = inputStream.read(buffer)) != -1) {
                         outputStream.write(buffer, 0, bytesRead);

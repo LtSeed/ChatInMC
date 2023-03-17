@@ -2,7 +2,6 @@ package ltseed.chatinmc.Talker.DialogFlow;
 
 import com.google.cloud.dialogflow.v2beta1.*;
 import ltseed.chatinmc.Talker.Talkative;
-import ltseed.chatinmc.Utils.Config;
 
 import java.io.IOException;
 

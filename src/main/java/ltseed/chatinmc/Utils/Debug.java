@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import java.util.function.Consumer;
 
 public enum Debug {
-    A,B,N;
+    @SuppressWarnings("unused") A,B,N;
     Consumer<String> info;
     public void loadDebug(Consumer<String> info){
         this.info = info;

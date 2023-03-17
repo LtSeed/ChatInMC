@@ -12,10 +12,10 @@ import java.util.Map;
 @Setter
 
 public class ChatGPTBuilder implements MessageBuilder {
-    private static final ChatGPTBuilder DEFAULT = new ChatGPTBuilder("[model]","[prompt]",null,512,1,1,1,null,0,0,1,null);
-    public static final ChatGPTBuilder CONTENT_FILTER = new ChatGPTBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
+    private static final ChatGPTBuilder DEFAULT = new ChatGPTBuilder("[model]",null,512,1,1,1,null,0,0,1,null);
+    //public static final ChatGPTBuilder CONTENT_FILTER = new ChatGPTBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
     String model;
-    String prompt;
+
     String suffix;// = null;
     int max_tokens;// = 512;
     double temperature;// = 1;
@@ -29,19 +29,13 @@ public class ChatGPTBuilder implements MessageBuilder {
     @Override
     public ChatGPTCompletions build(Player ignore){
         if(model.contains("[model]"))return null;
-        if(prompt.contains("[prompt]"))return null;
-        return new ChatGPTCompletions(model,prompt,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
+        return new ChatGPTCompletions(model,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
     }
 
     public static ChatGPTBuilder getDefault(){
         return new ChatGPTBuilder(DEFAULT);
     }
 
-    public void setPrompt(String prompt) {
-        if(this.prompt.contains("[prompt]"))
-            this.prompt = this.prompt.replace("[prompt]",prompt);
-        else this.prompt = prompt;
-    }
 
     public void setModel(String model) {
         if(this.model.contains("[model]"))
@@ -49,9 +43,8 @@ public class ChatGPTBuilder implements MessageBuilder {
         else this.model = model;
     }
 
-    protected ChatGPTBuilder(String model, String prompt, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
+    protected ChatGPTBuilder(String model, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
         this.model = model;
-        this.prompt = prompt;
         this.suffix = suffix;
         this.max_tokens = max_tokens;
         this.temperature = temperature;
@@ -66,7 +59,6 @@ public class ChatGPTBuilder implements MessageBuilder {
 
     public ChatGPTBuilder(ChatGPTBuilder askBuilder){
         this.model = askBuilder.model;
-        this.prompt = askBuilder.prompt;
         this.suffix = askBuilder.suffix;
         this.max_tokens = askBuilder.max_tokens;
         this.temperature = askBuilder.temperature;

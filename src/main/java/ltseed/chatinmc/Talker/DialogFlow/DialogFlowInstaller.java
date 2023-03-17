@@ -19,7 +19,7 @@ public class DialogFlowInstaller {
     public static void install() throws Exception {
 
         String os = System.getProperty("os.name").toLowerCase();
-        String url = "";
+        String url;
 
         if (os.contains("win")) {
             url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-350.0.0-windows-x86_64.tar.gz";
@@ -43,7 +43,7 @@ public class DialogFlowInstaller {
         FileOutputStream outputStream = new FileOutputStream("google-cloud-sdk.tar.gz");
 
         byte[] buffer = new byte[4096];
-        int bytesRead = -1;
+        int bytesRead;
 
         while ((bytesRead = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, bytesRead);

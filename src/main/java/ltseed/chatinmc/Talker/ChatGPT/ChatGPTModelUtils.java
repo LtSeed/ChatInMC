@@ -21,7 +21,7 @@ public class ChatGPTModelUtils {
         params.put("Authorization", "Bearer " + key);
         params.put("Content-Type", "application/json");
 
-        JSONObject response = Request.get(MODELS_URL, params, null);
+        JSONObject response = Request.get(MODELS_URL, params);
 
         System.out.println(response);
         List<String> models = new ArrayList<>();

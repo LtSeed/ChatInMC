@@ -70,10 +70,8 @@ public class PaginatedGUI {
             return;
         }
 
-        int slot = 0;
         for (Button button : pageButtons) {
             simpleGUI.addButton(button);
-            slot++;
         }
 
         if (page > 1) {

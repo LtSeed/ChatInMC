@@ -19,7 +19,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static ltseed.chatinmc.ChatInMC.ts;
 
@@ -50,16 +49,6 @@ public abstract class Button {
         this.lore = lore;
         this.skullOwner = null;
         this.texture = null;
-    }
-
-    public Button(short x, short y, String displayName, List<String> lore, File texture) {
-        this.x = x;
-        this.y = y;
-        this.material = Material.PLAYER_HEAD;
-        this.displayName = displayName;
-        this.lore = lore;
-        this.skullOwner = UUID.randomUUID();
-        this.texture = readTexture(texture);
     }
 
     public Button(int slot, ItemStack is) {

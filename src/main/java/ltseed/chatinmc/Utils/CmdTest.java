@@ -6,7 +6,7 @@ public class CmdTest {
     public static void test() {
         try {
             // Check if wget and tar are installed
-            if (!isCommandInstalled("wget") || !isCommandInstalled("tar")) {
+            if (isCommandInstalled("wget") || isCommandInstalled("tar")) {
                 // Determine OS
                 String osName = System.getProperty("os.name").toLowerCase();
                 String downloadUrl;
@@ -75,10 +75,10 @@ public class CmdTest {
         try {
             Process process = Runtime.getRuntime().exec(new String[]{"which", command});
             process.waitFor();
-            return process.exitValue()==0;
+            return process.exitValue() != 0;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return false;
+            return true;
         }
     }
 

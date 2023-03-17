@@ -84,7 +84,7 @@ public class Request {
         return JSONObject.parseObject(resultString);
     }
 
-    public static JSONObject get(String url, Map<String, String> header, Map<String, Object> params) {
+    public static JSONObject get(String url, Map<String, String> header) {
 
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
