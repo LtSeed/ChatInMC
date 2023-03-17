@@ -18,6 +18,7 @@ public class ChatterListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void chatWithAI(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+
         Location location = player.getLocation();
         for (Map.Entry<UUID, Chatter> entry : ChatInMC.chatters.entrySet()) {
             Chatter chatter = entry.getValue();

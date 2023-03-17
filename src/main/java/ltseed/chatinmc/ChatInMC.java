@@ -1,12 +1,10 @@
 package ltseed.chatinmc;
 
 import org.bukkit.Server;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.reflections.Reflections;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 import static ltseed.chatinmc.Config.*;
@@ -45,8 +43,26 @@ public final class ChatInMC extends JavaPlugin {
         chatters = readChatters();
         ts.getPluginManager().registerEvents(new ChatterListener(),this);
 
+        //注册所有GUI
+        enableAllViews();
+
         Objects.requireNonNull(ts.getPluginCommand("cim")).setExecutor(new Commands());
         debug.info("已经成功加载！");
+    }
+
+
+    private void enableAllViews() {
+        Reflections reflections = new Reflections("ltseed.chatinmc");
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(EnabledView.class);
+
+        for (Class<?> clazz : annotated) {
+            try {
+                SimpleGUI simpleGUI = (SimpleGUI) clazz.getDeclaredConstructor().newInstance();
+                simpleGUI.enableView();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

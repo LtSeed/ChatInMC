@@ -61,6 +61,14 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>paper-mc</id>
+            <url>https://papermc.io/repo/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -119,5 +127,29 @@
             <artifactId>google-cloud-dialogflow</artifactId>
             <version>4.18.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.comphenix.protocol/ProtocolLib -->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.8.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.mojang/authlib -->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.25</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+
+
     </dependencies>
 </project>
