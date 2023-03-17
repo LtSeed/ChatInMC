@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.DialogFlow;
 
 import java.io.*;
 import java.net.*;

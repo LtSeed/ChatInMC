@@ -1,6 +1,8 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Utils;
 
 import ltseed.Exception.InvalidChatterException;
+import ltseed.chatinmc.ChatInMC;
+import ltseed.chatinmc.Talker.Chatter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

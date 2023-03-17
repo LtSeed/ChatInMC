@@ -1,4 +1,6 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.DialogFlow;
+
+import ltseed.chatinmc.ChatInMC;
 
 import java.io.*;
 import java.net.*;
@@ -66,7 +68,7 @@ public class CloudSDKInstaller {
                         commands[3] = "-C";
                         commands[4] = "~";
                     }
-                    process = Runtime.getRuntime().exec(commands,null,ChatInMC.tp.getDataFolder());
+                    process = Runtime.getRuntime().exec(commands,null, ChatInMC.tp.getDataFolder());
                     process.waitFor();
                 } else {
                     throw new Exception("Failed to download Google Cloud SDK");

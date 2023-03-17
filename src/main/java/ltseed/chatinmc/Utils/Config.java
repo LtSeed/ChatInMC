@@ -1,5 +1,6 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Utils;
 
+import ltseed.chatinmc.ChatInMC;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import static ltseed.chatinmc.ChatInMC.tp;

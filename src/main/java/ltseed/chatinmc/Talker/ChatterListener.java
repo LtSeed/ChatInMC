@@ -1,5 +1,6 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker;
 
+import ltseed.chatinmc.ChatInMC;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -9,8 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 public class ChatterListener implements Listener {

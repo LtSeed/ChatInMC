@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Utils;
 
 
 import com.alibaba.fastjson.JSONObject;

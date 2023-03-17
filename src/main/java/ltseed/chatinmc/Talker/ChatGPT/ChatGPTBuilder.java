@@ -1,7 +1,8 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.ChatGPT;
 
 import lombok.Getter;
 import lombok.Setter;
+import ltseed.chatinmc.Talker.MessageBuilder;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

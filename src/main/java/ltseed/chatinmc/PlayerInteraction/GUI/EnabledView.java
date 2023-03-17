@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.PlayerInteraction.GUI;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,8 +1,12 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker;
 
 import lombok.Getter;
 import lombok.Setter;
 import ltseed.Exception.InvalidChatterException;
+import ltseed.chatinmc.ChatInMC;
+import ltseed.chatinmc.Talker.ChatGPT.ChatGPTBuilder;
+import ltseed.chatinmc.Talker.DialogFlow.DialogFlowBuilder;
+import ltseed.chatinmc.Talker.MessageBuilder;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -35,7 +39,7 @@ public class Chatter {
     }
 
     //新建实例时使用
-    Chatter(UUID uuid, double talk_distance, Long dialogTime) {
+    public Chatter(UUID uuid, double talk_distance, Long dialogTime) {
         this.uuid = uuid;
         //this.default_temperature = default_temperature;
         this.talk_distance = talk_distance;
@@ -45,7 +49,7 @@ public class Chatter {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToFile(File Folder) throws IOException {
-        ChatInMC.debug.debugB("ltseed.chatinmc.Chatter#saveToFile called");
+        ChatInMC.debug.debugB("ltseed.chatinmc.Talker.Chatter#saveToFile called");
         File saving = new File(Folder, String.valueOf(uuid));
         saving.createNewFile();
         YamlConfiguration yml_file = new YamlConfiguration();
@@ -61,7 +65,7 @@ public class Chatter {
     }
 
     //读取文件时使用
-    Chatter(File chatter) throws IOException, InvalidConfigurationException, InvalidChatterException {
+    public Chatter(File chatter) throws IOException, InvalidConfigurationException, InvalidChatterException {
         Long dialogTime1;
         YamlConfiguration yml_file = new YamlConfiguration();
         yml_file.load(chatter);

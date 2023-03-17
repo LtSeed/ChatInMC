@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.PlayerInteraction.GUI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;

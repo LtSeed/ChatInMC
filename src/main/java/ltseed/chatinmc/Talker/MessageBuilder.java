@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker;
 
 import org.bukkit.entity.Player;
 

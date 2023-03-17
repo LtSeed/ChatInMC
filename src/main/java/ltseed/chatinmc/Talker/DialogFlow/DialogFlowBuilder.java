@@ -1,5 +1,6 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.DialogFlow;
 
+import ltseed.chatinmc.Talker.MessageBuilder;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DialogFlowBuilder implements MessageBuilder{
+public class DialogFlowBuilder implements MessageBuilder {
 
     private static final Map<Player, Date> timer = new HashMap<>();
     private static final Map<Player, String> sessions = new HashMap<>();
@@ -36,7 +37,7 @@ public class DialogFlowBuilder implements MessageBuilder{
         return new DialogFlowTalker(sessionId);
     }
 
-    DialogFlowBuilder(Long time){
+    public DialogFlowBuilder(Long time){
         this.dialogTime = time;
     }
 }

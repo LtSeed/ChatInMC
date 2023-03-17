@@ -1,8 +1,8 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.DialogFlow;
 
 import com.google.cloud.dialogflow.v2beta1.*;
-import com.google.protobuf.*;
-import org.apache.commons.codec.language.bm.Languages;
+import ltseed.chatinmc.Talker.Talkative;
+import ltseed.chatinmc.Utils.Config;
 
 import java.io.IOException;
 

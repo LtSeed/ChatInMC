@@ -1,12 +1,12 @@
 package ltseed.chatinmc;
 
-import org.bukkit.Location;
+import ltseed.chatinmc.PlayerInteraction.PlayerConversation;
+import ltseed.chatinmc.Talker.Chatter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,5 +1,14 @@
 package ltseed.chatinmc;
 
+import ltseed.chatinmc.PlayerInteraction.GUI.EnabledView;
+import ltseed.chatinmc.PlayerInteraction.GUI.SimpleGUI;
+import ltseed.chatinmc.Talker.Chatter;
+import ltseed.chatinmc.Talker.ChatterListener;
+import ltseed.chatinmc.Talker.DialogFlow.CloudSDKInstaller;
+import ltseed.chatinmc.Talker.DialogFlow.DialogFlowInstaller;
+import ltseed.chatinmc.Utils.CmdTest;
+import ltseed.chatinmc.Utils.Config;
+import ltseed.chatinmc.Utils.Debug;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,8 +16,8 @@ import org.reflections.Reflections;
 
 import java.util.*;
 
-import static ltseed.chatinmc.Config.*;
-import static ltseed.chatinmc.FileProcess.*;
+import static ltseed.chatinmc.Utils.Config.*;
+import static ltseed.chatinmc.Utils.FileProcess.*;
 
 public final class ChatInMC extends JavaPlugin {
 
@@ -24,9 +33,11 @@ public final class ChatInMC extends JavaPlugin {
         //获取静态实例
         ts = getServer();
         tp = this;
+
         //读取config
         readConfig();
         debug.loadDebug(s -> tp.getLogger().info(s));
+
         //检测运行环境
         try {
             CmdTest.test();
@@ -37,6 +48,7 @@ public final class ChatInMC extends JavaPlugin {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         //读取data
         checkFolders(tp);
         models = readModels();
@@ -46,7 +58,9 @@ public final class ChatInMC extends JavaPlugin {
         //注册所有GUI
         enableAllViews();
 
+        //注册指令处理类
         Objects.requireNonNull(ts.getPluginCommand("cim")).setExecutor(new Commands());
+
         debug.info("已经成功加载！");
     }
 
@@ -70,6 +84,5 @@ public final class ChatInMC extends JavaPlugin {
         Config.saveConfig();
         saveChatters(chatters.values());
         saveModels(models);
-        // Plugin shutdown logic
     }
 }

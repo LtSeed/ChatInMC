@@ -1,15 +1,17 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.Talker.ChatGPT;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import ltseed.chatinmc.Talker.Talkative;
+import ltseed.chatinmc.Utils.Config;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static ltseed.chatinmc.Request.request;
+import static ltseed.chatinmc.Utils.Request.request;
 
-public class ChatGPTCompletions implements Talkative{
+public class ChatGPTCompletions implements Talkative {
 
     private final String model;
     private final String prompt;

@@ -1,4 +1,4 @@
-package ltseed.chatinmc;
+package ltseed.chatinmc.PlayerInteraction;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
