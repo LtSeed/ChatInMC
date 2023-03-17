@@ -22,7 +22,7 @@ public class PaginatedGUI {
     private final ItemStack prevPageItem;
     private final ItemStack nextPageItem;
 
-    PaginatedGUI(String title, List<Button> allButtons) {
+    public PaginatedGUI(String title, List<Button> allButtons) {
         this.title = title;
         this.allButtons = allButtons;
         this.pages = new HashMap<>();

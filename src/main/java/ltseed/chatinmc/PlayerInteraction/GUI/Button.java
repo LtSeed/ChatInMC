@@ -42,6 +42,16 @@ public abstract class Button {
         this.texture = null;
     }
 
+    public Button(int slot, Material material, String displayName, List<String> lore) {
+        this.x = (short) (slot % 9);
+        this.y = (short) ((short) (slot - this.x) / 9);
+        this.material = material;
+        this.displayName = displayName;
+        this.lore = lore;
+        this.skullOwner = null;
+        this.texture = null;
+    }
+
     public Button(short x, short y, String displayName, List<String> lore, File texture) {
         this.x = x;
         this.y = y;

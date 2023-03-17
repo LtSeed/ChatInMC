@@ -17,7 +17,7 @@ public class SimpleGUI implements Listener {
     private final Inventory inventory;
     private final Map<Integer, Button> buttons;
 
-    SimpleGUI(String inventoryName, Map<Integer, Button> buttons) {
+    protected SimpleGUI(String inventoryName, Map<Integer, Button> buttons) {
         this.buttons = buttons;
         int inventorySize = 54;
         inventory = Bukkit.createInventory(null, inventorySize, inventoryName);
