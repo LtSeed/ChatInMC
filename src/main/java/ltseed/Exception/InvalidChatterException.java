@@ -1,7 +1,6 @@
 package ltseed.Exception;
 
 import ltseed.chatinmc.ChatInMC;
-import org.bukkit.ChatColor;
 
 public class InvalidChatterException extends Exception {
 
@@ -9,10 +8,6 @@ public class InvalidChatterException extends Exception {
 
     public InvalidChatterException(TYPE type) {
         this.type = type;
-    }
-
-    public TYPE getType() {
-        return type;
     }
 
     @Override
@@ -23,7 +18,8 @@ public class InvalidChatterException extends Exception {
         return s;
     }
 
+    @SuppressWarnings("unused")
     public enum TYPE {
-        INVALID_UUID, INVALID_DEFAULT_TEMPERATURE, INVALID_USER_TEMPERATURE, UNFOUNDED_MODEL, INVALID_TALK_DISTANCE, INVALID_CORE_TYPE, INVALID_DIALOG_TIME;
+        INVALID_UUID, INVALID_DEFAULT_TEMPERATURE, INVALID_USER_TEMPERATURE, UNFOUNDED_MODEL, INVALID_TALK_DISTANCE, INVALID_CORE_TYPE, INVALID_DIALOG_TIME
     }
 }
