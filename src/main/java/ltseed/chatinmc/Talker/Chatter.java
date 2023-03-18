@@ -21,6 +21,9 @@ import static ltseed.chatinmc.ChatInMC.ts;
 @Setter
 public class Chatter {
 
+    private String name;
+    private String description;
+
     private UUID uuid;
     //private final double default_temperature;
     private double talk_distance = 10;
@@ -42,6 +45,18 @@ public class Chatter {
     public Chatter() {
     }
 
+    public Map<String, Object> describe() {
+        Map<String, Object> descriptionMap = new HashMap<>();
+        descriptionMap.put("name", this.name);
+        descriptionMap.put("description", this.description);
+        descriptionMap.put("uuid", this.uuid.toString());
+        descriptionMap.put("talk_distance", this.talk_distance);
+        descriptionMap.put("dialogTime", this.dialogTime);
+        // Add any additional properties you want to describe here
+        return descriptionMap;
+    }
+
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToFile(File Folder) throws IOException {
         ChatInMC.debug.debugB("ltseed.chatinmc.Talker.Chatter#saveToFile called");
@@ -53,9 +68,12 @@ public class Chatter {
         //yml_file.set("user_temperature",temperature.entrySet());
         //yml_file.set("model",model);
         yml_file.set("talk_distance",talk_distance);
+        yml_file.set("name",name);
+        yml_file.set("description",description);
         if(core instanceof ChatGPTBuilder){
             yml_file.set("type","ChatGPT");
             yml_file.set("modelOrProjectId","ChatGPT_" + models);
+            ((ChatGPTBuilder) core).writeFile(yml_file);
         } else {
             yml_file.set("type","DialogFlow");
             yml_file.set("modelOrProjectId",((DialogFlowBuilder)core).getProjectId());
@@ -75,6 +93,12 @@ public class Chatter {
             uuid = UUID.fromString(Objects.requireNonNull(yml_file.getString("uuid")));
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_UUID);
+        }
+        try {
+            name = yml_file.getString("name","NF");
+            description = yml_file.getString("description","NF");
+        } catch (Exception e) {
+            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_NAME_OR_DESCRIPTION);
         }
 //        try {
 //            default_temperature = yml_file.getDouble("default_temperature");
@@ -97,12 +121,14 @@ public class Chatter {
             String s = yml_file.getString("type","ChatGPT");
             core = getCore(dialogTime1, s, p);
             if(dialogTime1 == null) dialogTime1 = (long) (60 * 1000);
-
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
         dialogTime = dialogTime1;
 
+        if(core instanceof ChatGPTBuilder){
+            ((ChatGPTBuilder)core).readFile(yml_file);
+        }
     }
 
     public static MessageBuilder getCore(Long dialogTime1, String model, String projectId) throws InvalidChatterException {

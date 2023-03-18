@@ -3,6 +3,7 @@ package ltseed.chatinmc.Talker.ChatGPT;
 import lombok.Getter;
 import lombok.Setter;
 import ltseed.chatinmc.Talker.MessageBuilder;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -74,5 +75,30 @@ public class ChatGPTBuilder implements MessageBuilder {
     }
 
 
+    public void readFile(YamlConfiguration yml_file) {
+        this.model = yml_file.getString("Chat_GPT.model");
+        this.suffix = yml_file.getString("Chat_GPT.suffix");
+        this.max_tokens = yml_file.getInt("Chat_GPT.max_tokens");
+        this.temperature = yml_file.getDouble("Chat_GPT.temperature");
+        this.top_p = yml_file.getInt("Chat_GPT.top_p");
+        this.n = yml_file.getInt("Chat_GPT.n");
+        this.logprobs = yml_file.getInt("Chat_GPT.logprobs");
+        this.presence_penalty = yml_file.getDouble("Chat_GPT.presence_penalty");
+        this.frequency_penalty = yml_file.getDouble("Chat_GPT.frequency_penalty");
+        this.best_of = yml_file.getInt("Chat_GPT.best_of");
+    }
+
+    public void writeFile(YamlConfiguration yml_file) {
+        yml_file.set("Chat_GPT.model", this.model);
+        yml_file.set("Chat_GPT.suffix", this.suffix);
+        yml_file.set("Chat_GPT.max_tokens", this.max_tokens);
+        yml_file.set("Chat_GPT.temperature", this.temperature);
+        yml_file.set("Chat_GPT.top_p", this.top_p);
+        yml_file.set("Chat_GPT.n", this.n);
+        yml_file.set("Chat_GPT.logprobs", this.logprobs);
+        yml_file.set("Chat_GPT.presence_penalty", this.presence_penalty);
+        yml_file.set("Chat_GPT.frequency_penalty", this.frequency_penalty);
+        yml_file.set("Chat_GPT.best_of", this.best_of);
+    }
 
 }

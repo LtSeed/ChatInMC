@@ -3,12 +3,12 @@ package ltseed.chatinmc.PlayerInteraction.GUI.FinalGUI;
 import ltseed.Exception.InvalidChatterException;
 import ltseed.chatinmc.ChatInMC;
 import ltseed.chatinmc.PlayerInteraction.GUI.Button;
-import ltseed.chatinmc.PlayerInteraction.GUI.EnabledView;
 import ltseed.chatinmc.PlayerInteraction.GUI.PaginatedGUI;
 import ltseed.chatinmc.PlayerInteraction.GUI.SimpleGUI;
 import ltseed.chatinmc.PlayerInteraction.PlayerConversation;
 import ltseed.chatinmc.Talker.ChatGPT.ChatGPTBuilder;
 import ltseed.chatinmc.Talker.Chatter;
+import ltseed.chatinmc.Talker.DialogFlow.DialogFlowBuilder;
 import ltseed.chatinmc.Talker.MessageBuilder;
 import ltseed.chatinmc.Utils.TimeConverter;
 import org.bukkit.ChatColor;
@@ -21,27 +21,18 @@ import java.util.*;
 import static ltseed.chatinmc.Talker.Chatter.getCore;
 import static ltseed.chatinmc.Utils.EntityMaterialMapper.getMaterial;
 
-@EnabledView
-public class ChatterCreateGUI extends SimpleGUI {
+public class ChatterManageGUI extends SimpleGUI {
+    String name;
+    String description;
 
-    @Override
-    public void enableView() {
-        super.enableView();
-    }
+    String choose_entity;
+    Material material;
 
-    private static final Map<Player, ChatterCreateGUI> creating = new HashMap<>();
+    double talkDistance;
 
-    String name = "未设置";
-    String description = "未设置";
+    long dur;
 
-    String choose_entity = "未选择";
-    Material material = null;
-    String core = null;
-    double talkDistance = 15;
-
-    long dur = 60*1000*60;
-
-    String core_name = "未指定";
+    String core_name;
 
     String projectId = "未设置";
 
@@ -55,12 +46,39 @@ public class ChatterCreateGUI extends SimpleGUI {
     double frequency_penalty = 0;
     int best_of = 1;
 
-    public static ChatterCreateGUI getInstance(Player player){
-        return creating.getOrDefault(player, new ChatterCreateGUI(player));
+    public static ChatterManageGUI getInstance(Player player, Chatter chatter){
+        return new ChatterManageGUI(player, chatter);
     }
 
-    private ChatterCreateGUI(Player player) {
-        super("新建一个Chatter！", new HashMap<>());
+    private ChatterManageGUI(Player player, Chatter chatter) {
+        super("修改一个Chatter！", new HashMap<>());
+
+        name = chatter.getName();
+        description = chatter.getDescription();
+        choose_entity = chatter.getUuid().toString();
+        try {
+            material = getMaterial(Objects.requireNonNull(chatter.getEntity()).getType());
+        } catch (Exception e) {
+            material = Material.COW_SPAWN_EGG;
+        }
+
+        talkDistance = chatter.getTalk_distance();
+        dur = chatter.getDialogTime();
+        core_name = chatter.getCore().getClass().getName().replace("Builder","");
+        if(core_name.contains("ChatGPT")){
+            ChatGPTBuilder core = (ChatGPTBuilder) chatter.getCore();
+            suffix= core.getSuffix();
+            max_tokens = core.getMax_tokens();
+            temperature = core.getTemperature();
+            top_p = core.getTop_p();
+            n = core.getN();
+            logprobs = core.getLogprobs();
+            presence_penalty = core.getPresence_penalty();
+            frequency_penalty = core.getFrequency_penalty();
+            best_of = core.getBest_of();
+        } else {
+            projectId = ((DialogFlowBuilder)chatter.getCore()).getProjectId();
+        }
         init(player);
     }
 
@@ -151,7 +169,7 @@ public class ChatterCreateGUI extends SimpleGUI {
                     Button button = new Button(0, Material.WRITABLE_BOOK,s,null) {
                         @Override
                         public void call(Player p) {
-                            core = s;
+                            core_name = s;
                             open(p);
                         }
                     };
@@ -365,13 +383,15 @@ public class ChatterCreateGUI extends SimpleGUI {
             }
         };
         addButton(dialogTimeSetButton);
-        Button createButton = new Button((short) 5, (short) 5, Material.GREEN_WOOL, "Create", null) {
+        Button createButton = new Button((short) 5, (short) 5, Material.GREEN_WOOL, "Reset", null) {
             @Override
             public void call(Player player) {
-                if(!Objects.equals(choose_entity, "未选择实体") && !Objects.equals(name, "Name") && !Objects.equals(description, "Description") && material != null && core != null) {
+                if(!Objects.equals(choose_entity, "未选择实体") && !Objects.equals(name, "Name") && !Objects.equals(description, "Description") && material != null) {
                     if(core_name.equals("DialogFlow")&&projectId.equals("未设置projectId")) return;
                     Chatter chatter = new Chatter();
                     UUID uuid = UUID.fromString(choose_entity);
+                    chatter.setName(name);
+                    chatter.setDescription(description);
                     chatter.setUuid(uuid);
                     chatter.getEntity();
                     chatter.setTalk_distance(talkDistance);
@@ -406,13 +426,10 @@ public class ChatterCreateGUI extends SimpleGUI {
             @Override
             public void call(Player player) {
                 player.closeInventory();
-                creating.remove(player);
             }
         };
         addButton(cancelButton);
 
         open(player);
-        creating.put(player,this);
     }
-
 }

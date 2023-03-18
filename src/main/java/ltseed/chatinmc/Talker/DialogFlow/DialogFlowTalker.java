@@ -35,7 +35,6 @@ public class DialogFlowTalker implements Talkative {
 
         // Send the post and get the response
         DetectIntentResponse response = this.sessionsClient.detectIntent(session, queryInput);
-
         // Extract the response message
         return response.getQueryResult().getFulfillmentText();
     }
