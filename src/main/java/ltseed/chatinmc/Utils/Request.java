@@ -4,6 +4,7 @@ package ltseed.chatinmc.Utils;
 import com.alibaba.fastjson.JSONObject;
 import ltseed.chatinmc.ChatInMC;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -14,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 public class Request {
@@ -63,6 +65,7 @@ public class Request {
             if (response.getStatusLine().getStatusCode() != 200)
                 ChatInMC.debug.debugA(String.valueOf(response.getStatusLine().getStatusCode()));
 
+
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         } catch (Exception e) {
@@ -103,6 +106,7 @@ public class Request {
             //将params以json格式添加到request中
             //httpRequest.(new StringEntity(new JSONObject(params).toString()));
 
+            header.put("Content-Type","application/json; charset=utf-8");
             if (header != null) {
                 for (String key : header.keySet()) {
                     httpRequest.setHeader(key, header.get(key));

@@ -16,7 +16,7 @@ public class ChatGPTModelUtils {
     public static List<String> getAvailableModels(String key) {
         Map<String, String> params = new HashMap<>();
         params.put("Authorization", "Bearer " + key);
-        params.put("Content-Type", "application/json");
+        //params.put("Content-Type", "application/json");
         JSONObject response;
         if (ChatGPTCompletions.GPT_USE_PROXY) {
             response = Request.get(MODELS_URL.replace("openai", "openai-proxy"),params);

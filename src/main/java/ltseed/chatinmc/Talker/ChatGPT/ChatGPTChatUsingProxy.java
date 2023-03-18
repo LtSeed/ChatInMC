@@ -13,7 +13,7 @@ public class ChatGPTChatUsingProxy implements Talkative {
     final Map<String, Object> params = new HashMap<>();
 
     public ChatGPTChatUsingProxy(String sessionId) {
-        header.put("Content-Type","application/json");
+        header.put("Content-Type","application/json; charset=utf-8");
         params.put("sessionId", sessionId);
         params.put("apiKey", Config.chatGPT_key);
     }
