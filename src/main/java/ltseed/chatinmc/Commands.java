@@ -1,21 +1,18 @@
 package ltseed.chatinmc;
 
 import lombok.NonNull;
-import ltseed.chatinmc.PlayerInteraction.GUI.Button;
 import ltseed.chatinmc.PlayerInteraction.GUI.FinalGUI.ChatterCreateGUI;
 import ltseed.chatinmc.PlayerInteraction.GUI.FinalGUI.ChatterManageGUI;
-import ltseed.chatinmc.PlayerInteraction.GUI.PaginatedGUI;
-import ltseed.chatinmc.Talker.Chatter;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Commands implements CommandExecutor {
+public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NonNull CommandSender sender, Command command, @NonNull String label, @SuppressWarnings("NullableProblems") String[] args) {
 
@@ -41,23 +38,42 @@ public class Commands implements CommandExecutor {
 
             Player player = (Player) sender;
 
-            ArrayList<Button> allButtons = new ArrayList<>();
-
-            for (Chatter value : ChatInMC.chatters.values()) {
-                List<String> d = new ArrayList<>();
-                value.describe().forEach((k,v) -> d.add(k+": "+v));
-                allButtons.add(new Button(0, Material.WRITABLE_BOOK, value.getName(), d) {
-                    @Override
-                    public void call(Player player) {
-                        ChatterManageGUI.getInstance(player,value).open(player);
-                    }
-                });
-            }
-
-            new PaginatedGUI("选择你要修改的Chatter!", allButtons).open(player,1);
+            ChatterManageGUI.openManageChooseGUI(player);
 
             return true;
         }
+
+        if(command.getName().equalsIgnoreCase("cim")){
+
+            sender.sendMessage("/cim create 创建一个Chatter");
+            sender.sendMessage("/cim manage 管理Chatters");
+
+        }
         return false;
+    }
+
+    /**
+     * Requests a list of possible completions for a command argument.
+     *
+     * @param sender  Source of the command.  For players tab-completing a
+     *                command inside of a command block, this will be the player, not
+     *                the command block.
+     * @param command Command which was executed
+     * @param label   Alias of the command which was used
+     * @param args    The arguments passed to the command, including final
+     *                partial argument to be completed
+     * @return A List of possible completions for the final argument, or null
+     * to default to the command executor
+     */
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if(command.getName().equalsIgnoreCase("cim")){
+            List<String> list = new ArrayList<>();
+            list.add("create");
+            list.add("manage");
+            return list;
+        }
+        return null;
     }
 }

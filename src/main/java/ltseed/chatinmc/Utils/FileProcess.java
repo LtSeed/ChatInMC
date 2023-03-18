@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileProcess {
 
     private static File dataFolder;
@@ -32,7 +33,7 @@ public class FileProcess {
         try {
             models.createNewFile();
         } catch (IOException e) {
-            ChatInMC.debug.err("在读取models文件时发生错误！");
+            ChatInMC.debug.err("Error when reading file of models!");
             ChatInMC.debug.debugA(e.getLocalizedMessage());
         }
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(models);
@@ -51,7 +52,7 @@ public class FileProcess {
             try {
                 value = new Chatter(file);
             } catch (IOException | InvalidConfigurationException | InvalidChatterException e) {
-                ChatInMC.debug.warn("在读取实体数据时发生了错误: " + e.getMessage());
+                ChatInMC.debug.warn("Error when reading file of entities: " + e.getMessage());
             }
             map.put(UUID.fromString(file.getName()), value);
         }
@@ -62,8 +63,8 @@ public class FileProcess {
             try {
                 chatter.saveToFile(chattersFolder);
             } catch (IOException e) {
-                ChatInMC.debug.err("在保存实体数据时发生了错误，这可能导致重大的问题，" +
-                        "请检查文件（"+ chatter.getUuid() +"）: " + e.getMessage());
+                ChatInMC.debug.err("Error when saving file of entities, it may cause problem" +
+                        "please check file:"+ chatter.getUuid() +":" + e.getMessage());
             }
         }
     }
@@ -73,8 +74,13 @@ public class FileProcess {
         try {
             yml.save(new File(dataFolder,"models.yml"));
         } catch (IOException e) {
-            ChatInMC.debug.err("在保存模型数据时发生了错误，" +
-                    "请检查文件（models.yml）: " + e.getMessage());
+            ChatInMC.debug.err("Error when saving file of entities," +
+                    "please check file:models.yml: " + e.getMessage());
         }
+    }
+
+    public static void deleteChatterFile(UUID uuid) {
+        File file = new File(chattersFolder, uuid.toString());
+        if(file.exists()) file.delete();
     }
 }

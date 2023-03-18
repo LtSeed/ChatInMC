@@ -1,0 +1,407 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": false,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": false,
+    "cutConstructors": false
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ltseed.chatinmc.Utils.FileProcess",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1438026963 { 
+   	label=chatinmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1966903370 { 
+   	label=Utils
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Debug685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(E)Debug</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   A: Debug [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   B: Debug [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   N: Debug [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   info: Consumer&lt;String&gt; [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ debugA(log: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ debugB(log: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ err(err: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ info(info: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ loadDebug(info: Consumer&lt;String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ valueOf(name: String): Debug</TD></TR>
+<TR><TD ALIGN="LEFT" >+ values(): Debug[]</TD></TR>
+<TR><TD ALIGN="LEFT" >+ warn(warn: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#DCFBD5"
+];
+
+FileProcess685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)FileProcess</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ checkFolders(tp: Plugin)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readChatters(): Map&lt;UUID, Chatter&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readModels(): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveChatters(chatters: Collection&lt;Chatter&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveModels(models: List&lt;String&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TimeConverter685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TimeConverter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getCode(time: Long): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTime(s: String): Long</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_890550284 { 
+   	label=Talker
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   ChatGPTBuilder1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTBuilder</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   dialogTime: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logit_bias: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   model: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># ChatGPTBuilder()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ ChatGPTBuilder(askBuilder: ChatGPTBuilder)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ build(player: Player): Talkative</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getBest_of(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDefault(): ChatGPTBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDialogTime(): Long</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getFrequency_penalty(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getLogit_bias(): Map&lt;String, String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getLogprobs(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMax_tokens(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getModel(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getN(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPresence_penalty(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSuffix(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTemperature(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTop_p(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readFile(yml_file: YamlConfiguration)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setBest_of(best_of: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDialogTime(dialogTime: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setFrequency_penalty(frequency_penalty: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setLogit_bias(logit_bias: Map&lt;String, String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setLogprobs(logprobs: Integer)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setMax_tokens(max_tokens: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setModel(model: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setN(n: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setPresence_penalty(presence_penalty: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setSuffix(suffix: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTemperature(temperature: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTop_p(top_p: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeFile(yml_file: YamlConfiguration)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChatGPTChatUsingProxy1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTChatUsingProxy</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   header: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   params: Map&lt;String, Object&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ ChatGPTChatUsingProxy(sessionId: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setKey(key: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChatGPTCompletions1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTCompletions</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logit_bias: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   model: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># ChatGPTCompletions(model: String, suffix: String, max_tokens: int, temperature: double, top_p: int, n: int, logprobs: Integer, presence_penalty: double, frequency_penalty: double, best_of: int, logit_bias: Map&lt;String, String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ ask(prompt: String, key: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Chatter179301375[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Chatter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   core: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   description: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dialogTime: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   talk_distance: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   te: Entity [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   uuid: UUID [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ Chatter()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ Chatter(chatter: File)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ describe(): Map&lt;String, Object&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCore(dialogTime1: Long, model: String, projectId: String): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCore(): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDescription(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDialogTime(): long</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEntity(): Entity</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getName(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTalk_distance(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTe(): Entity</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUuid(): UUID</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveToFile(Folder: File)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setCore(core: MessageBuilder)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDescription(description: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDialogTime(dialogTime: long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setName(name: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTalk_distance(talk_distance: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTe(te: Entity)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setUuid(uuid: UUID)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DialogFlowBuilder1678276613[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DialogFlowBuilder</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dialogTime: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   projectId: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ DialogFlowBuilder(projectId: String, time: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ build(player: Player): DialogFlowTalker</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDialogTime(): Long</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getProjectId(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DialogFlowTalker1678276613[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DialogFlowTalker</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   projectId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sessionId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sessionsClient: SessionsClient [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ DialogFlowTalker(projectId: String, sessionId: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MessageBuilder179301375[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)MessageBuilder</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ build(talker: Player): Talkative</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+} 
+} 
+
+subgraph cluster_809373649 { 
+   	label=Exception
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   InvalidChatterException1487485050[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidChatterException</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   type: TYPE [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ InvalidChatterException(type: TYPE)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMessage(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+subgraph cluster_645927870 { 
+   	label=InvalidChatterException
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   TYPE2050353929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(E)TYPE</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   INVALID_CORE_TYPE: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_DEFAULT_TEMPERATURE: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_DIALOG_TIME: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_NAME_OR_DESCRIPTION: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_TALK_DISTANCE: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_USER_TEMPERATURE: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   INVALID_UUID: TYPE [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   UNFOUNDED_MODEL: TYPE [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ valueOf(name: String): TYPE</TD></TR>
+<TR><TD ALIGN="LEFT" >+ values(): TYPE[]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#DCFBD5"
+];
+} 
+} 
+
+'edges    
+ChatGPTBuilder1485060316 -> ChatGPTCompletions1485060316[label="build() -> ChatGPTCompletions()"];
+Chatter179301375 -> Debug685466037[label="saveToFile() -> debugB()"];
+Chatter179301375 -> MessageBuilder179301375[label="core
+[0..1]"];
+Chatter179301375 -> TimeConverter685466037[label="Chatter() -> getTime()"];
+DialogFlowBuilder1678276613 -> DialogFlowTalker1678276613[label="build() -> DialogFlowTalker()"];
+InvalidChatterException1487485050 -> TYPE2050353929[label="type
+[0..1]"];
+MessageBuilder179301375 -> ChatGPTBuilder1485060316[arrowhead=none, arrowtail=empty, dir=both];
+MessageBuilder179301375 -> DialogFlowBuilder1678276613[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml

@@ -2,6 +2,7 @@ package ltseed.chatinmc.Utils;
 
 
 import com.alibaba.fastjson.JSONObject;
+import ltseed.chatinmc.ChatInMC;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -33,11 +34,6 @@ public class Request {
         CloseableHttpResponse response = null;
         try {
             // 创建uri
-            //            if (params != null){
-//                for (String key : params.keySet()) {
-//                    j.addProperty(key, params.get(key).toString());
-//                }
-//            }
 
             URIBuilder builder = new URIBuilder(url);
             URI uri = builder.build();
@@ -57,20 +53,20 @@ public class Request {
             try {
                 response = httpClient.execute(httpRequest);
             } catch (ClientProtocolException e){
-                System.out.println(e.getLocalizedMessage());
+                ChatInMC.debug.debugA(e.getLocalizedMessage());
                 return null;
             } catch (IOException e) {
-                System.out.println("Connection failed, check the Internet!");
+                ChatInMC.debug.debugA("Connection failed, check the Internet!");
                 return null;
             }
             // 判断返回状态是否为200
             if (response.getStatusLine().getStatusCode() != 200)
-                System.out.println(response.getStatusLine().getStatusCode());
+                ChatInMC.debug.debugA(String.valueOf(response.getStatusLine().getStatusCode()));
 
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ChatInMC.debug.err(e.getLocalizedMessage());
         } finally {
             try {
                 if (response != null) {
@@ -78,7 +74,7 @@ public class Request {
                 }
                 httpClient.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                ChatInMC.debug.err(e.getLocalizedMessage());
             }
         }
         return JSONObject.parseObject(resultString);
@@ -117,20 +113,20 @@ public class Request {
             try {
                 response = httpClient.execute(httpRequest);
             } catch (ClientProtocolException e){
-                System.out.println(e.getLocalizedMessage());
+                ChatInMC.debug.debugA(e.getLocalizedMessage());
                 return null;
             } catch (IOException e) {
-                System.out.println("Connection failed, check the Internet!");
+                ChatInMC.debug.debugA("Connection failed, check the Internet!");
                 return null;
             }
             // 判断返回状态是否为200
             if (response.getStatusLine().getStatusCode() != 200)
-                System.out.println(response.getStatusLine().getStatusCode());
+                ChatInMC.debug.debugA(String.valueOf(response.getStatusLine().getStatusCode()));
 
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ChatInMC.debug.err(e.getLocalizedMessage());
         } finally {
             try {
                 if (response != null) {
@@ -138,7 +134,7 @@ public class Request {
                 }
                 httpClient.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                ChatInMC.debug.err(e.getLocalizedMessage());
             }
         }
         return JSONObject.parseObject(resultString);

@@ -17,12 +17,13 @@ public class PaginatedGUI {
     private final String title;
     private final List<Button> allButtons;
     private final Map<Integer, List<Button>> pages;
+    private final List<Button> otherButtons;
     private final int totalPages;
 
     private final ItemStack prevPageItem;
     private final ItemStack nextPageItem;
 
-    public PaginatedGUI(String title, List<Button> allButtons) {
+    public PaginatedGUI(String title, List<Button> allButtons, List<Button> otherButtons) {
         this.title = title;
         this.allButtons = allButtons;
         this.pages = new HashMap<>();
@@ -40,8 +41,11 @@ public class PaginatedGUI {
         nextPageItemMeta.setDisplayName(ChatColor.GREEN + "下一页");
         nextPageItem.setItemMeta(nextPageItemMeta);
 
+        this.otherButtons = otherButtons;
+
         setupPages();
     }
+
 
     private void setupPages() {
         int currentPage = 1;
@@ -66,7 +70,7 @@ public class PaginatedGUI {
 
         if (pageButtons == null) {
             player.sendMessage(ChatColor.RED + "无效的页码！");
-            ChatInMC.debug.err("无效的页码！");
+            ChatInMC.debug.err("Illegal page number!");
             return;
         }
 
@@ -83,8 +87,15 @@ public class PaginatedGUI {
             });
         }
 
+        if(otherButtons != null && otherButtons.size() <= 7){
+            for (Button otherButton : otherButtons) {
+                if(otherButton.getSlot()<53 && otherButton.getSlot()>45)
+                    simpleGUI.addButton(otherButton);
+            }
+        }
+
         if (page < totalPages) {
-            simpleGUI.addButton(new Button(45, nextPageItem) {
+            simpleGUI.addButton(new Button(53, nextPageItem) {
                 @Override
                 public void call(Player p) {
                     open(p, page + 1);

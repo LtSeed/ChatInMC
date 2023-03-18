@@ -1,5 +1,7 @@
 package ltseed.chatinmc.Utils;
 
+import ltseed.chatinmc.ChatInMC;
+
 import java.io.IOException;
 
 public class CmdTest {
@@ -65,9 +67,9 @@ public class CmdTest {
             }
 
             // Print message
-            System.out.println("wget and tar are installed.");
+            ChatInMC.debug.info("wget and tar are installed.");
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            ChatInMC.debug.err("wget and tar are not installed!");
         }
     }
 
@@ -77,7 +79,6 @@ public class CmdTest {
             process.waitFor();
             return process.exitValue() != 0;
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
             return true;
         }
     }

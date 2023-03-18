@@ -1,0 +1,219 @@
+@startuml
+
+/' diagram meta data start
+config=CallConfiguration;
+{
+  "rootMethod": "ltseed.chatinmc.ChatInMC#onDisable()",
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showMethodParametersTypes": true,
+    "showMethodParametersNames": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 5,
+    "showCallOrder": true,
+    "edgeMode": "MethodsOnly", // TypesOnly, MethodsOnly, TypesAndMethods, MethodsAndDirectTypeUsage
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ltseed.chatinmc.ChatInMC",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="LR"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1438026963 { 
+   	label=chatinmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1737928423 { 
+   	label=ChatInMC
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChatInMC1813016792XXXonDisable0[
+	label="+ onDisable()"
+	style=filled
+	fillcolor=white
+	tooltip="ChatInMC
+
+null"
+	penwidth=4
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_1966903370 { 
+   	label=Utils
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_597279248 { 
+   	label=FileProcess
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   FileProcess685466037XXXsaveChatters403341581[
+	label="+ saveChatters(chatters: Collection<Chatter>)"
+	style=filled
+	fillcolor=white
+	tooltip="FileProcess
+
+null"
+	fontcolor=darkgreen
+];
+
+FileProcess685466037XXXsaveModels1839184593[
+	label="+ saveModels(models: List<String>)"
+	style=filled
+	fillcolor=white
+	tooltip="FileProcess
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_83305371 { 
+   	label=Config
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   Config685466037XXXsaveConfig0[
+	label="+ saveConfig()"
+	style=filled
+	fillcolor=white
+	tooltip="Config
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+
+subgraph cluster_890550284 { 
+   	label=Talker
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_1485016390 { 
+   	label=Chatter
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   Chatter179301375XXXsaveToFile2189724[
+	label="+ saveToFile(Folder: File)"
+	style=filled
+	fillcolor=white
+	tooltip="Chatter
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_900357657 { 
+   	label=ChatGPT
+	labeljust=l
+	fillcolor="#c4c4c4"
+	style=filled
+   
+   subgraph cluster_1432684050 { 
+   	label=ChatGPTBuilder
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChatGPTBuilder1485060316XXXwriteFile1306316433[
+	label="+ writeFile(yml_file: YamlConfiguration)"
+	style=filled
+	fillcolor=white
+	tooltip="ChatGPTBuilder
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+} 
+} 
+
+'edges    
+ChatInMC1813016792XXXonDisable0 -> Config685466037XXXsaveConfig0[label=0];
+ChatInMC1813016792XXXonDisable0 -> FileProcess685466037XXXsaveChatters403341581[label=1];
+ChatInMC1813016792XXXonDisable0 -> FileProcess685466037XXXsaveModels1839184593[label=3];
+Chatter179301375XXXsaveToFile2189724 -> ChatGPTBuilder1485060316XXXwriteFile1306316433[label=12];
+FileProcess685466037XXXsaveChatters403341581 -> Chatter179301375XXXsaveToFile2189724[label=0];
+    
+}
+@enduml

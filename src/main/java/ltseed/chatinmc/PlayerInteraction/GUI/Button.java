@@ -24,12 +24,14 @@ import static ltseed.chatinmc.ChatInMC.ts;
 
 public abstract class Button {
 
-    private final short x,y;
+    private short x;
+    private short y;
     private final Material material;
     private final String displayName;
     private final List<String> lore;
     private final UUID skullOwner;
     private final String texture;
+    boolean pressed = false;
 
     public Button(short x, short y, Material material, String displayName, List<String> lore) {
         this.x = x;
@@ -42,8 +44,14 @@ public abstract class Button {
     }
 
     public Button(int slot, Material material, String displayName, List<String> lore) {
-        this.x = (short) (slot % 9);
-        this.y = (short) ((short) (slot - this.x) / 9);
+        if(slot == -1){
+            this.x = (short) 0;
+            this.y = (short) 1;
+        } else {
+            this.x = (short) (slot % 9);
+            this.y = (short) ((short) (slot - this.x) / 9);
+            x++;y++;
+        }
         this.material = material;
         this.displayName = displayName;
         this.lore = lore;
@@ -52,8 +60,14 @@ public abstract class Button {
     }
 
     public Button(int slot, ItemStack is) {
-        this.x = (short) (slot % 9);
-        this.y = (short) ((short) (slot - this.x) / 9);
+        if(slot == -1){
+            this.x = (short) 0;
+            this.y = (short) 1;
+        } else {
+            this.x = (short) (slot % 9);
+            this.y = (short) ((short) (slot - this.x) / 9);
+            x++;y++;
+        }
         this.material = is.getType();
         this.displayName = Objects.requireNonNull(is.getItemMeta()).getDisplayName();
         this.lore = is.getItemMeta().getLore();
@@ -66,7 +80,9 @@ public abstract class Button {
     }
 
     public void setupButton(Inventory inventory){
-        inventory.setItem(getSlot(), toItemStack());
+        if(getSlot() != -1)
+            inventory.setItem(getSlot(), toItemStack());
+        else inventory.addItem(toItemStack());
     }
 
     public ItemStack toItemStack() {
@@ -85,6 +101,7 @@ public abstract class Button {
         return itemStack;
     }
 
+    @SuppressWarnings("unused")
     private String readTexture(File imageFile){
         String base64 = null;
         try {
@@ -125,4 +142,23 @@ public abstract class Button {
     }
 
     public abstract void call(Player player);
+
+    public void resetSlot(int slot) {
+        if(getSlot() == -1){
+            if(slot == -1){
+                this.x = (short) 0;
+                this.y = (short) 1;
+            } else {
+                this.x = (short) ((short) (slot % 9));
+                this.y = (short) ((short) (slot - this.x) / 9);
+                x++;y++;
+            }
+        }
+    }
+
+    public void callOnce(Player player) {
+        if(pressed) return;
+        pressed = true;
+        call(player);
+    }
 }

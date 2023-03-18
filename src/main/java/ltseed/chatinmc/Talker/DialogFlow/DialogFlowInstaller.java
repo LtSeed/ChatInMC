@@ -1,5 +1,7 @@
 package ltseed.chatinmc.Talker.DialogFlow;
 
+import ltseed.chatinmc.ChatInMC;
+
 import java.io.*;
 import java.net.*;
 
@@ -28,7 +30,8 @@ public class DialogFlowInstaller {
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-350.0.0-linux-x86_64.tar.gz";
         } else {
-            throw new RuntimeException("Unsupported operating system: " + os);
+            ChatInMC.debug.err("Unsupported operating system: " + os);
+            return;
         }
 
         debug.debugB("Downloading Google DialogFlow CLI from " + url);

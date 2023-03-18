@@ -15,17 +15,19 @@ import java.util.UUID;
 public class ChatterListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void chatWithAI(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
+    public void chatWithAI(final AsyncPlayerChatEvent event) {
+        final Player player = event.getPlayer();
 
         Location location = player.getLocation();
         for (Map.Entry<UUID, Chatter> entry : ChatInMC.chatters.entrySet()) {
-            Chatter chatter = entry.getValue();
+            final Chatter chatter = entry.getValue();
             Entity entity = chatter.getEntity();
             if(entity == null) continue;
             if(entity.getLocation().distance(location) <= chatter.getTalk_distance()){
-                String m = chatter.getCore().build(player).chat(event.getMessage());
-                player.sendMessage("[" + entity.getCustomName() + "] -> 你：" + m);
+                new Thread(()->{
+                    String m = chatter.getCore().build(player).chat(event.getMessage());
+                    player.sendMessage("[" + chatter.getName() + "] -> 你：" + m);
+                }).start();
             }
         }
     }

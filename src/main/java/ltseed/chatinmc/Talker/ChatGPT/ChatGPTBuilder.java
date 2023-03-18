@@ -3,20 +3,24 @@ package ltseed.chatinmc.Talker.ChatGPT;
 import lombok.Getter;
 import lombok.Setter;
 import ltseed.chatinmc.Talker.MessageBuilder;
+import ltseed.chatinmc.Talker.Talkative;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
-
 public class ChatGPTBuilder implements MessageBuilder {
-    private static final ChatGPTBuilder DEFAULT = new ChatGPTBuilder("[model]",null,512,1,1,1,null,0,0,1,null);
-    //public static final ChatGPTBuilder CONTENT_FILTER = new ChatGPTBuilder("[model]","<|endoftext|>[prompt]\n--\nLabel:",null,1,0,0,1,10,0,0,1,null);
-    String model;
+    private static final Map<Player, Date> timer = new HashMap<>();
+    private static final Map<Player, String> sessions = new HashMap<>();
 
+    long dialogTime = 60_000;
+    private static final ChatGPTBuilder DEFAULT = new ChatGPTBuilder();
+    String model;
     String suffix;// = null;
     int max_tokens;// = 512;
     double temperature;// = 1;
@@ -28,8 +32,31 @@ public class ChatGPTBuilder implements MessageBuilder {
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
     @Override
-    public ChatGPTCompletions build(Player ignore){
-        if(model.contains("[model]"))return null;
+    public Talkative build(Player player){
+        if(model.contains("[model]") && !ChatGPTCompletions.GPT_USE_PROXY) {
+            player.sendMessage("未设定模型，使用默认值");
+            model = "text-davinci-003";
+        }
+        if(ChatGPTCompletions.GPT_USE_PROXY){
+            Date now = new Date();
+            String sessionId;
+            if(player == null) return new ChatGPTChatUsingProxy(UUID.randomUUID().toString());
+            if(timer.containsKey(player)){
+                if(timer.get(player).getTime() - now.getTime() >= dialogTime){
+                    timer.put(player,now);
+                    sessionId = UUID.randomUUID().toString();
+                    sessions.put(player, sessionId);
+                } else {
+                    timer.put(player,now);
+                    sessionId = sessions.getOrDefault(player,UUID.randomUUID().toString());
+                }
+            } else {
+                timer.put(player,now);
+                sessionId = UUID.randomUUID().toString();
+                sessions.put(player, sessionId);
+            }
+            return new ChatGPTChatUsingProxy(sessionId);
+        }
         return new ChatGPTCompletions(model,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
     }
 
@@ -44,18 +71,18 @@ public class ChatGPTBuilder implements MessageBuilder {
         else this.model = model;
     }
 
-    protected ChatGPTBuilder(String model, String suffix, int max_tokens, int temperature, int top_p, int n, Integer logprobs, double presence_penalty, double frequency_penalty, int best_of, Map<String, String> logit_bias) {
-        this.model = model;
-        this.suffix = suffix;
-        this.max_tokens = max_tokens;
-        this.temperature = temperature;
-        this.top_p = top_p;
-        this.n = n;
-        this.logprobs = logprobs;
-        this.presence_penalty = presence_penalty;
-        this.frequency_penalty = frequency_penalty;
-        this.best_of = best_of;
-        this.logit_bias = logit_bias;
+    protected ChatGPTBuilder() {
+        this.model = "[model]";
+        this.suffix = null;
+        this.max_tokens = 512;
+        this.temperature = 1;
+        this.top_p = 1;
+        this.n = 1;
+        this.logprobs = null;
+        this.presence_penalty = 0;
+        this.frequency_penalty = 0;
+        this.best_of = 1;
+        this.logit_bias = null;
     }
 
     public ChatGPTBuilder(ChatGPTBuilder askBuilder){
@@ -72,6 +99,7 @@ public class ChatGPTBuilder implements MessageBuilder {
         if (askBuilder.logit_bias != null)
             this.logit_bias = new HashMap<>(askBuilder.logit_bias);
         else this.logit_bias = null;
+        this.dialogTime = askBuilder.dialogTime;
     }
 
 

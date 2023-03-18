@@ -12,6 +12,7 @@ import ltseed.chatinmc.Talker.Chatter;
 import ltseed.chatinmc.Talker.MessageBuilder;
 import ltseed.chatinmc.Utils.TimeConverter;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -24,12 +25,7 @@ import static ltseed.chatinmc.Utils.EntityMaterialMapper.getMaterial;
 @EnabledView
 public class ChatterCreateGUI extends SimpleGUI {
 
-    @Override
-    public void enableView() {
-        super.enableView();
-    }
-
-    private static final Map<Player, ChatterCreateGUI> creating = new HashMap<>();
+    public static final Map<Player, ChatterCreateGUI> creating = new HashMap<>();
 
     String name = "未设置";
     String description = "未设置";
@@ -56,24 +52,30 @@ public class ChatterCreateGUI extends SimpleGUI {
     int best_of = 1;
 
     public static ChatterCreateGUI getInstance(Player player){
-        return creating.getOrDefault(player, new ChatterCreateGUI(player));
+        ChatterCreateGUI orDefault = creating.getOrDefault(player, new ChatterCreateGUI(player));
+        orDefault.update();
+        return orDefault;
     }
 
     private ChatterCreateGUI(Player player) {
         super("新建一个Chatter！", new HashMap<>());
-        init(player);
+        update();
+        open(player);
+        creating.put(player,this);
     }
 
-    private void init(Player player) {
+    public void update() {
         List<String> nameLore = new ArrayList<>();
         nameLore.add("Click to edit");
-        Button nameButton = new Button((short) 2, (short) 3, Material.NAME_TAG,"名称：" +  name, nameLore) {
+        Button nameButton = new Button((short) 3, (short) 3, Material.NAME_TAG,"名称：" +  name, nameLore) {
             /**
              */
             @Override
             public void call(Player player) {
                 new PlayerConversation(player).startConversation("请输入Chatter的名字！", response -> {
-                    name = response;
+                    ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                    chatterCreateGUI.name = response;
+                    creating.put(player,chatterCreateGUI);
                     open(player);
                 });
             }
@@ -82,13 +84,15 @@ public class ChatterCreateGUI extends SimpleGUI {
 
         List<String> descLore = new ArrayList<>();
         descLore.add("Click to edit");
-        Button descButton = new Button((short) 4, (short) 3, Material.PAPER,"描述：" +  description, descLore) {
+        Button descButton = new Button((short) 3, (short) 2, Material.PAPER,"描述：" +  description, descLore) {
             /**
              */
             @Override
             public void call(Player player) {
                 new PlayerConversation(player).startConversation("请输入Chatter的描述！", response -> {
-                    description = response;
+                    ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                    chatterCreateGUI.description = response;
+                    creating.put(player,chatterCreateGUI);
                     open(player);
                 });
             }
@@ -110,24 +114,33 @@ public class ChatterCreateGUI extends SimpleGUI {
                     // 将实体转化为按钮
                     List<String> lore = new ArrayList<>();
                     lore.add(entity.getName());
-                    lore.add("位置: " + entity.getLocation());
+                    Location location = entity.getLocation();
+                    lore.add("位置: " + location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ());
                     lore.add("实体ID: " + entity.getEntityId());
 
-                    Button button = new Button(0, getMaterial(entity.getType()),entity.getCustomName(),lore) {
+                    Button button = new Button(-1, getMaterial(entity.getType()),entity.getName(),lore) {
                         final UUID uuid = entity.getUniqueId();
                         final Material m = getMaterial(entity.getType());
                         @Override
                         public void call(Player p) {
-                            choose_entity = uuid.toString();
-                            material = m;
+                            ChatterCreateGUI chatterCreateGUI = creating.get(p);
+                            chatterCreateGUI.choose_entity = uuid.toString();
+                            chatterCreateGUI.material = m;
+                            creating.put(p,chatterCreateGUI);
                             open(p);
                         }
                     };
                     buttons.add(button);
                 }
-
+                ArrayList<Button> otherButtons = new ArrayList<>();
+                otherButtons.add(new Button((short) 2,(short) 6,Material.ARROW,"返回",null) {
+                    @Override
+                    public void call(Player player) {
+                        open(player);
+                    }
+                });
                 // 创建一个分页GUI
-                PaginatedGUI gui = new PaginatedGUI("实体列表", buttons);
+                PaginatedGUI gui = new PaginatedGUI("实体列表", buttons, otherButtons);
 
                 // 打开指定页码的页面
                 gui.open(player, 1);
@@ -148,18 +161,27 @@ public class ChatterCreateGUI extends SimpleGUI {
                 for (String s : ChatInMC.models) {
                     // 将模型转化为按钮
 
-                    Button button = new Button(0, Material.WRITABLE_BOOK,s,null) {
+                    Button button = new Button(-1, Material.WRITABLE_BOOK,s,null) {
                         @Override
                         public void call(Player p) {
-                            core = s;
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.core_name = s;
+                            chatterCreateGUI.core = s;
+                            creating.put(player,chatterCreateGUI);
                             open(p);
                         }
                     };
                     buttons.add(button);
                 }
-
+                ArrayList<Button> otherButtons = new ArrayList<>();
+                otherButtons.add(new Button(46,Material.ARROW,"返回",null) {
+                    @Override
+                    public void call(Player player) {
+                        open(player);
+                    }
+                });
                 // 创建一个分页GUI
-                PaginatedGUI gui = new PaginatedGUI("核心列表", buttons);
+                PaginatedGUI gui = new PaginatedGUI("核心列表", buttons,otherButtons);
 
                 // 打开指定页码的页面
                 gui.open(player, 1);
@@ -172,7 +194,9 @@ public class ChatterCreateGUI extends SimpleGUI {
             public void call(Player player) {
                 new PlayerConversation(player).startConversation("请输入能够触发聊天的距离！", response -> {
                     try {
-                        talkDistance = Double.parseDouble(response);
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.talkDistance = Double.parseDouble(response);
+                        creating.put(player,chatterCreateGUI);
                     } catch (NumberFormatException e) {
                         player.sendMessage("你的数字格式有误！");
                     }
@@ -182,7 +206,7 @@ public class ChatterCreateGUI extends SimpleGUI {
         };
         addButton(distanceSetButton);
 
-        if(core_name.equals("DialogFlow")){
+        if(core_name.equalsIgnoreCase("DialogFlow")){
             List<String> proIdSetLore = new ArrayList<>();
             proIdSetLore.add("Click to edit");
             Button proIdSetButton = new Button((short) 5, (short) 4, Material.BOOK,"projectId：" +  projectId, proIdSetLore) {
@@ -191,7 +215,10 @@ public class ChatterCreateGUI extends SimpleGUI {
                 @Override
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入DialogFlow ProjectID:", response -> {
-                        projectId = response;
+
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.projectId = response;
+                        creating.put(player,chatterCreateGUI);
                         open(player);
                     });
                 }
@@ -206,7 +233,9 @@ public class ChatterCreateGUI extends SimpleGUI {
                 @Override
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入suffix！", response -> {
-                        suffix = response;
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.suffix = response;
+                        creating.put(player,chatterCreateGUI);
                         open(player);
                     });
                 }
@@ -220,7 +249,9 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入max_tokens！", response -> {
                         try {
-                            max_tokens = Integer.parseInt(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.max_tokens = Integer.parseInt(response);
+                            creating.put(player,chatterCreateGUI);
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -237,7 +268,10 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入temperature！", response -> {
                         try {
-                            temperature = Double.parseDouble(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.temperature = Double.parseDouble(response);
+                            creating.put(player,chatterCreateGUI);
+
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -254,7 +288,10 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入top_p！", response -> {
                         try {
-                            top_p = Integer.parseInt(response);
+
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.top_p = Integer.parseInt(response);
+                            creating.put(player,chatterCreateGUI);
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -271,7 +308,9 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入n！", response -> {
                         try {
-                            n = Integer.parseInt(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.n = Integer.parseInt(response);
+                            creating.put(player,chatterCreateGUI);
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -288,7 +327,10 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入logprobs！", response -> {
                         try {
-                            logprobs = Integer.parseInt(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.logprobs = Integer.parseInt(response);
+                            creating.put(player,chatterCreateGUI);
+
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -305,7 +347,10 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入presence_penalty_setButton！", response -> {
                         try {
-                            presence_penalty = Double.parseDouble(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.presence_penalty = Double.parseDouble(response);
+                            creating.put(player,chatterCreateGUI);
+
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -322,7 +367,9 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入frequency_penalty！", response -> {
                         try {
-                            frequency_penalty = Double.parseDouble(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.frequency_penalty = Double.parseDouble(response);
+                            creating.put(player,chatterCreateGUI);
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -339,7 +386,9 @@ public class ChatterCreateGUI extends SimpleGUI {
                 public void call(Player player) {
                     new PlayerConversation(player).startConversation("请输入best_of！", response -> {
                         try {
-                            best_of = Integer.parseInt(response);
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            chatterCreateGUI.best_of = Integer.parseInt(response);
+                            creating.put(player,chatterCreateGUI);
                         } catch (NumberFormatException e) {
                             player.sendMessage("你的数字格式有误！");
                         }
@@ -356,7 +405,9 @@ public class ChatterCreateGUI extends SimpleGUI {
             public void call(Player player) {
                 new PlayerConversation(player).startConversation("请输入对话持续时间，格式为*天*时*分*秒*毫秒", response -> {
                     try {
-                        dur = TimeConverter.getTime(response);
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.dur = TimeConverter.getTime(response);
+                        creating.put(player,chatterCreateGUI);
                     } catch (Exception e) {
                         player.sendMessage("你的格式有误！");
                     }
@@ -365,17 +416,18 @@ public class ChatterCreateGUI extends SimpleGUI {
             }
         };
         addButton(dialogTimeSetButton);
-        Button createButton = new Button((short) 5, (short) 5, Material.GREEN_WOOL, "Create", null) {
+        Button createButton = new Button((short) 5, (short) 3, Material.GREEN_WOOL, "Create", null) {
             @Override
             public void call(Player player) {
                 if(!Objects.equals(choose_entity, "未选择实体") && !Objects.equals(name, "Name") && !Objects.equals(description, "Description") && material != null && core != null) {
-                    if(core_name.equals("DialogFlow")&&projectId.equals("未设置projectId")) return;
                     Chatter chatter = new Chatter();
                     UUID uuid = UUID.fromString(choose_entity);
                     chatter.setUuid(uuid);
                     chatter.getEntity();
                     chatter.setTalk_distance(talkDistance);
                     chatter.setDialogTime(dur);
+                    chatter.setName(name);
+                    chatter.setDescription(description);
                     try {
                         MessageBuilder core1 = getCore(dur, core_name, projectId);
                         if(core1 instanceof ChatGPTBuilder){
@@ -393,7 +445,7 @@ public class ChatterCreateGUI extends SimpleGUI {
                             chatter.setCore(gptBuilder);
                         } else chatter.setCore(core1);
                     } catch (InvalidChatterException e) {
-                        e.printStackTrace();
+                        ChatInMC.debug.err(e.getLocalizedMessage());
                     }
                     ChatInMC.chatters.put(uuid,chatter);
                     player.closeInventory();
@@ -402,7 +454,7 @@ public class ChatterCreateGUI extends SimpleGUI {
         };
         addButton(createButton);
 
-        Button cancelButton = new Button((short) 4, (short) 5, Material.BARRIER, ChatColor.RED+"Cancel", null) {
+        Button cancelButton = new Button((short) 5, (short) 5, Material.BARRIER, ChatColor.RED+"Cancel", null) {
             @Override
             public void call(Player player) {
                 player.closeInventory();
@@ -410,9 +462,9 @@ public class ChatterCreateGUI extends SimpleGUI {
             }
         };
         addButton(cancelButton);
-
-        open(player);
-        creating.put(player,this);
     }
 
+    ChatterCreateGUI(){
+        super();
+    }
 }

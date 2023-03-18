@@ -6,6 +6,9 @@ import ltseed.Exception.InvalidChatterException;
 import ltseed.chatinmc.ChatInMC;
 import ltseed.chatinmc.Talker.ChatGPT.ChatGPTBuilder;
 import ltseed.chatinmc.Talker.DialogFlow.DialogFlowBuilder;
+import ltseed.chatinmc.Utils.FileProcess;
+import ltseed.chatinmc.Utils.TimeConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -15,29 +18,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static ltseed.chatinmc.ChatInMC.models;
-import static ltseed.chatinmc.ChatInMC.ts;
+import static ltseed.chatinmc.ChatInMC.*;
+
 @Getter
 @Setter
 public class Chatter {
 
     private String name;
     private String description;
-
     private UUID uuid;
-    //private final double default_temperature;
     private double talk_distance = 10;
-    //private Map<UUID, Double> temperature = new HashMap<>();
-    //private final String model;
-
-    private Long dialogTime = 60*1000L;
-
+    private long dialogTime = 60*1000L;
     private MessageBuilder core;
-
     private Entity te = null;
     @Nullable
     public Entity getEntity(){
-        if(te == null) te = ts.getEntity(uuid);
+        if(te == null) {
+            Bukkit.getScheduler().runTaskLater(tp, () -> te = ts.getEntity(uuid), 5);
+        }
         return te;
     }
 
@@ -52,7 +50,6 @@ public class Chatter {
         descriptionMap.put("uuid", this.uuid.toString());
         descriptionMap.put("talk_distance", this.talk_distance);
         descriptionMap.put("dialogTime", this.dialogTime);
-        // Add any additional properties you want to describe here
         return descriptionMap;
     }
 
@@ -64,9 +61,6 @@ public class Chatter {
         saving.createNewFile();
         YamlConfiguration yml_file = new YamlConfiguration();
         yml_file.set("uuid",String.valueOf(uuid));
-        //yml_file.set("default_temperature",default_temperature);
-        //yml_file.set("user_temperature",temperature.entrySet());
-        //yml_file.set("model",model);
         yml_file.set("talk_distance",talk_distance);
         yml_file.set("name",name);
         yml_file.set("description",description);
@@ -78,15 +72,13 @@ public class Chatter {
             yml_file.set("type","DialogFlow");
             yml_file.set("modelOrProjectId",((DialogFlowBuilder)core).getProjectId());
         }
-
-        if(dialogTime != null)
-            yml_file.set("DialogTime",dialogTime);
+        yml_file.set("DialogTime",dialogTime);
         yml_file.save(saving);
     }
 
     //读取文件时使用
     public Chatter(File chatter) throws IOException, InvalidConfigurationException, InvalidChatterException {
-        Long dialogTime1;
+        long dialogTime1;
         YamlConfiguration yml_file = new YamlConfiguration();
         yml_file.load(chatter);
         try {
@@ -100,19 +92,13 @@ public class Chatter {
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_NAME_OR_DESCRIPTION);
         }
-//        try {
-//            default_temperature = yml_file.getDouble("default_temperature");
-//        } catch (Exception e) {
-//            throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DEFAULT_TEMPERATURE);
-//        }
         try {
             talk_distance = yml_file.getDouble("talk_distance");
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_TALK_DISTANCE);
         }
         try {
-            dialogTime1 = yml_file.getLong("DialogTime",-1);
-            if(dialogTime1 == -1) dialogTime1 = null;
+            dialogTime1 = yml_file.getLong("DialogTime", TimeConverter.getTime("1时"));
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_DIALOG_TIME);
         }
@@ -120,7 +106,6 @@ public class Chatter {
             String p = yml_file.getString("modelOrProjectId","text-davinci-003");
             String s = yml_file.getString("type","ChatGPT");
             core = getCore(dialogTime1, s, p);
-            if(dialogTime1 == null) dialogTime1 = (long) (60 * 1000);
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
@@ -145,5 +130,9 @@ public class Chatter {
                 }
                 throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
+    }
+
+    public void delete() {
+        FileProcess.deleteChatterFile(uuid);
     }
 }

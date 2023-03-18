@@ -29,6 +29,7 @@ public final class ChatInMC extends JavaPlugin {
     public static Map<UUID, Chatter> chatters;
 
     public static Debug debug;
+
     @Override
     public void onEnable() {
         //获取静态实例
@@ -38,23 +39,32 @@ public final class ChatInMC extends JavaPlugin {
         //读取config
         readConfig();
         debug.loadDebug(s -> tp.getLogger().info(s));
+        debug.info("CIM start to load");
 
         //检测运行环境
-        try {
-            CmdTest.test();
-            if(!CloudSDKInstaller.isCloudSdkInstalled())
-                CloudSDKInstaller.install();
-            if(!DialogFlowInstaller.isDialogFlowInstalled())
-                DialogFlowInstaller.install();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        new Thread(() -> {
+            try {
+                CmdTest.test();
+                if (!CloudSDKInstaller.isCloudSdkInstalled())
+                    CloudSDKInstaller.install();
+                if (!DialogFlowInstaller.isDialogFlowInstalled())
+                    DialogFlowInstaller.install();
+            } catch (Exception e) {
+                debug.err("fail to install google! You may not able to use DialogFlow!");
+            }
+        }).start();
 
         //读取data
         checkFolders(tp);
         models = readModels();
-        models.addAll(getAvailableModels(chatGPT_key));
+        try {
+            models.addAll(getAvailableModels(chatGPT_key));
+        } catch (Exception e) {
+            debug.err("Unable to get models, you can only use GPT_PROXY");
+            models.add("ChatGPT_PROXY");
+        }
         chatters = readChatters();
+        debug.info("Read " + chatters.size() + "Chatters");
         ts.getPluginManager().registerEvents(new ChatterListener(),this);
 
         //注册所有GUI
@@ -62,8 +72,9 @@ public final class ChatInMC extends JavaPlugin {
 
         //注册指令处理类
         Objects.requireNonNull(ts.getPluginCommand("cim")).setExecutor(new Commands());
+        Objects.requireNonNull(ts.getPluginCommand("cim")).setTabCompleter(new Commands());
 
-        debug.info("已经成功加载！");
+        debug.info("Load Success!");
     }
 
 
@@ -75,8 +86,7 @@ public final class ChatInMC extends JavaPlugin {
             try {
                 SimpleGUI simpleGUI = (SimpleGUI) clazz.getDeclaredConstructor().newInstance();
                 simpleGUI.enableView();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
     }

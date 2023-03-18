@@ -13,7 +13,6 @@ public class CloudSDKInstaller {
             process.waitFor();
             return process.exitValue() == 0;
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -74,8 +73,7 @@ public class CloudSDKInstaller {
                     throw new Exception("Failed to download Google Cloud SDK");
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
     }

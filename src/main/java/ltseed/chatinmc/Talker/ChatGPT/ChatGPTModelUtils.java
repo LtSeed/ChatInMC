@@ -14,16 +14,14 @@ public class ChatGPTModelUtils {
     private static final String MODELS_URL = "https://api.openai.com/v1/models";
 
     public static List<String> getAvailableModels(String key) {
-
-        //
-
         Map<String, String> params = new HashMap<>();
         params.put("Authorization", "Bearer " + key);
         params.put("Content-Type", "application/json");
+        JSONObject response;
+        if (ChatGPTCompletions.GPT_USE_PROXY) {
+            response = Request.get(MODELS_URL.replace("openai", "openai-proxy"),params);
+        } else response = Request.get(MODELS_URL,params);
 
-        JSONObject response = Request.get(MODELS_URL, params);
-
-        System.out.println(response);
         List<String> models = new ArrayList<>();
         if (response != null && response.containsKey("data")) {
             JSONArray data = response.getJSONArray("data");

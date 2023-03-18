@@ -1,0 +1,385 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ltseed.chatinmc.Commands",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1438026963 { 
+   	label=chatinmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Commands1813016792[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Commands</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+subgraph cluster_1966903370 { 
+   	label=Utils
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   EntityMaterialMapper685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)EntityMaterialMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getMaterial(entityType: EntityType): Material</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TimeConverter685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TimeConverter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getCode(time: Long): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTime(s: String): Long</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_470348790 { 
+   	label=PlayerInteraction
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Button689662904[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Button</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   displayName: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   lore: List&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   material: Material [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   skullOwner: UUID [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   texture: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   x: short [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   y: short [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ call(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createSkullItemStack(owner: UUID, displayName: String, lore: List&lt;String&gt;, texture: String): ItemStack</TD></TR>
+<TR><TD ALIGN="LEFT" >- readTexture(imageFile: File): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ toItemStack(): ItemStack</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChatterCreateGUI1411321477[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatterCreateGUI</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   choose_entity: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   core: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   core_name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   description: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   dur: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   material: Material [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   projectId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   talkDistance: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getInstance(player: Player): ChatterCreateGUI</TD></TR>
+<TR><TD ALIGN="LEFT" >- init(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChatterManageGUI1411321477[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatterManageGUI</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   choose_entity: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   core_name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   description: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   dur: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   material: Material [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   projectId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   talkDistance: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getInstance(player: Player, chatter: Chatter): ChatterManageGUI</TD></TR>
+<TR><TD ALIGN="LEFT" >- init(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ConversationCallback2053031449[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)ConversationCallback</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onResponse(response: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+PaginatedGUI689662904[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PaginatedGUI</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   allButtons: List&lt;Button&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nextPageItem: ItemStack [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pages: Map&lt;Integer, List&lt;Button&gt;&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   prevPageItem: ItemStack [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   title: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   totalPages: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ open(player: Player, page: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PlayerConversation1012394763[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PlayerConversation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   callbacks: Map&lt;String, ConversationCallback&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   playerUUID: UUID [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ handleResponse(response: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerChat(event: AsyncPlayerChatEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ sendMessage(message: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startConversation(prompt: String, callback: ConversationCallback)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SimpleGUI689662904[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SimpleGUI</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   buttons: Map&lt;Integer, Button&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventory: Inventory [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addButton(button: Button)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ enableView()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onInventoryClick(event: InventoryClickEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ open(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_890550284 { 
+   	label=Talker
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   ChatGPTBuilder1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTBuilder</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   dialogTime: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logit_bias: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   model: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ build(player: Player): Talkative</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readFile(yml_file: YamlConfiguration)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeFile(yml_file: YamlConfiguration)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Chatter179301375[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Chatter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   core: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   description: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dialogTime: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   talk_distance: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   te: Entity [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   uuid: UUID [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ describe(): Map&lt;String, Object&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCore(dialogTime1: Long, model: String, projectId: String): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveToFile(Folder: File)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MessageBuilder179301375[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)MessageBuilder</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ build(talker: Player): Talkative</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+} 
+} 
+
+'edges    
+Chatter179301375 -> ChatGPTBuilder1485060316[label="saveToFile() -> writeFile()"];
+Chatter179301375 -> MessageBuilder179301375[label="core
+[0..1]"];
+ChatterCreateGUI1411321477 -> Chatter179301375[label="init() -> getCore()"];
+ChatterManageGUI1411321477 -> Chatter179301375[label="init() -> getCore()"];
+Commands1813016792 -> Chatter179301375[label="onCommand() -> describe()"];
+Commands1813016792 -> ChatterCreateGUI1411321477[label="onCommand() -> getInstance()"];
+Commands1813016792 -> ChatterManageGUI1411321477[label="onCommand() -> getInstance()"];
+Commands1813016792 -> PaginatedGUI689662904[label="onCommand() -> open()"];
+PaginatedGUI689662904 -> Button689662904[label="allButtons
+[0..*]"];
+PaginatedGUI689662904 -> Button689662904[label="pages
+[0..*]"];
+PlayerConversation1012394763 -> ConversationCallback2053031449[label="callbacks
+[0..*]"];
+SimpleGUI689662904 -> ChatterCreateGUI1411321477[arrowhead=none, arrowtail=empty, dir=both];
+SimpleGUI689662904 -> ChatterManageGUI1411321477[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml

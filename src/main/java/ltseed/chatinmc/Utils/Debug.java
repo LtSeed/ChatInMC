@@ -12,21 +12,21 @@ public enum Debug {
     }
 
     public void info(String info){
-        this.info.accept("[ChatInMC][info]"+info);
+        this.info.accept("[info]"+info);
     }
     public void warn(String warn){
-        this.info.accept("[ChatInMC]" + ChatColor.YELLOW + "[warn]" + warn);
+        this.info.accept(ChatColor.YELLOW + "[warn]" + warn);
     }
     public void err(String err){
-        this.info.accept("[ChatInMC]" + ChatColor.RED + "[ERROR]" + err);
+        this.info.accept(ChatColor.RED + "[ERROR]" + err);
     }
 
     public void debugA(String log){
-        if(this != N) info.accept("[ChatInMC]" + ChatColor.GREEN + "[DEBUG_A]" + log);
+        if(this != N) info.accept(ChatColor.GREEN + "[DEBUG_A]" + log);
     }
 
     public void debugB(String log){
-        if(this == B) info.accept("[ChatInMC]" + ChatColor.BLUE+ "[DEBUG_B]" + log);
+        if(this == B) info.accept(ChatColor.BLUE+ "[DEBUG_B]" + log);
     }
 
 }

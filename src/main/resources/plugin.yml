@@ -2,6 +2,8 @@ name: ChatInMC
 version: '${project.version}'
 main: ltseed.chatinmc.ChatInMC
 api-version: 1.19
+description: chat in mc!
+load: POSTWORLD
 
 commands:
   cim:

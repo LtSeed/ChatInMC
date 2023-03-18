@@ -13,8 +13,8 @@ import static ltseed.chatinmc.Utils.Request.post;
 
 public class ChatGPTCompletions implements Talkative {
 
+    public static final boolean GPT_USE_PROXY = true;
     private final String model;
-    private String prompt;
     private final String suffix;// = null;
     private final int max_tokens;// = 512;
     private final double temperature;// = 1;
@@ -40,16 +40,13 @@ public class ChatGPTCompletions implements Talkative {
         this.logit_bias = logit_bias;
     }
 
-    public String ask(String key) {
+    public String ask(String prompt,String key) {
         HashMap<String, String> stringStringHashMap = new HashMap<>();
         stringStringHashMap.put("Authorization","Bearer " + key);
         stringStringHashMap.put("Content-Type","application/json");
         HashMap<String, Object> params = new HashMap<>();
-//        params.put("model","text-davinci-003");
-//        params.put("prompt",question);
-//        params.put("temperature",0);
-//        params.put("max_tokens",512);
         ChatGPTBuilder aDefault = ChatGPTBuilder.getDefault();
+        params.put("prompt",prompt);
         if(!Objects.equals(this.model, aDefault.model)) params.put("model", this.model);
         if(!Objects.equals(this.suffix, aDefault.suffix)) params.put("suffix", this.suffix);
         if(!Objects.equals(this.max_tokens, 16)) params.put("max_tokens", this.max_tokens);
@@ -62,7 +59,9 @@ public class ChatGPTCompletions implements Talkative {
         if(!Objects.equals(this.best_of, aDefault.best_of)) params.put("best_of", this.best_of);
         if(!Objects.equals(this.logit_bias, aDefault.logit_bias)) params.put("logit_bias", this.logit_bias);
         System.out.println(params);
-        JSONObject request = post("https://api.openai.com/v1/completions", stringStringHashMap, params);
+        String url = "https://api.openai.com/v1/completions";
+        if(GPT_USE_PROXY) url = url.replace("openai","openai-proxy");
+        JSONObject request = post(url, stringStringHashMap, params);
         System.out.println(request);
         if(request == null) return null;
         JSONArray choices = request.getJSONArray("choices");
@@ -72,7 +71,6 @@ public class ChatGPTCompletions implements Talkative {
 
     @Override
     public String chat(String string) {
-        this.prompt = string;
-        return ask(Config.chatGPT_key);
+        return ask(string, Config.chatGPT_key);
     }
 }

@@ -33,7 +33,4 @@ public class Config {
         tp.saveConfig();
     }
 
-    //public static long getDialogTime() {
-    //    return 0;
-    //}
 }

@@ -1,0 +1,195 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": false,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ltseed.chatinmc.Talker.Talkative",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1438026963 { 
+   	label=chatinmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1966903370 { 
+   	label=Utils
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Request685466037[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Request</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ get(url: String, header: Map&lt;String, String&gt;): JSONObject</TD></TR>
+<TR><TD ALIGN="LEFT" >+ post(url: String, header: Map&lt;String, String&gt;, params: Map&lt;String, Object&gt;): JSONObject</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_890550284 { 
+   	label=Talker
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   ChatGPTChatUsingProxy1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTChatUsingProxy</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   header: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   params: Map&lt;String, Object&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChatGPTCompletions1485060316[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChatGPTCompletions</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   best_of: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   frequency_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logit_bias: Map&lt;String, String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logprobs: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   max_tokens: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   model: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   n: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   presence_penalty: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   suffix: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   temperature: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   top_p: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ ask(prompt: String, key: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DialogFlowTalker1678276613[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DialogFlowTalker</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   projectId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sessionId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sessionsClient: SessionsClient [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Talkative179301375[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)Talkative</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chat(string: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+} 
+} 
+
+'edges    
+ChatGPTChatUsingProxy1485060316 -> Request685466037[label="chat() -> post()"];
+Talkative179301375 -> ChatGPTChatUsingProxy1485060316[arrowhead=none, arrowtail=empty, dir=both];
+Talkative179301375 -> ChatGPTCompletions1485060316[arrowhead=none, arrowtail=empty, dir=both];
+Talkative179301375 -> DialogFlowTalker1678276613[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml
