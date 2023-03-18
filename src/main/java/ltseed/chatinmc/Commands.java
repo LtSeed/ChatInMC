@@ -47,7 +47,7 @@ public class Commands implements CommandExecutor, TabCompleter {
 
             sender.sendMessage("/cim create 创建一个Chatter");
             sender.sendMessage("/cim manage 管理Chatters");
-
+            return true;
         }
         return false;
     }

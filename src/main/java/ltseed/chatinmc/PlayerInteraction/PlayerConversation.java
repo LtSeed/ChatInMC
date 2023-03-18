@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static ltseed.chatinmc.ChatInMC.tp;
 import static ltseed.chatinmc.ChatInMC.ts;
-import static org.bukkit.event.EventPriority.LOWEST;
+import static org.bukkit.event.EventPriority.HIGH;
 
 
 public class PlayerConversation implements Listener {
@@ -58,7 +58,7 @@ public class PlayerConversation implements Listener {
         void onResponse(String response);
     }
 
-    @EventHandler(priority = LOWEST)
+    @EventHandler(priority = HIGH)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if(called) return;
         Player player = event.getPlayer();
