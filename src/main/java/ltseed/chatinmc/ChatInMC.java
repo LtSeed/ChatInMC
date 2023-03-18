@@ -16,6 +16,7 @@ import org.reflections.Reflections;
 
 import java.util.*;
 
+import static ltseed.chatinmc.Talker.ChatGPT.ChatGPTModelUtils.getAvailableModels;
 import static ltseed.chatinmc.Utils.Config.*;
 import static ltseed.chatinmc.Utils.FileProcess.*;
 
@@ -52,6 +53,7 @@ public final class ChatInMC extends JavaPlugin {
         //读取data
         checkFolders(tp);
         models = readModels();
+        models.addAll(getAvailableModels(chatGPT_key));
         chatters = readChatters();
         ts.getPluginManager().registerEvents(new ChatterListener(),this);
 
