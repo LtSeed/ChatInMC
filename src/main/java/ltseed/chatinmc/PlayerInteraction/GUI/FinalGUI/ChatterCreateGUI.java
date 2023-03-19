@@ -449,16 +449,21 @@ public class ChatterCreateGUI extends SimpleGUI {
                     }
                     ChatInMC.chatters.put(uuid,chatter);
                     player.closeInventory();
+                    player.sendMessage("chatter 成功创建！");
+                } else {
+                    open(player);
                 }
             }
         };
-        addButton(createButton);
+        if(!Objects.equals(choose_entity, "未选择实体") && !Objects.equals(name, "Name") && !Objects.equals(description, "Description") && material != null && core != null)
+            addButton(createButton);
 
         Button cancelButton = new Button((short) 5, (short) 5, Material.BARRIER, ChatColor.RED+"Cancel", null) {
             @Override
             public void call(Player player) {
                 player.closeInventory();
                 creating.remove(player);
+                player.sendMessage("chatter 成功删除！");
             }
         };
         addButton(cancelButton);

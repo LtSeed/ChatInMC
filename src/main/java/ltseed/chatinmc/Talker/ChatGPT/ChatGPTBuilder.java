@@ -7,10 +7,7 @@ import ltseed.chatinmc.Talker.Talkative;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -31,6 +28,8 @@ public class ChatGPTBuilder implements MessageBuilder {
     double frequency_penalty;// = 0;
     int best_of;// = 1;
     Map<String,String> logit_bias;// = null;
+    List<String> basicTrain = new ArrayList<>();
+
     @Override
     public Talkative build(Player player){
         if(model.contains("[model]") && !ChatGPTCompletions.GPT_USE_PROXY) {
@@ -49,15 +48,21 @@ public class ChatGPTBuilder implements MessageBuilder {
                 } else {
                     timer.put(player,now);
                     sessionId = sessions.getOrDefault(player,UUID.randomUUID().toString());
+                    this.basicTrain(sessionId);
                 }
             } else {
                 timer.put(player,now);
                 sessionId = UUID.randomUUID().toString();
                 sessions.put(player, sessionId);
+                this.basicTrain(sessionId);
             }
             return new ChatGPTChatUsingProxy(sessionId);
         }
         return new ChatGPTCompletions(model,suffix,max_tokens,temperature,top_p,n,logprobs,presence_penalty,frequency_penalty,best_of,logit_bias);
+    }
+
+    private void basicTrain(String sessionId) {
+        basicTrain.forEach(o-> new ChatGPTChatUsingProxy(sessionId).chat(o));
     }
 
     public static ChatGPTBuilder getDefault(){
@@ -114,6 +119,7 @@ public class ChatGPTBuilder implements MessageBuilder {
         this.presence_penalty = yml_file.getDouble("Chat_GPT.presence_penalty");
         this.frequency_penalty = yml_file.getDouble("Chat_GPT.frequency_penalty");
         this.best_of = yml_file.getInt("Chat_GPT.best_of");
+        this.basicTrain = yml_file.getStringList("Chat_GPT.basicTrain");
     }
 
     public void writeFile(YamlConfiguration yml_file) {
@@ -127,6 +133,7 @@ public class ChatGPTBuilder implements MessageBuilder {
         yml_file.set("Chat_GPT.presence_penalty", this.presence_penalty);
         yml_file.set("Chat_GPT.frequency_penalty", this.frequency_penalty);
         yml_file.set("Chat_GPT.best_of", this.best_of);
+        yml_file.set("Chat_GPT.basicTrain",this.basicTrain);
     }
 
 }

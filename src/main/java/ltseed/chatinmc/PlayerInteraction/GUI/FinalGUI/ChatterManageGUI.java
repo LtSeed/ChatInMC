@@ -87,6 +87,10 @@ public class ChatterManageGUI extends SimpleGUI {
     }
 
     public static void openManageChooseGUI(Player player) {
+        if(ChatInMC.chatters.size()==0){
+            player.sendMessage("现在没有Chatter！");
+            return;
+        }
         ArrayList<Button> allButtons = new ArrayList<>();
 
         for (Chatter value : ChatInMC.chatters.values()) {
@@ -489,6 +493,7 @@ public class ChatterManageGUI extends SimpleGUI {
                     }
                     ChatInMC.chatters.put(uuid,chatter);
                     player.closeInventory();
+                    player.sendMessage("chatter 成功修改！");
                 }
             }
         };
@@ -502,6 +507,7 @@ public class ChatterManageGUI extends SimpleGUI {
                 ChatInMC.chatters.get(key).delete();
                 ChatInMC.chatters.remove(key);
                 openManageChooseGUI(player);
+                player.sendMessage("chatter 成功删除！");
             }
         };
         addButton(cancelButton);

@@ -109,6 +109,7 @@ public class EntityMaterialMapper {
         ENTITY_MATERIAL_MAP.put(EntityType.ZOMBIE_HORSE, Material.ZOMBIE_HORSE_SPAWN_EGG);
         ENTITY_MATERIAL_MAP.put(EntityType.ZOMBIE_VILLAGER, Material.ZOMBIE_VILLAGER_SPAWN_EGG);
         ENTITY_MATERIAL_MAP.put(EntityType.THROWN_EXP_BOTTLE, Material.EXPERIENCE_BOTTLE);
+        ENTITY_MATERIAL_MAP.put(EntityType.ALLAY, Material.ALLAY_SPAWN_EGG);
     }
     public static Material getMaterial(EntityType entityType){
         return ENTITY_MATERIAL_MAP.getOrDefault(entityType, Material.PAPER);
