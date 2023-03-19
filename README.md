@@ -56,4 +56,4 @@ ChatInMC基于MIT许可证发布。
 
 ##### 视频演示
 
- [ChatinMC bilibili](https://www.bilibili.com/video/BV1Ms4y1p79W/?share_source=copy_web)
+ [ChatInMC bilibili](https://www.bilibili.com/video/BV1Ms4y1p79W/?share_source=copy_web)
