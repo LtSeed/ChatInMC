@@ -54,4 +54,6 @@ ChatInMC基于MIT许可证发布。
 ![修改聊天机器人1](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142706.png)
 ![修改聊天机器人2](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142802.png)
 
+##### 视频演示
 
+ [ChatinMC bilibili](https://www.bilibili.com/video/BV1Ms4y1p79W/?share_source=copy_web)
