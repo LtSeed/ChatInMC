@@ -36,6 +36,8 @@ ChatInMC基于MIT许可证发布。
 
 #### 使用说明
 
+*目前只能用拼音和英文进行交流*
+
 ##### 创建Chatter
 输入指令 ``` /cim create ```开始创建聊天机器人
 ![创建聊天机器人](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319141602.png)
