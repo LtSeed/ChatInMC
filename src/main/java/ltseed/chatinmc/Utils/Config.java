@@ -6,12 +6,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import static ltseed.chatinmc.ChatInMC.tp;
 
 /**
-
- The Config class is responsible for reading and saving the configuration data
- for the ChatInMC plugin. The configuration data includes the ChatGPT API key,
- DialogFlow authentication token, and debug mode flag.
- @author ltseed
- @version 1.0
+ * The Config class is responsible for reading and saving the configuration data
+ * for the ChatInMC plugin. The configuration data includes the ChatGPT API key,
+ * DialogFlow authentication token, and debug mode flag.
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public class Config {
 
@@ -34,22 +34,22 @@ public class Config {
      * Reads the configuration data from the plugin's config.yml file and assigns
      * the values to the corresponding fields in the Config class.
      */
-    public static void readConfig(){
+    public static void readConfig() {
         FileConfiguration fileConfiguration = tp.getConfig();
         chatGPT_key = fileConfiguration.getString("chatGPT_key");
         dialogFlowToken = fileConfiguration.getString("DialogFlowToken");
-        debug = fileConfiguration.getString("debug","N");
+        debug = fileConfiguration.getString("debug", "N");
         ChatInMC.debug = Debug.valueOf(debug);
     }
 
     /**
      * Saves the current configuration data to the plugin's config.yml file.
      */
-    public static void saveConfig(){
+    public static void saveConfig() {
         FileConfiguration fileConfiguration = tp.getConfig();
-        fileConfiguration.set("chatGPT_key",chatGPT_key);
+        fileConfiguration.set("chatGPT_key", chatGPT_key);
         fileConfiguration.set("DialogFlowToken", dialogFlowToken);
-        fileConfiguration.set("debug",debug);
+        fileConfiguration.set("debug", debug);
         tp.saveConfig();
     }
 

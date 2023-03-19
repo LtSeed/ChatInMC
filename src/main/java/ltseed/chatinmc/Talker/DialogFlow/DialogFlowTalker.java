@@ -6,9 +6,10 @@ import ltseed.chatinmc.Talker.Talkative;
 import java.io.IOException;
 
 /**
- A class that implements the Talkative interface to communicate with DialogFlow to chat with users.
- @author ltseed
- @version 1.0
+ * A class that implements the Talkative interface to communicate with DialogFlow to chat with users.
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public class DialogFlowTalker implements Talkative {
 

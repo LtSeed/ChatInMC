@@ -11,8 +11,9 @@ import java.util.UUID;
 
 /**
  * A builder class for creating instances of `DialogFlowTalker`.
- @author ltseed
- @version 1.0
+ *
+ * @author ltseed
+ * @version 1.0
  */
 @Getter
 public class DialogFlowBuilder implements MessageBuilder {
@@ -39,6 +40,17 @@ public class DialogFlowBuilder implements MessageBuilder {
 
 
     /**
+     * Creates a new `DialogFlowBuilder` instance with the specified project ID and dialog time.
+     *
+     * @param projectId  the ID of the Dialogflow project to use
+     * @param dialogTime the maximum time between dialogs in milliseconds
+     */
+    public DialogFlowBuilder(String projectId, Long dialogTime) {
+        this.projectId = projectId;
+        this.dialogTime = dialogTime;
+    }
+
+    /**
      * Builds a new instance of `DialogFlowTalker` for the specified player.
      *
      * @param player the player to build the `DialogFlowTalker` instance for
@@ -48,33 +60,21 @@ public class DialogFlowBuilder implements MessageBuilder {
     public DialogFlowTalker build(Player player) {
         Date now = new Date();
         String sessionId;
-        if(player == null) return null;
-        if(timer.containsKey(player)){
-            if(timer.get(player).getTime() - now.getTime() >= dialogTime){
-                timer.put(player,now);
+        if (player == null) return null;
+        if (timer.containsKey(player)) {
+            if (timer.get(player).getTime() - now.getTime() >= dialogTime) {
+                timer.put(player, now);
                 sessionId = UUID.randomUUID().toString();
                 sessions.put(player, sessionId);
             } else {
-                timer.put(player,now);
-                sessionId = sessions.getOrDefault(player,UUID.randomUUID().toString());
+                timer.put(player, now);
+                sessionId = sessions.getOrDefault(player, UUID.randomUUID().toString());
             }
         } else {
-            timer.put(player,now);
+            timer.put(player, now);
             sessionId = UUID.randomUUID().toString();
             sessions.put(player, sessionId);
         }
-        return new DialogFlowTalker(projectId,sessionId);
-    }
-
-
-    /**
-     * Creates a new `DialogFlowBuilder` instance with the specified project ID and dialog time.
-     *
-     * @param projectId  the ID of the Dialogflow project to use
-     * @param dialogTime the maximum time between dialogs in milliseconds
-     */
-    public DialogFlowBuilder(String projectId,Long dialogTime){
-        this.projectId = projectId;
-        this.dialogTime = dialogTime;
+        return new DialogFlowTalker(projectId, sessionId);
     }
 }

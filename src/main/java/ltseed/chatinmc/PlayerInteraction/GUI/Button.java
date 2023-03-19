@@ -23,35 +23,36 @@ import java.util.UUID;
 import static ltseed.chatinmc.ChatInMC.ts;
 
 /**
- This class represents a clickable inventory item that can be used to trigger a specific action when clicked by a player.
-
- The class provides methods to create an ItemStack representing the item, set the display name, lore, material, and skull owner.
-
- It also provides a method to reset the item's slot position in the inventory and a method to trigger the item's action when clicked.
-
- The class uses the Bukkit API to create and modify ItemStacks and to handle player interactions.
- @author LtSeed
- @version 1.0
+ * This class represents a clickable inventory item that can be used to trigger a specific action when clicked by a player.
+ * <p>
+ * The class provides methods to create an ItemStack representing the item, set the display name, lore, material, and skull owner.
+ * <p>
+ * It also provides a method to reset the item's slot position in the inventory and a method to trigger the item's action when clicked.
+ * <p>
+ * The class uses the Bukkit API to create and modify ItemStacks and to handle player interactions.
+ *
+ * @author LtSeed
+ * @version 1.0
  */
 public abstract class Button {
 
-    private short x; // The x coordinate of the button in the GUI
-    private short y; // The y coordinate of the button in the GUI
     private final Material material; // The material of the button
     private final String displayName; // The display name of the button
     private final List<String> lore; // The lore of the button
     private final UUID skullOwner; // The UUID of the skull owner for a skull button
     private final String texture; // The texture URL for a custom skull button
     boolean pressed = false; // Whether the button has been pressed or not
+    private short x; // The x coordinate of the button in the GUI
+    private short y; // The y coordinate of the button in the GUI
 
     /**
-
-     Constructs a button with the given coordinates, material, display name, and lore.
-     @param x the x coordinate of the button
-     @param y the y coordinate of the button
-     @param material the material of the button
-     @param displayName the display name of the button
-     @param lore the lore of the button
+     * Constructs a button with the given coordinates, material, display name, and lore.
+     *
+     * @param x           the x coordinate of the button
+     * @param y           the y coordinate of the button
+     * @param material    the material of the button
+     * @param displayName the display name of the button
+     * @param lore        the lore of the button
      */
     public Button(short x, short y, Material material, String displayName, List<String> lore) {
         this.x = x;
@@ -64,21 +65,22 @@ public abstract class Button {
     }
 
     /**
-
-     Constructs a button with the given slot, material, display name, and lore.
-     @param slot the slot in the inventory where the button should be placed
-     @param material the material of the button
-     @param displayName the display name of the button
-     @param lore the lore of the button
+     * Constructs a button with the given slot, material, display name, and lore.
+     *
+     * @param slot        the slot in the inventory where the button should be placed
+     * @param material    the material of the button
+     * @param displayName the display name of the button
+     * @param lore        the lore of the button
      */
     public Button(int slot, Material material, String displayName, List<String> lore) {
-        if(slot == -1){
+        if (slot == -1) {
             this.x = (short) 0;
             this.y = (short) 1;
         } else {
             this.x = (short) (slot % 9);
             this.y = (short) ((short) (slot - this.x) / 9);
-            x++;y++;
+            x++;
+            y++;
         }
         this.material = material;
         this.displayName = displayName;
@@ -88,19 +90,20 @@ public abstract class Button {
     }
 
     /**
-
-     Constructs a button with the given slot and item stack.
-     @param slot the slot in the inventory where the button should be placed
-     @param is the item stack of the button
+     * Constructs a button with the given slot and item stack.
+     *
+     * @param slot the slot in the inventory where the button should be placed
+     * @param is   the item stack of the button
      */
     public Button(int slot, ItemStack is) {
-        if(slot == -1){
+        if (slot == -1) {
             this.x = (short) 0;
             this.y = (short) 1;
         } else {
             this.x = (short) (slot % 9);
             this.y = (short) ((short) (slot - this.x) / 9);
-            x++;y++;
+            x++;
+            y++;
         }
         this.material = is.getType();
         this.displayName = Objects.requireNonNull(is.getItemMeta()).getDisplayName();
@@ -110,29 +113,29 @@ public abstract class Button {
     }
 
     /**
-
-     Returns the slot of the button in the GUI.
-     @return the slot of the button
+     * Returns the slot of the button in the GUI.
+     *
+     * @return the slot of the button
      */
-    public int getSlot(){
-        return (y-1) * 9 + (x-1);
+    public int getSlot() {
+        return (y - 1) * 9 + (x - 1);
     }
 
     /**
-
-     Sets up the button in the given inventory.
-     @param inventory the inventory where the button should be placed
+     * Sets up the button in the given inventory.
+     *
+     * @param inventory the inventory where the button should be placed
      */
-    public void setupButton(Inventory inventory){
-        if(getSlot() != -1)
+    public void setupButton(Inventory inventory) {
+        if (getSlot() != -1)
             inventory.setItem(getSlot(), toItemStack());
         else inventory.addItem(toItemStack());
     }
 
     /**
-
-     Converts the ClickableItem instance to an ItemStack.
-     @return an ItemStack representing the ClickableItem
+     * Converts the ClickableItem instance to an ItemStack.
+     *
+     * @return an ItemStack representing the ClickableItem
      */
     public ItemStack toItemStack() {
         ItemStack itemStack;
@@ -151,13 +154,13 @@ public abstract class Button {
     }
 
     /**
-
-     Reads the texture file and encodes it to Base64.
-     @param imageFile The file containing the image to read and encode.
-     @return A Base64 encoded string representation of the image.
+     * Reads the texture file and encodes it to Base64.
+     *
+     * @param imageFile The file containing the image to read and encode.
+     * @return A Base64 encoded string representation of the image.
      */
     @SuppressWarnings("unused")
-    private String readTexture(File imageFile){
+    private String readTexture(File imageFile) {
         String base64 = null;
         try {
             BufferedImage image = ImageIO.read(imageFile);
@@ -172,13 +175,13 @@ public abstract class Button {
     }
 
     /**
-
-     Creates a skull item stack with the given parameters.
-     @param owner The UUID of the skull's owner.
-     @param displayName The display name of the skull item stack.
-     @param lore The lore of the skull item stack.
-     @param texture The Base64 encoded texture of the skull item stack.
-     @return An ItemStack representing the skull item stack.
+     * Creates a skull item stack with the given parameters.
+     *
+     * @param owner       The UUID of the skull's owner.
+     * @param displayName The display name of the skull item stack.
+     * @param lore        The lore of the skull item stack.
+     * @param texture     The Base64 encoded texture of the skull item stack.
+     * @return An ItemStack representing the skull item stack.
      */
     private ItemStack createSkullItemStack(UUID owner, String displayName, List<String> lore, String texture) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
@@ -206,38 +209,39 @@ public abstract class Button {
     }
 
     /**
-
-     What to do when button is pressed.
-     @param player the called player
+     * What to do when button is pressed.
+     *
+     * @param player the called player
      */
     public abstract void call(Player player);
 
     /**
-
-     Resets the slot position of the item in the inventory to the specified position.
-     @param slot the slot position of the item in the inventory
+     * Resets the slot position of the item in the inventory to the specified position.
+     *
+     * @param slot the slot position of the item in the inventory
      */
     public void resetSlot(int slot) {
-        if(getSlot() == -1){
-            if(slot == -1){
+        if (getSlot() == -1) {
+            if (slot == -1) {
                 this.x = (short) 0;
                 this.y = (short) 1;
             } else {
                 this.x = (short) ((short) (slot % 9));
                 this.y = (short) ((short) (slot - this.x) / 9);
-                x++;y++;
+                x++;
+                y++;
             }
         }
     }
 
     /**
-
-     What to do when button is pressed.
-     This method only call once.
-     @param player the called player
+     * What to do when button is pressed.
+     * This method only call once.
+     *
+     * @param player the called player
      */
     public void callOnce(Player player) {
-        if(pressed) return;
+        if (pressed) return;
         pressed = true;
         call(player);
     }

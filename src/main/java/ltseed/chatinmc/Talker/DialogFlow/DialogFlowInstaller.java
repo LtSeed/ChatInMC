@@ -2,15 +2,19 @@ package ltseed.chatinmc.Talker.DialogFlow;
 
 import ltseed.chatinmc.ChatInMC;
 
-import java.io.*;
-import java.net.*;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import static ltseed.chatinmc.ChatInMC.*;
+import static ltseed.chatinmc.ChatInMC.debug;
+import static ltseed.chatinmc.ChatInMC.tp;
 
 /**
  * DialogFlowInstaller 类用于安装 DialogFlow CLI。该类提供两个方法，分别用于检查 DialogFlow CLI 是否已经安装和安装 DialogFlow CLI。
- @author ltseed
- @version 1.0
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public class DialogFlowInstaller {
 
@@ -80,7 +84,7 @@ public class DialogFlowInstaller {
         cs[1] = "-zxvf";
         cs[2] = "google-cloud-sdk.tar.gz";
         //cs = "tar -zxvf google-cloud-sdk.tar.gz".split(" ");
-        Process process = Runtime.getRuntime().exec(cs,null,tp.getDataFolder());
+        Process process = Runtime.getRuntime().exec(cs, null, tp.getDataFolder());
         process.waitFor();
 
         debug.info("Installation completed");

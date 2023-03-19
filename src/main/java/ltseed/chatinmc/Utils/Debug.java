@@ -5,12 +5,12 @@ import org.bukkit.ChatColor;
 import java.util.function.Consumer;
 
 /**
-
- An enum representing different levels of debug output, including A, B, and N (none).
- Each enum constant has methods for outputting information, warnings, and errors at its respective level.
- Additionally, there are methods for debugging at levels A and B.
- @author ltseed
- @version 1.0
+ * An enum representing different levels of debug output, including A, B, and N (none).
+ * Each enum constant has methods for outputting information, warnings, and errors at its respective level.
+ * Additionally, there are methods for debugging at levels A and B.
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public enum Debug {
     @SuppressWarnings("unused")
@@ -18,12 +18,13 @@ public enum Debug {
     B,
     N;
     Consumer<String> info;
+
     /**
      * Sets the output consumer for this debug level.
      *
      * @param info The consumer to set.
      */
-    public void loadDebug(Consumer<String> info){
+    public void loadDebug(Consumer<String> info) {
         this.info = info;
     }
 
@@ -32,8 +33,8 @@ public enum Debug {
      *
      * @param info The message to output.
      */
-    public void info(String info){
-        this.info.accept("[info]"+info);
+    public void info(String info) {
+        this.info.accept("[info]" + info);
     }
 
     /**
@@ -41,7 +42,7 @@ public enum Debug {
      *
      * @param warn The warning message to output.
      */
-    public void warn(String warn){
+    public void warn(String warn) {
         this.info.accept(ChatColor.YELLOW + "[warn]" + warn);
     }
 
@@ -50,7 +51,7 @@ public enum Debug {
      *
      * @param err The error message to output.
      */
-    public void err(String err){
+    public void err(String err) {
         this.info.accept(ChatColor.RED + "[ERROR]" + err);
     }
 
@@ -59,8 +60,8 @@ public enum Debug {
      *
      * @param log The message to output.
      */
-    public void debugA(String log){
-        if(this != N) info.accept(ChatColor.GREEN + "[DEBUG_A]" + log);
+    public void debugA(String log) {
+        if (this != N) info.accept(ChatColor.GREEN + "[DEBUG_A]" + log);
     }
 
     /**
@@ -68,8 +69,8 @@ public enum Debug {
      *
      * @param log The message to output.
      */
-    public void debugB(String log){
-        if(this == B) info.accept(ChatColor.BLUE+ "[DEBUG_B]" + log);
+    public void debugB(String log) {
+        if (this == B) info.accept(ChatColor.BLUE + "[DEBUG_B]" + log);
     }
 
 }

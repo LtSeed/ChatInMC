@@ -1,0 +1,9 @@
+ltseed.chatinmc
+ltseed.chatinmc.PlayerInteraction
+ltseed.chatinmc.PlayerInteraction.GUI
+ltseed.chatinmc.PlayerInteraction.GUI.FinalGUI
+ltseed.chatinmc.Talker
+ltseed.chatinmc.Talker.ChatGPT
+ltseed.chatinmc.Talker.DialogFlow
+ltseed.chatinmc.Utils
+ltseed.Exception

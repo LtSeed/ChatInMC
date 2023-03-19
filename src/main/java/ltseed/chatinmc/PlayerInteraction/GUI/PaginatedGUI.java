@@ -1,6 +1,5 @@
 package ltseed.chatinmc.PlayerInteraction.GUI;
 
-import ltseed.chatinmc.ChatInMC;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- A paginated graphical user interface (GUI) for displaying multiple buttons on multiple pages.
-
+ * A paginated graphical user interface (GUI) for displaying multiple buttons on multiple pages.
  */
 public class PaginatedGUI {
 
@@ -30,9 +28,9 @@ public class PaginatedGUI {
     /**
      * Constructs a new PaginatedGUI with the given title and buttons.
      *
-     * @param title         the title of the GUI
-     * @param allButtons    a list of all buttons to be displayed
-     * @param otherButtons  a list of additional buttons to be displayed on every page
+     * @param title        the title of the GUI
+     * @param allButtons   a list of all buttons to be displayed
+     * @param otherButtons a list of additional buttons to be displayed on every page
      */
     public PaginatedGUI(String title, List<Button> allButtons, List<Button> otherButtons) {
         this.title = title;
@@ -102,9 +100,9 @@ public class PaginatedGUI {
             });
         }
 
-        if(otherButtons != null && otherButtons.size() <= 7){
+        if (otherButtons != null && otherButtons.size() <= 7) {
             for (Button otherButton : otherButtons) {
-                if(otherButton.getSlot()<53 && otherButton.getSlot()>45)
+                if (otherButton.getSlot() < 53 && otherButton.getSlot() > 45)
                     simpleGUI.addButton(otherButton);
             }
         }

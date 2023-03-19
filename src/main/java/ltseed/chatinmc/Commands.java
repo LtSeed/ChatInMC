@@ -60,7 +60,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(command.getName().equalsIgnoreCase("cim")){
+        if (command.getName().equalsIgnoreCase("cim")) {
 
             sender.sendMessage("/cim create 创建一个Chatter");
             sender.sendMessage("/cim manage 管理Chatters");
@@ -85,7 +85,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     @SuppressWarnings("NullableProblems")
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if(command.getName().equalsIgnoreCase("cim")){
+        if (command.getName().equalsIgnoreCase("cim")) {
             List<String> list = new ArrayList<>();
             list.add("create");
             list.add("manage");

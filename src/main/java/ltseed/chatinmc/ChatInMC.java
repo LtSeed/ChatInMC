@@ -17,7 +17,8 @@ import org.reflections.Reflections;
 import java.util.*;
 
 import static ltseed.chatinmc.Talker.ChatGPT.ChatGPTModelUtils.getAvailableModels;
-import static ltseed.chatinmc.Utils.Config.*;
+import static ltseed.chatinmc.Utils.Config.chatGPT_key;
+import static ltseed.chatinmc.Utils.Config.readConfig;
 import static ltseed.chatinmc.Utils.FileProcess.*;
 
 /**
@@ -38,19 +39,29 @@ import static ltseed.chatinmc.Utils.FileProcess.*;
  */
 public final class ChatInMC extends JavaPlugin {
 
-    /** The Bukkit server instance */
+    /**
+     * The Bukkit server instance
+     */
     public static Server ts;
 
-    /** The ChatInMC plugin instance */
+    /**
+     * The ChatInMC plugin instance
+     */
     public static Plugin tp;
 
-    /** A list of available models for the ChatGPT AI */
+    /**
+     * A list of available models for the ChatGPT AI
+     */
     public static List<String> models;
 
-    /** A map of all active chatters */
+    /**
+     * A map of all active chatters
+     */
     public static Map<UUID, Chatter> chatters;
 
-    /** The debug utility for the plugin */
+    /**
+     * The debug utility for the plugin
+     */
     public static Debug debug;
 
     /**
@@ -92,7 +103,7 @@ public final class ChatInMC extends JavaPlugin {
         }
         chatters = readChatters();
         debug.info("Read " + chatters.size() + "Chatters");
-        ts.getPluginManager().registerEvents(new ChatterListener(),this);
+        ts.getPluginManager().registerEvents(new ChatterListener(), this);
 
         //注册所有GUI
         enableAllViews();

@@ -4,39 +4,34 @@ package ltseed.chatinmc.Utils;
 import com.alibaba.fastjson.JSONObject;
 import ltseed.chatinmc.ChatInMC;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
-
- A utility class for making HTTP requests using the Apache HttpClient library and FastJson for JSON serialization/deserialization.
- @author ltseed
- @version 1.0
+ * A utility class for making HTTP requests using the Apache HttpClient library and FastJson for JSON serialization/deserialization.
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public class Request {
 
     /**
-
-     Sends a POST request to the specified URL with the given headers and parameters.
-
-     @param url the URL to send the request to
-
-     @param header a map of header values to include in the request
-
-     @param params a map of parameters to include in the request body
-
-     @return the JSON response from the server as a JSONObject, or null if the request fails
+     * Sends a POST request to the specified URL with the given headers and parameters.
+     *
+     * @param url    the URL to send the request to
+     * @param header a map of header values to include in the request
+     * @param params a map of parameters to include in the request body
+     * @return the JSON response from the server as a JSONObject, or null if the request fails
      */
     public static JSONObject post(String url, Map<String, String> header, Map<String, Object> params) {
 
@@ -65,7 +60,7 @@ public class Request {
             // 执行请求
             try {
                 response = httpClient.execute(httpRequest);
-            } catch (ClientProtocolException e){
+            } catch (ClientProtocolException e) {
                 ChatInMC.debug.debugA(e.getLocalizedMessage());
                 return null;
             } catch (IOException e) {
@@ -95,14 +90,11 @@ public class Request {
     }
 
     /**
-
-     Sends a GET request to the specified URL with the given headers.
-
-     @param url the URL to send the request to
-
-     @param header a map of header values to include in the request
-
-     @return the JSON response from the server as a JSONObject, or null if the request fails
+     * Sends a GET request to the specified URL with the given headers.
+     *
+     * @param url    the URL to send the request to
+     * @param header a map of header values to include in the request
+     * @return the JSON response from the server as a JSONObject, or null if the request fails
      */
     public static JSONObject get(String url, Map<String, String> header) {
 
@@ -127,7 +119,7 @@ public class Request {
             //将params以json格式添加到request中
             //httpRequest.(new StringEntity(new JSONObject(params).toString()));
 
-            header.put("Content-Type","application/json; charset=utf-8");
+            header.put("Content-Type", "application/json; charset=utf-8");
             for (String key : header.keySet()) {
                 httpRequest.setHeader(key, header.get(key));
             }
@@ -135,7 +127,7 @@ public class Request {
             // 执行请求
             try {
                 response = httpClient.execute(httpRequest);
-            } catch (ClientProtocolException e){
+            } catch (ClientProtocolException e) {
                 ChatInMC.debug.debugA(e.getLocalizedMessage());
                 return null;
             } catch (IOException e) {

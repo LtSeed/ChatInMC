@@ -1,18 +1,20 @@
 package ltseed.chatinmc.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * The TimeConverter class provides static methods for converting time strings
  * to their equivalent long values in milliseconds, and vice versa.
- *
+ * <p>
  * The conversion is done by parsing a time string in the format of a number followed
  * by a time unit character ('毫' for milliseconds, '秒' for seconds, '分' for minutes,
  * '时' for hours, and '天' for days) and multiplying the number with the corresponding
  * value in milliseconds. The converted long value can be used to represent time
  * duration in milliseconds.
- *  @author ltseed
- *  @version 1.0
+ *
+ * @author ltseed
+ * @version 1.0
  */
 public class TimeConverter {
 
@@ -20,6 +22,7 @@ public class TimeConverter {
      * A map containing the values in milliseconds for each time unit character.
      */
     private static final Map<Character, Long> timeMap = new HashMap<>();
+
     /*
       Initializes the timeMap with values for each time unit character.
      */
@@ -33,7 +36,7 @@ public class TimeConverter {
 
     /**
      * Converts a time string to its equivalent long value in milliseconds.
-     *
+     * <p>
      * The time string should be in the format of a number followed by a time unit character.
      * For example, "5分" represents 5 minutes, and "2天3时" represents 2 days and 3 hours.
      *
@@ -63,7 +66,7 @@ public class TimeConverter {
     /**
      * Converts a long value in milliseconds to a time string in the format of
      * a number followed by a time unit character.
-     *
+     * <p>
      * The time string represents the time duration of the long value in milliseconds.
      * For example, 300000L represents 5 minutes, and 202800000L represents 2 days and 7 hours.
      *

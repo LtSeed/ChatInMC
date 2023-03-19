@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- This class provides static methods to read and save data files in the plugin data folder,
- including chatters and models.
- @author ltseed
- @version 1.0
+ * This class provides static methods to read and save data files in the plugin data folder,
+ * including chatters and models.
+ *
+ * @author ltseed
+ * @version 1.0
  */
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileProcess {
@@ -29,10 +30,10 @@ public class FileProcess {
      * @param tp 插件实例
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void checkFolders(Plugin tp){
+    public static void checkFolders(Plugin tp) {
         dataFolder = tp.getDataFolder();
         dataFolder.mkdirs();
-        chattersFolder = new File(dataFolder,"chatters");
+        chattersFolder = new File(dataFolder, "chatters");
         chattersFolder.mkdirs();
     }
 
@@ -68,9 +69,9 @@ public class FileProcess {
      *
      * @return 包含所有对话者的Map
      */
-    public static Map<UUID, Chatter> readChatters(){
+    public static Map<UUID, Chatter> readChatters() {
         Map<UUID, Chatter> map = new HashMap<>();
-        if(chattersFolder.listFiles() == null) return map;
+        if (chattersFolder.listFiles() == null) return map;
         for (File file : Objects.requireNonNull(chattersFolder.listFiles())) {
             Chatter value = null;
             try {
@@ -89,13 +90,13 @@ public class FileProcess {
      *
      * @param chatters 要保存的对话者实例的集合
      */
-    public static void saveChatters(Collection<Chatter> chatters){
+    public static void saveChatters(Collection<Chatter> chatters) {
         for (Chatter chatter : chatters) {
             try {
                 chatter.saveToFile(chattersFolder);
             } catch (IOException e) {
                 ChatInMC.debug.err("Error when saving file of entities, it may cause problem" +
-                        "please check file:"+ chatter.getUuid() +":" + e.getMessage());
+                        "please check file:" + chatter.getUuid() + ":" + e.getMessage());
             }
         }
     }
@@ -106,11 +107,11 @@ public class FileProcess {
      *
      * @param models 要保存的模型名称列表
      */
-    public static void saveModels(List<String> models){
+    public static void saveModels(List<String> models) {
         YamlConfiguration yml = new YamlConfiguration();
-        yml.set("models",models);
+        yml.set("models", models);
         try {
-            yml.save(new File(dataFolder,"models.yml"));
+            yml.save(new File(dataFolder, "models.yml"));
         } catch (IOException e) {
             ChatInMC.debug.err("Error when saving file of entities," +
                     "please check file:models.yml: " + e.getMessage());
@@ -125,6 +126,6 @@ public class FileProcess {
      */
     public static void deleteChatterFile(UUID uuid) {
         File file = new File(chattersFolder, uuid.toString());
-        if(file.exists()) file.delete();
+        if (file.exists()) file.delete();
     }
 }
