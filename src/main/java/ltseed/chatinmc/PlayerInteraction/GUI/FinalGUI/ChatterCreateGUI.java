@@ -22,9 +22,24 @@ import java.util.*;
 import static ltseed.chatinmc.Talker.Chatter.getCore;
 import static ltseed.chatinmc.Utils.EntityMaterialMapper.getMaterial;
 
+/**
+
+ A GUI for creating a new {@link Chatter}. This GUI is used to gather information
+
+ from the player about the new Chatter that they want to create.
+
+ It extends {@link SimpleGUI} and is annotated with {@link EnabledView}.
+ @author LtSeed
+ @version 1.0
+ */
 @EnabledView
 public class ChatterCreateGUI extends SimpleGUI {
 
+    /**
+
+     A map of player instances that are creating a new Chatter and their associated
+     {@link ChatterCreateGUI} instances.
+     */
     public static final Map<Player, ChatterCreateGUI> creating = new HashMap<>();
 
     String name = "未设置";
@@ -50,13 +65,27 @@ public class ChatterCreateGUI extends SimpleGUI {
     double presence_penalty = 0;
     double frequency_penalty = 0;
     int best_of = 1;
+    ArrayList<String> basicTrain = new ArrayList<>();
 
+    /**
+
+     Returns a singleton instance of the {@link ChatterCreateGUI} for the specified player.
+     If the player does not already have a {@link ChatterCreateGUI} instance, a new one is created.
+     @param player The player to get the {@link ChatterCreateGUI} instance for
+     @return The {@link ChatterCreateGUI} instance for the player
+     */
     public static ChatterCreateGUI getInstance(Player player){
         ChatterCreateGUI orDefault = creating.getOrDefault(player, new ChatterCreateGUI(player));
         orDefault.update();
         return orDefault;
     }
 
+    /**
+
+     Constructs a new {@link ChatterCreateGUI} instance for the specified player.
+     The GUI is opened immediately and added to the {@link #creating} map.
+     @param player The player to create the GUI for
+     */
     private ChatterCreateGUI(Player player) {
         super("新建一个Chatter！", new HashMap<>());
         update();
@@ -64,6 +93,10 @@ public class ChatterCreateGUI extends SimpleGUI {
         creating.put(player,this);
     }
 
+    /**
+
+     Updates the buttons in the GUI with the latest information.
+     */
     public void update() {
         List<String> nameLore = new ArrayList<>();
         nameLore.add("Click to edit");
@@ -86,6 +119,10 @@ public class ChatterCreateGUI extends SimpleGUI {
         descLore.add("Click to edit");
         Button descButton = new Button((short) 3, (short) 2, Material.PAPER,"描述：" +  description, descLore) {
             /**
+             * Opens a {@link PlayerConversation} with the player to get a new name for the Chatter.
+             * Updates the GUI with the new name.
+             *
+             * @param player The player who clicked the button
              */
             @Override
             public void call(Player player) {
@@ -188,6 +225,19 @@ public class ChatterCreateGUI extends SimpleGUI {
             }
         };
         addButton(coreChooseButton);
+
+        List<String> basicTrainEditLore = new ArrayList<>();
+        basicTrainEditLore.add("Click to edit");
+        basicTrainEditLore.addAll(basicTrain);
+        Button basicTrainEditButton = new Button((short) 9, (short) 1, Material.WRITTEN_BOOK,"基本训练字符串: size = " + basicTrain.size(), basicTrainEditLore) {
+            /**
+             */
+            @Override
+            public void call(Player player) {
+                openBasicTrainSetGUI(player);
+            }
+        };
+        addButton(basicTrainEditButton);
 
         Button distanceSetButton = new Button((short) 7, (short) 3, Material.ARROW,"触发距离："+ talkDistance, nameLore) {
             @Override
@@ -442,6 +492,7 @@ public class ChatterCreateGUI extends SimpleGUI {
                             gptBuilder.setPresence_penalty(presence_penalty);
                             gptBuilder.setTop_p(top_p);
                             gptBuilder.setTemperature(temperature);
+                            gptBuilder.setBasicTrain(basicTrain);
                             chatter.setCore(gptBuilder);
                         } else chatter.setCore(core1);
                     } catch (InvalidChatterException e) {
@@ -467,6 +518,140 @@ public class ChatterCreateGUI extends SimpleGUI {
             }
         };
         addButton(cancelButton);
+    }
+
+    /**
+
+     Opens the GUI for setting the basic training data for the AI.
+     @param player The player for whom the GUI is being opened.
+     */
+    protected void openBasicTrainSetGUI(Player player) {
+        List<Button> buttons = new ArrayList<>();
+        int i = 1;
+        for (String s : basicTrain) {
+            // 将basicTrain转化为按钮
+
+            Button button = new Button(-1, Material.WRITABLE_BOOK,String.valueOf(i++),splitString(s)) {
+                @Override
+                public void call(Player p) {
+                    new PlayerConversation(player).startConversation("请输入新的字符串！", response -> {
+                        try {
+                            ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                            ArrayList<String> n = new ArrayList<>();
+                            for (String s1 : chatterCreateGUI.basicTrain) {
+                                if(s1.equalsIgnoreCase(s)) n.add(response);
+                                else n.add(s1);
+                            }
+                            chatterCreateGUI.basicTrain = n;
+                            creating.put(player,chatterCreateGUI);
+                        } catch (Exception e) {
+                            player.sendMessage("格式有误！");
+                        }
+                        openBasicTrainSetGUI(player);
+                    });
+                    player.closeInventory();
+                }
+            };
+            buttons.add(button);
+        }
+        ArrayList<Button> otherButtons = new ArrayList<>();
+        otherButtons.add(new Button(46,Material.ARROW,"返回",null) {
+            @Override
+            public void call(Player player) {
+                open(player);
+            }
+        });
+        otherButtons.add(new Button(47,Material.ARROW,"添加新的",null) {
+            @Override
+            public void call(Player player) {
+                new PlayerConversation(player).startConversation("请输入新的字符串！", response -> {
+                    try {
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.basicTrain.add(response);
+                        creating.put(player,chatterCreateGUI);
+                    } catch (Exception e) {
+                        player.sendMessage("格式有误！");
+                    }
+                    openBasicTrainSetGUI(player);
+                });
+                player.closeInventory();
+            }
+        });
+        otherButtons.add(new Button(48,Material.BARRIER,"进入删除界面",null) {
+            @Override
+            public void call(Player player) {
+                openBasicTrainDeleteGUI(player);
+            }
+        });
+        // 创建一个分页GUI
+        PaginatedGUI gui = new PaginatedGUI("核心列表", buttons,otherButtons);
+
+        // 打开指定页码的页面
+        gui.open(player, 1);
+    }
+
+    /**
+
+     Opens the GUI for deleting the basic training data for the AI.
+     @param player The player for whom the GUI is being opened.
+     */
+    protected void openBasicTrainDeleteGUI(Player player) {
+        List<Button> buttons = new ArrayList<>();
+        int i = 1;
+        for (String s : basicTrain) {
+            // 将basicTrain转化为按钮
+            Button button = new Button(-1, Material.BARRIER,String.valueOf(i++),splitString(s)) {
+                @Override
+                public void call(Player p) {
+                    try {
+                        ChatterCreateGUI chatterCreateGUI = creating.get(player);
+                        chatterCreateGUI.basicTrain.remove(s);
+                        creating.put(player,chatterCreateGUI);
+                    } catch (Exception e) {
+                        player.sendMessage("出现了未知问题！");
+                    }
+                    openBasicTrainDeleteGUI(player);
+                }
+            };
+            buttons.add(button);
+        }
+        ArrayList<Button> otherButtons = new ArrayList<>();
+        otherButtons.add(new Button(46,Material.ARROW,"返回",null) {
+            @Override
+            public void call(Player player) {
+                open(player);
+            }
+        });
+        otherButtons.add(new Button(48,Material.EMERALD,"退出删除界面",null) {
+            @Override
+            public void call(Player player) {
+                openBasicTrainSetGUI(player);
+            }
+        });
+        // 创建一个分页GUI
+        PaginatedGUI gui = new PaginatedGUI("核心列表", buttons,otherButtons);
+
+        // 打开指定页码的页面
+        gui.open(player, 1);
+    }
+
+    /**
+
+     Splits a given string into substrings of maximum length 10 and returns them in a list.
+     @param input the string to be split
+     @return a list of substrings of maximum length 10
+     */
+    public static List<String> splitString(String input) {
+        List<String> result = new ArrayList<>();
+        int startIndex = 0;
+        int endIndex = Math.min(input.length(), 10);
+        while (startIndex < input.length()) {
+            String substring = input.substring(startIndex, endIndex);
+            result.add(substring);
+            startIndex = endIndex;
+            endIndex = Math.min(startIndex + 10, input.length());
+        }
+        return result;
     }
 
     ChatterCreateGUI(){

@@ -12,7 +12,24 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Handles commands related to managing Chatters.
+ */
 public class Commands implements CommandExecutor, TabCompleter {
+
+    /**
+     * Executes a command.
+     *
+     * @param sender  Source of the command. For players tab-completing a
+     *                command inside of a command block, this will be the player, not
+     *                the command block.
+     * @param command Command which was executed
+     * @param label   Alias of the command which was used
+     * @param args    The arguments passed to the command, including final
+     *                partial argument to be completed
+     * @return true if the command was handled, false otherwise
+     */
     @Override
     public boolean onCommand(@NonNull CommandSender sender, Command command, @NonNull String label, @SuppressWarnings("NullableProblems") String[] args) {
 

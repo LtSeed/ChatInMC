@@ -18,14 +18,25 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/**
+
+ A utility class for making HTTP requests using the Apache HttpClient library and FastJson for JSON serialization/deserialization.
+ @author ltseed
+ @version 1.0
+ */
 public class Request {
 
     /**
-     * post
-     *
-     * @param url    请求URL
-     * @param header header
-     * @return result, null when can not connect to Internet
+
+     Sends a POST request to the specified URL with the given headers and parameters.
+
+     @param url the URL to send the request to
+
+     @param header a map of header values to include in the request
+
+     @param params a map of parameters to include in the request body
+
+     @return the JSON response from the server as a JSONObject, or null if the request fails
      */
     public static JSONObject post(String url, Map<String, String> header, Map<String, Object> params) {
 
@@ -83,6 +94,16 @@ public class Request {
         return JSONObject.parseObject(resultString);
     }
 
+    /**
+
+     Sends a GET request to the specified URL with the given headers.
+
+     @param url the URL to send the request to
+
+     @param header a map of header values to include in the request
+
+     @return the JSON response from the server as a JSONObject, or null if the request fails
+     */
     public static JSONObject get(String url, Map<String, String> header) {
 
         // 创建Httpclient对象
@@ -107,10 +128,8 @@ public class Request {
             //httpRequest.(new StringEntity(new JSONObject(params).toString()));
 
             header.put("Content-Type","application/json; charset=utf-8");
-            if (header != null) {
-                for (String key : header.keySet()) {
-                    httpRequest.setHeader(key, header.get(key));
-                }
+            for (String key : header.keySet()) {
+                httpRequest.setHeader(key, header.get(key));
             }
 
             // 执行请求

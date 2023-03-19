@@ -4,7 +4,25 @@ import ltseed.chatinmc.ChatInMC;
 
 import java.io.IOException;
 
+/**
+ * The {@code CmdTest} class provides a method for testing if the {@code wget} and {@code tar} commands are installed
+ * on the system and, if not, installs them. The methods are static and no instances of this class should be created.
+ *
+ * <p>Usage:
+ * <pre>{@code
+ * CmdTest.test();
+ * }</pre>
+ *  @author ltseed
+ *  @version 1.0
+ */
 public class CmdTest {
+    /**
+     * Tests if the {@code wget} and {@code tar} commands are installed and installs them if not. The method detects the
+     * operating system and installs the appropriate version of the commands.
+     *
+     * <p>Note: this method does not return a value, but logs messages to the console using the {@link ChatInMC#debug}
+     * class.
+     */
     public static void test() {
         try {
             // Check if wget and tar are installed
@@ -73,6 +91,11 @@ public class CmdTest {
         }
     }
 
+    /**
+     Checks if a given command is installed on the system.
+     @param command the name of the command to check
+     @return true if the command is installed, false otherwise
+     */
     private static boolean isCommandInstalled(String command) {
         try {
             Process process = Runtime.getRuntime().exec(new String[]{"which", command});

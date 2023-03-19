@@ -9,16 +9,41 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * A builder class for creating instances of `DialogFlowTalker`.
+ @author ltseed
+ @version 1.0
+ */
 @Getter
 public class DialogFlowBuilder implements MessageBuilder {
 
+    /**
+     * A map of players and the last time they engaged in a dialog.
+     */
     private static final Map<Player, Date> timer = new HashMap<>();
+
+    /**
+     * A map of players and their current session IDs.
+     */
     private static final Map<Player, String> sessions = new HashMap<>();
 
+    /**
+     * The maximum time between dialogs in milliseconds.
+     */
     private final Long dialogTime;
 
+    /**
+     * The ID of the Dialogflow project to use.
+     */
     private final String projectId;
 
+
+    /**
+     * Builds a new instance of `DialogFlowTalker` for the specified player.
+     *
+     * @param player the player to build the `DialogFlowTalker` instance for
+     * @return a new instance of `DialogFlowTalker` for the specified player
+     */
     @Override
     public DialogFlowTalker build(Player player) {
         Date now = new Date();
@@ -41,8 +66,15 @@ public class DialogFlowBuilder implements MessageBuilder {
         return new DialogFlowTalker(projectId,sessionId);
     }
 
-    public DialogFlowBuilder(String projectId,Long time){
+
+    /**
+     * Creates a new `DialogFlowBuilder` instance with the specified project ID and dialog time.
+     *
+     * @param projectId  the ID of the Dialogflow project to use
+     * @param dialogTime the maximum time between dialogs in milliseconds
+     */
+    public DialogFlowBuilder(String projectId,Long dialogTime){
         this.projectId = projectId;
-        this.dialogTime = time;
+        this.dialogTime = dialogTime;
     }
 }

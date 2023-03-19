@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ A paginated graphical user interface (GUI) for displaying multiple buttons on multiple pages.
+
+ */
 public class PaginatedGUI {
 
     private final String title;
@@ -23,6 +27,13 @@ public class PaginatedGUI {
     private final ItemStack prevPageItem;
     private final ItemStack nextPageItem;
 
+    /**
+     * Constructs a new PaginatedGUI with the given title and buttons.
+     *
+     * @param title         the title of the GUI
+     * @param allButtons    a list of all buttons to be displayed
+     * @param otherButtons  a list of additional buttons to be displayed on every page
+     */
     public PaginatedGUI(String title, List<Button> allButtons, List<Button> otherButtons) {
         this.title = title;
         this.allButtons = allButtons;
@@ -46,7 +57,9 @@ public class PaginatedGUI {
         setupPages();
     }
 
-
+    /**
+     * Splits the list of all buttons into pages of 45 buttons each and stores them in the pages map.
+     */
     private void setupPages() {
         int currentPage = 1;
         List<Button> currentPageButtons = new ArrayList<>();
@@ -64,18 +77,20 @@ public class PaginatedGUI {
         }
     }
 
+    /**
+     * Opens the GUI for the specified player on the specified page.
+     *
+     * @param player the player to open the GUI for
+     * @param page   the page to open the GUI on
+     */
     public void open(Player player, int page) {
         SimpleGUI simpleGUI = new SimpleGUI(title, new HashMap<>());
         List<Button> pageButtons = pages.get(page);
 
-        if (pageButtons == null) {
-            player.sendMessage(ChatColor.RED + "无效的页码！");
-            ChatInMC.debug.err("Illegal page number!");
-            return;
-        }
-
-        for (Button button : pageButtons) {
-            simpleGUI.addButton(button);
+        if (pageButtons != null) {
+            for (Button button : pageButtons) {
+                simpleGUI.addButton(button);
+            }
         }
 
         if (page > 1) {

@@ -7,8 +7,18 @@ import java.net.*;
 
 import static ltseed.chatinmc.ChatInMC.*;
 
+/**
+ * DialogFlowInstaller 类用于安装 DialogFlow CLI。该类提供两个方法，分别用于检查 DialogFlow CLI 是否已经安装和安装 DialogFlow CLI。
+ @author ltseed
+ @version 1.0
+ */
 public class DialogFlowInstaller {
 
+    /**
+     * 检查 DialogFlow CLI 是否已经安装。
+     *
+     * @return 如果已经安装则返回 true，否则返回 false。
+     */
     public static boolean isDialogFlowInstalled() {
         try {
             Class.forName("com.google.cloud.dialogflow.v2beta1.SessionsClient");
@@ -18,6 +28,11 @@ public class DialogFlowInstaller {
         }
     }
 
+    /**
+     * 安装 DialogFlow CLI。
+     *
+     * @throws Exception 如果安装过程中发生异常则抛出异常。
+     */
     public static void install() throws Exception {
 
         String os = System.getProperty("os.name").toLowerCase();

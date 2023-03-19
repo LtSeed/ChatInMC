@@ -20,16 +20,43 @@ import static ltseed.chatinmc.Talker.ChatGPT.ChatGPTModelUtils.getAvailableModel
 import static ltseed.chatinmc.Utils.Config.*;
 import static ltseed.chatinmc.Utils.FileProcess.*;
 
+/**
+ * The main class of the ChatInMC plugin. This class extends JavaPlugin and handles plugin initialization and deactivation.
+ * <p>
+ * This plugin provides an AI chatbot feature to Minecraft, allowing players to chat with an AI powered by ChatGPT.
+ * </p>
+ * <p>
+ * This plugin also provides several GUIs for the chatbot, and allows players to interact with the chatbot through commands.
+ * </p>
+ * <p>
+ * This class initializes the plugin and registers all necessary events, commands and GUIs.
+ * </p>
+ *
+ * @author ltseed
+ * @version 1.0
+ * @since 2023-03-19
+ */
 public final class ChatInMC extends JavaPlugin {
 
+    /** The Bukkit server instance */
     public static Server ts;
+
+    /** The ChatInMC plugin instance */
     public static Plugin tp;
 
+    /** A list of available models for the ChatGPT AI */
     public static List<String> models;
+
+    /** A map of all active chatters */
     public static Map<UUID, Chatter> chatters;
 
+    /** The debug utility for the plugin */
     public static Debug debug;
 
+    /**
+     * Called when the plugin is being enabled.
+     * Initializes the plugin and registers all necessary events, commands and GUIs.
+     */
     @Override
     public void onEnable() {
         //获取静态实例
@@ -77,7 +104,9 @@ public final class ChatInMC extends JavaPlugin {
         debug.info("Load Success!");
     }
 
-
+    /**
+     * Enables all GUIs annotated with {@link ltseed.chatinmc.PlayerInteraction.GUI.EnabledView}.
+     */
     private void enableAllViews() {
         Reflections reflections = new Reflections("ltseed.chatinmc");
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(EnabledView.class);
@@ -91,6 +120,10 @@ public final class ChatInMC extends JavaPlugin {
         }
     }
 
+    /**
+     * Called when the plugin is being disabled.
+     * save data.
+     */
     @Override
     public void onDisable() {
         Config.saveConfig();

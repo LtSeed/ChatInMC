@@ -9,10 +9,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+
+ This class provides utility methods to interact with OpenAI's GPT-3 API for chatbot models.
+
+ The methods in this class enable the user to retrieve a list of available chatbot models from the API.
+ @author ltseed
+ @version 1.0
+ */
 public class ChatGPTModelUtils {
 
+    /**
+
+     The URL for retrieving available chatbot models from the OpenAI API.
+     */
     private static final String MODELS_URL = "https://api.openai.com/v1/models";
 
+    /**
+
+     Returns a list of available chatbot models from the OpenAI API.
+
+     @param key the API key to access the OpenAI API
+
+     @return a list of available chatbot models
+     */
     public static List<String> getAvailableModels(String key) {
         Map<String, String> params = new HashMap<>();
         params.put("Authorization", "Bearer " + key);

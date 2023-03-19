@@ -22,6 +22,15 @@ import java.util.*;
 import static ltseed.chatinmc.Talker.Chatter.getCore;
 import static ltseed.chatinmc.Utils.EntityMaterialMapper.getMaterial;
 
+/**
+ A GUI for managing Chatters. Allows the user to modify the name, description, entity, talking distance, and dialog time
+ of a Chatter, as well as its underlying AI core and parameters (if it is a ChatGPTBuilder), or the DialogFlow project ID
+ (if it is a DialogFlowBuilder).
+ The GUI also displays a list of all available Chatters and allows the user to choose which one to modify.
+ This class extends SimpleGUI and uses a HashMap to store GUI elements.
+ @author LtSeed
+ @version 1.0
+ */
 public class ChatterManageGUI extends SimpleGUI {
 
     public static final Map<Player, ChatterManageGUI> managing = new HashMap<>();
@@ -48,11 +57,27 @@ public class ChatterManageGUI extends SimpleGUI {
     double presence_penalty = 0;
     double frequency_penalty = 0;
     int best_of = 1;
+    List<String> basicTrain = new ArrayList<>();
 
+    /**
+
+     Returns an instance of ChatterManageGUI for a specific player and Chatter.
+     @param player the player using the GUI
+     @param chatter the Chatter to modify
+     @return an instance of ChatterManageGUI
+     */
     public static ChatterManageGUI getInstance(Player player, Chatter chatter){
         return new ChatterManageGUI(player, chatter);
     }
 
+    /**
+
+     Constructor for ChatterManageGUI. Initializes all necessary variables and calls the update() and open() methods.
+
+     @param player the player using the GUI
+
+     @param chatter the Chatter to modify
+     */
     private ChatterManageGUI(Player player, Chatter chatter) {
         super("修改一个Chatter！", new HashMap<>());
 
@@ -79,6 +104,7 @@ public class ChatterManageGUI extends SimpleGUI {
             presence_penalty = core.getPresence_penalty();
             frequency_penalty = core.getFrequency_penalty();
             best_of = core.getBest_of();
+            basicTrain = core.getBasicTrain();
         } else {
             projectId = ((DialogFlowBuilder)chatter.getCore()).getProjectId();
         }
@@ -86,6 +112,12 @@ public class ChatterManageGUI extends SimpleGUI {
         open(player);
     }
 
+    /**
+
+     Static method to open the ChatterManageGUI for the specified player.
+     Displays a message if there are no Chatters available.
+     @param player the player using the GUI
+     */
     public static void openManageChooseGUI(Player player) {
         if(ChatInMC.chatters.size()==0){
             player.sendMessage("现在没有Chatter！");
@@ -109,6 +141,10 @@ public class ChatterManageGUI extends SimpleGUI {
         new PaginatedGUI("选择你要修改的Chatter!", allButtons, otherButtons).open(player,1);
     }
 
+    /**
+
+     Updates the buttons in the GUI with the latest information.
+     */
     public void update() {
         List<String> nameLore = new ArrayList<>();
         nameLore.add("Click to edit");
@@ -481,11 +517,12 @@ public class ChatterManageGUI extends SimpleGUI {
                             gptBuilder.setLogprobs(logprobs);
                             gptBuilder.setMax_tokens(max_tokens);
                             gptBuilder.setN(n);
-                            if(!suffix.equals("默认值"))
+                            if(suffix!=null&&!suffix.equals("默认值"))
                                 gptBuilder.setSuffix(suffix);
                             gptBuilder.setPresence_penalty(presence_penalty);
                             gptBuilder.setTop_p(top_p);
                             gptBuilder.setTemperature(temperature);
+                            gptBuilder.setBasicTrain(basicTrain);
                             chatter.setCore(gptBuilder);
                         } else chatter.setCore(core1);
                     } catch (InvalidChatterException e) {
