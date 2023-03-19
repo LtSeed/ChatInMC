@@ -31,3 +31,18 @@ ChatInMC是一个基于Bukkit的Minecraft聊天机器人插件，通过对话流
 **许可证**
 
 ChatInMC基于MIT许可证发布。
+
+----------------------------------------------------------
+
+#### 使用说明
+
+##### 创建Chatter
+输入指令 ``` /cim create ```开始创建聊天机器人
+![创建聊天机器人](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319141602.png)
+
+##### 管理Chatter
+输入指令``` /cim manage ```选择需要修改的聊天机器人
+![修改聊天机器人1](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142706.png)
+![修改聊天机器人2](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142802.png)
+
+
