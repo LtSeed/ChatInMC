@@ -6,6 +6,17 @@ import org.bukkit.entity.EntityType;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *This code is mapping EntityType objects to their corresponding Material objects in Minecraft. Each EntityType object is associated with a specific Material object, which can be used to spawn an item in the game.
+ *
+ * The EntityMaterialMapper class contains a static HashMap called ENTITY_MATERIAL_MAP, which is initialized with mappings between various EntityType objects and their corresponding Material objects using the put() method.
+ *
+ * For example, the AREA_EFFECT_CLOUD EntityType object is mapped to the AIR Material object, while the ARMOR_STAND EntityType object is mapped to the ARMOR_STAND Material object.
+ *
+ * This code can be used to simplify the process of creating and spawning entities in the game, as it provides an easy way to map EntityType objects to their corresponding Material objects.
+ * @author ltseed
+ * @version 1.0
+ * */
 public class EntityMaterialMapper {
     private static final Map<EntityType, Material> ENTITY_MATERIAL_MAP = new HashMap<>();
 
@@ -111,6 +122,13 @@ public class EntityMaterialMapper {
         ENTITY_MATERIAL_MAP.put(EntityType.THROWN_EXP_BOTTLE, Material.EXPERIENCE_BOTTLE);
         ENTITY_MATERIAL_MAP.put(EntityType.ALLAY, Material.ALLAY_SPAWN_EGG);
     }
+    /**
+     * Returns the Material that corresponds to the given EntityType.
+     * If the EntityType is not present in the map, returns Material.PAPER.
+     *
+     * @param entityType the EntityType for which to retrieve the corresponding Material
+     * @return the Material that corresponds to the given EntityType, or Material.PAPER if no mapping is present
+     */
     public static Material getMaterial(EntityType entityType){
         return ENTITY_MATERIAL_MAP.getOrDefault(entityType, Material.PAPER);
     }
