@@ -2,6 +2,13 @@
 
 ChatInMC是一个基于Bukkit的Minecraft聊天机器人插件，通过对话流API实现与玩家的互动。
 
+**开发者文档**
+
+我们提供了大量针对开发者的API，并以[JavaDocs](https://ltseed.github.io/ChatInMC/)的方式呈现。
+
+![开发者文档](https://github.com/LtSeed/ChatInMC/blob/master/images/1_796602707_171_85_3_674825693_1262e0447220f6a7faff95c0efa7ff8a.png)
+
+
 **依赖**
 
 - Bukkit API
@@ -47,4 +54,6 @@ ChatInMC基于MIT许可证发布。
 ![修改聊天机器人1](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142706.png)
 ![修改聊天机器人2](https://github.com/LtSeed/ChatInMC/blob/master/images/Pasted%20image%2020230319142802.png)
 
+##### 视频演示
 
+ [ChatInMC bilibili](https://www.bilibili.com/video/BV1Ms4y1p79W/?share_source=copy_web)
