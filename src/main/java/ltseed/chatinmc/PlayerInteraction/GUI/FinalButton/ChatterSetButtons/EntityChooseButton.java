@@ -41,9 +41,9 @@ public class EntityChooseButton extends Button {
             lore.add("位置: " + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ());
             lore.add("实体ID: " + entity.getEntityId());
 
-            Button button = new Button(-1, getMaterialFromType(entity.getType()), entity.getName(), lore) {
+            Button button = new Button(-1, getMaterialFromType(entity), entity.getName(), lore) {
                 final UUID uuid = entity.getUniqueId();
-                final Material m = getMaterialFromType(entity.getType());
+                final Material m = getMaterialFromType(entity);
 
                 @Override
                 public void call(Player p) {

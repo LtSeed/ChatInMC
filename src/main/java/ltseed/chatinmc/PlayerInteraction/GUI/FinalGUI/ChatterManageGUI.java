@@ -49,7 +49,7 @@ public class ChatterManageGUI extends GUIWithChatterInformation {
         description = chatter.getDescription();
         choose_entity = chatter.getUuid().toString();
         try {
-            material = getMaterialFromType(Objects.requireNonNull(chatter.getEntity()).getType());
+            material = getMaterialFromType(Objects.requireNonNull(chatter.getEntity()));
         } catch (Exception e) {
             material = Material.COW_SPAWN_EGG;
         }
