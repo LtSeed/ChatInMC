@@ -96,13 +96,18 @@ public final class ChatInMC extends JavaPlugin {
         checkFolders(tp);
         models = readModels();
         try {
-            models.addAll(getAvailableModels(chatGPT_key));
+            List<String> availableModels = getAvailableModels(chatGPT_key);
+            models.addAll(availableModels);
+            if(availableModels.isEmpty()){
+                debug.err("Unable to get models, you can only use GPT_PROXY");
+                models.add("ChatGPT_PROXY");
+            }
         } catch (Exception e) {
             debug.err("Unable to get models, you can only use GPT_PROXY");
             models.add("ChatGPT_PROXY");
         }
         chatters = readChatters();
-        debug.info("Read " + chatters.size() + "Chatters");
+        debug.info("Read " + chatters.size() + " Chatters");
         ts.getPluginManager().registerEvents(new ChatterListener(), this);
 
         //注册所有GUI

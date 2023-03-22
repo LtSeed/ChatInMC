@@ -29,14 +29,14 @@ public class PaginatedGUI {
      * Constructs a new PaginatedGUI with the given title and buttons.
      *
      * @param title        the title of the GUI
-     * @param allButtons   a list of all buttons to be displayed
+     * @param listButtons   a list of all buttons to be displayed
      * @param otherButtons a list of additional buttons to be displayed on every page
      */
-    public PaginatedGUI(String title, List<Button> allButtons, List<Button> otherButtons) {
+    public PaginatedGUI(String title, List<Button> listButtons, List<Button> otherButtons) {
         this.title = title;
-        this.allButtons = allButtons;
+        this.allButtons = listButtons;
         this.pages = new HashMap<>();
-        this.totalPages = (int) Math.ceil((double) allButtons.size() / 45);
+        this.totalPages = (int) Math.ceil((double) listButtons.size() / 45);
 
         this.prevPageItem = new ItemStack(Material.ARROW);
         ItemMeta prevPageItemMeta = prevPageItem.getItemMeta();
@@ -101,9 +101,24 @@ public class PaginatedGUI {
         }
 
         if (otherButtons != null && otherButtons.size() <= 7) {
+            boolean[] added = new boolean[7];
             for (Button otherButton : otherButtons) {
-                if (otherButton.getSlot() < 53 && otherButton.getSlot() > 45)
+                int slot = otherButton.getSlot();
+                if (slot < 53 && slot > 45 && !added[slot - 46]) {
                     simpleGUI.addButton(otherButton);
+                    added[slot - 46] = true;
+                } else {
+                    int firstNoSet = 0;
+                    for (int i1 = 0; i1 < 7; i1++) {
+                        if (!added[i1]) {
+                            firstNoSet = i1;
+                            break;
+                        }
+                    }
+                    otherButton.resetSlot(firstNoSet + 46);
+                    simpleGUI.addButton(otherButton);
+                    added[firstNoSet] = true;
+                }
             }
         }
 

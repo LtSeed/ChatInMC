@@ -41,7 +41,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
 
             Player player = (Player) sender;
-            ChatterCreateGUI.getInstance(player).open(player);
+            ChatterCreateGUI.getGUIInstance(player).open(player);
 
             return true;
         }

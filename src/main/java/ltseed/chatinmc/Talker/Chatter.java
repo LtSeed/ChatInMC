@@ -114,7 +114,7 @@ public class Chatter {
         try {
             String p = yml_file.getString("modelOrProjectId", "text-davinci-003");
             String s = yml_file.getString("type", "ChatGPT");
-            core = getCore(dialogTime1, s, p);
+            core = getMessageBuilder(dialogTime1, s, p);
         } catch (Exception e) {
             throw new InvalidChatterException(InvalidChatterException.TYPE.INVALID_CORE_TYPE);
         }
@@ -134,7 +134,7 @@ public class Chatter {
      * @return 返回对应的消息构建器实例
      * @throws InvalidChatterException 当模型类型不合法时抛出异常
      */
-    public static MessageBuilder getCore(Long dialogTime1, String model, String projectId) throws InvalidChatterException {
+    public static MessageBuilder getMessageBuilder(Long dialogTime1, String model, String projectId) throws InvalidChatterException {
         switch (model) {
             case "ChatGPT":
                 return ChatGPTBuilder.getDefault();

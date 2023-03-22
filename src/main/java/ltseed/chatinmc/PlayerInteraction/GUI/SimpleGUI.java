@@ -1,6 +1,7 @@
 package ltseed.chatinmc.PlayerInteraction.GUI;
 
 import ltseed.chatinmc.ChatInMC;
+import ltseed.chatinmc.PlayerInteraction.GUI.AbstractGUI.GUIWithChatterInformation;
 import ltseed.chatinmc.PlayerInteraction.GUI.FinalGUI.ChatterCreateGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -143,8 +144,8 @@ public class SimpleGUI implements Listener {
      * @param player The player who will see the inventory.
      */
     public void open(Player player) {
-        if (this instanceof ChatterCreateGUI && ChatterCreateGUI.creating.containsKey(player)) {
-            ((ChatterCreateGUI) this).update();
+        if (this instanceof GUIWithChatterInformation && ChatterCreateGUI.creating.containsKey(player)) {
+            ((GUIWithChatterInformation) this).update();
         }
         enableView();
         Bukkit.getScheduler().runTaskLater(tp, () -> player.openInventory(inventory), 5);

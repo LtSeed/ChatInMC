@@ -131,7 +131,7 @@ public class EntityMaterialMapper {
      * @param entityType the EntityType for which to retrieve the corresponding Material
      * @return the Material that corresponds to the given EntityType, or Material.PAPER if no mapping is present
      */
-    public static Material getMaterial(EntityType entityType) {
+    public static Material getMaterialFromType(EntityType entityType) {
         return ENTITY_MATERIAL_MAP.getOrDefault(entityType, Material.PAPER);
     }
 }
